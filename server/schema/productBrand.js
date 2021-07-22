@@ -9,6 +9,16 @@ const productBrandSchema = new mongoose.Schema({
     category: { type: Schema.Types.ObjectId, ref: 'categories', required: true },
 });
 
+productBrandSchema.virtual('products', {
+    ref: 'products',
+    localField: '_id',
+    foreignField: 'productBrand',
+    justOne: false,
+});
+
+productBrandSchema.set('toObject', { virtuals: true });
+productBrandSchema.set('toJSON', { virtuals: true });
+
 const ProductBrand = mongoose.model('productBrands', productBrandSchema);
 
 module.exports = ProductBrand;

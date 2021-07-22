@@ -1,0 +1,1 @@
+export { default as ComingSoon } from './comingSoon/ComingSoon';

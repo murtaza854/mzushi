@@ -26,7 +26,7 @@ const startupSchema = new mongoose.Schema({
     serviceAreas: [{ type: Schema.Types.ObjectId, ref: 'areas', required: true }],
     serviceCities: [{ type: Schema.Types.ObjectId, ref: 'cities', required: true }],
     serviceProvinces: [{ type: Schema.Types.ObjectId, ref: 'provinces', required: true }],
-    adPackages: [{ type: Schema.Types.ObjectId, ref: 'adPackages', required: true }],
+    availableAds: { type: Number, required: true, default: 0 },
 });
 
 const Startup = mongoose.model('startups', startupSchema);

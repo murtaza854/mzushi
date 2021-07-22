@@ -16,23 +16,30 @@ router.post('/login', async (req, res) => {
     try {
         const response = await firebase.auth().signInWithEmailAndPassword(req.body.email, req.body.password);
         const user = response.user;
-        const idTokenResult = await user.getIdTokenResult()
-        if (!!idTokenResult.claims.admin && user.emailVerified) {
-            res.json({ loggedIn: true });
-        } else {
-            await firebase.auth().signOut();
-            throw 'Either user does not exist or email has not yet been verified!'
-        }
+        const idTokenResult = await user.getIdTokenResult();
+        const displayName = user.displayName;
+        const email = user.email;
+        const emailVerified = user.emailVerified;
+        const admin = idTokenResult.claims.admin;
+        res.json({ data: { displayName: displayName, email: email, emailVerified: emailVerified, admin: admin } });
     } catch (error) {
-        res.json({ loggedIn: false, error: error });
+        res.json({ data: null, error: error });
     }
 });
 
 router.get('/logged-in', async (req, res) => {
     try {
-        res.json({ loggedIn: true, data: firebase.auth().currentUser });
+        const user = firebase.auth().currentUser;
+        if (user) {
+            const idTokenResult = await user.getIdTokenResult();
+            const displayName = user.displayName;
+            const email = user.email;
+            const emailVerified = user.emailVerified;
+            const admin = idTokenResult.claims.admin;
+            res.json({ data: { displayName: displayName, email: email, emailVerified: emailVerified, admin: admin } });
+        } else res.json({ data: null })
     } catch (error) {
-        res.json({ loggedIn: false, error: error });
+        res.json({ data: null, error: error });
     }
 });
 
@@ -52,7 +59,7 @@ router.post('/add', async (req, res) => {
         await firebaseAdmin.auth().setCustomUserClaims(user.uid, { admin: true });
         user.sendEmailVerification();
         await user.updateProfile({
-            displayName: `${req.body.firstName} ${req.body.lastName}`,
+            displayName: req.body.firstName,
         });
         const newAdminUser = new AdminUser({
             firstName: req.body.firstName,

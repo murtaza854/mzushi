@@ -1,0 +1,10 @@
+export { default as productBrandObj } from './productBrand';
+export { default as categoryObj } from './category';
+export { default as productCategoryObj } from './productCategory';
+export { default as productSubCategoryObj } from './productSubCategory';
+export { default as countryObj } from './country';
+export { default as provinceObj } from './province';
+export { default as cityObj } from './city';
+export { default as areaObj } from './area';
+export { default as adminUserObj } from './adminUser';
+export { default as adPackageObj } from './adPackage';

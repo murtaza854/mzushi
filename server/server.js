@@ -7,8 +7,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 const app = express();
 
-// const firebaseFile = require('./firebase');
-// const firebase = firebaseFile.firebase;
+const firebaseFile = require('./firebase');
+const firebase = firebaseFile.firebase;
 // const firebaseAdmin = firebaseFile.admin;
 
 const url = process.env.DATABASE_URL;
@@ -28,12 +28,13 @@ const createServer = async (callback) => {
     app.use(cors({
         credentials: true,
         origin: [process.env.API_URL1, process.env.API_URL2]
+        // origin: [process.env.API_URL3]
     }));
-    // app.use(express.static('../client/public'));
+    app.use(express.static('./build'));
 
     const adminUserRoutes = require('./routes/adminUser');
     const productBrandRoutes = require('./routes/productBrand');
-    const categoryRoutes = require('./routes/productCategory');
+    const categoryRoutes = require('./routes/category');
     const productCategoryRoutes = require('./routes/productCategory');
     const productSubCategoryRoutes = require('./routes/productSubCategory');
     // const productRoutes = require('./routes/product');
@@ -41,8 +42,10 @@ const createServer = async (callback) => {
     const provinceRoutes = require('./routes/province');
     const cityRoutes = require('./routes/city');
     const countryRoutes = require('./routes/country');
+    const authRoutes = require('./routes/auth');
+    const adPackageRoutes = require('./routes/adPackage');
 
-    app.use('/api/admin-users', adminUserRoutes);
+    app.use('/api/admin-user', adminUserRoutes);
     app.use('/api/product-brand', productBrandRoutes);
     app.use('/api/category', categoryRoutes);
     app.use('/api/product-category', productCategoryRoutes);
@@ -51,6 +54,11 @@ const createServer = async (callback) => {
     app.use('/api/province', provinceRoutes);
     app.use('/api/city', cityRoutes);
     app.use('/api/country', countryRoutes);
+    app.use('/api/auth', authRoutes);
+    app.use('/api/ad-package', adPackageRoutes);
+    app.get('*', function (req, res) {
+        res.sendFile('./build/index.html');
+    });
     // app.use('/api/orders', orderRoutes);
     // app.get('/login', (req, res) => {
     //   firebase.auth().signInWithEmailAndPassword('murtazashafi11@gmail.com', 'test123')
@@ -66,6 +74,36 @@ const createServer = async (callback) => {
     //     res.send(error);
     //   });
     // })
+    // app.get('/__/auth/action', async (req, res) => {
+    //     try {
+    //         var mode = req.query.mode;
+    //         var actionCode = req.query.oobCode;
+    //         var continueUrl = req.query.continueUrl || null;
+    //         var lang = req.query.mode || 'en';
+    //         let data;
+    //         switch (mode) {
+    //             case 'resetPassword':
+    //                 // Display reset password handler and UI.
+    //                 // handleResetPassword(auth, actionCode, continueUrl, lang);
+    //                 break;
+    //             case 'recoverEmail':
+    //                 // Display email recovery handler and UI.
+    //                 // handleRecoverEmail(auth, actionCode, lang);
+    //                 break;
+    //             case 'verifyEmail':
+    //                 // Display email verification handler and UI.
+    //                 // data = auth.handleVerifyEmail(firebase.auth(), actionCode, continueUrl, lang);
+    //                 await auth.applyActionCode(actionCode);
+    //                 res.json({ data: true });
+    //                 break;
+    //             default:
+    //                 // Error: invalid mode.
+    //                 throw 'Invalid'
+    //         }
+    //     } catch (error) {
+    //         res.json({ data: 'Invalid', error: error });
+    //     }
+    // });
     app.listen(port, () => {
         console.log(`Example app listening at http://localhost:${port}`);
     });

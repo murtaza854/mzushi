@@ -28,11 +28,12 @@ const createServer = async (callback) => {
     };
     const response = await firebase.auth().createUserWithEmailAndPassword(email, password);
     const user = response.user;
-    await firebaseAdmin.auth().setCustomUserClaims(user.uid, {admin: true});
+    await firebaseAdmin.auth().setCustomUserClaims(user.uid, { admin: true });
     user.sendEmailVerification();
     await user.updateProfile({
-        displayName: `${firstName} ${lastName}`,
+        displayName: firstName,
     });
+    // console.log(user);
     const newAdminUser = new AdminUser({
         firstName: firstName,
         lastName: lastName,
@@ -42,7 +43,7 @@ const createServer = async (callback) => {
     await newAdminUser.save();
     console.log('Verification Email sent! Please verify to login');
     process.exit(0);
-    
+
 }
 
 createServer();

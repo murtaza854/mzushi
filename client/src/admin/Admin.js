@@ -60,7 +60,7 @@ function Admin(props) {
             {!user.userState ? (
                 <Login user={user} title="Mzushi: Admin Login" />
             ) : (
-                <AdminLayout user={user} darkState={darkState} setDarkState={setDarkState} title="Flowerworks: Dashboard" />
+                <AdminLayout user={user} darkState={darkState} setDarkState={setDarkState} title="Mzushi: Dashboard" />
             )}
         </ThemeProvider>
     );

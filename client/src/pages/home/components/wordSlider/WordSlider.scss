@@ -1,0 +1,93 @@
+$numberOfUniqueWords: 2;
+.word-slider-main {
+  background-color: #8fbedf;
+  height: 20rem;
+  p {
+    // margin-bottom: 0;
+    font-weight: 300;
+    color: white;
+    // margin: 0.5rem 0;
+    margin-top: 0.5rem;
+  }
+  h1 {
+    font-weight: 600;
+  }
+}
+.word-slider-container {
+//   width: 100vw;
+  // height: 20rem;
+  display: flex;
+  align-items: center;
+  color: white;
+  font-family: sans-serif;
+  
+  --word-size: 3rem;
+  --row-gap: 1rem;
+} 
+
+@media only screen and (max-width: 768px) {
+  .word-slider-container {
+    --word-size: 36px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .word-slider-container {
+    --word-size: 24px;
+    --row-gap: 8px;
+  }
+}
+
+.word-slider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  // To avoid cutting some letters
+  height: calc(var(--word-size) * 1.15);
+  font-size: var(--word-size);
+  line-height: 1;
+  overflow: hidden;
+}
+
+@mixin initTranslateY() {
+  transform: translateY(calc(50% - var(--word-size) / 2));
+}
+
+.word-slider__words {
+  display: grid;
+  color: #F6D33E;
+  grid-template-rows: repeat($numberOfUniqueWords+1, 1fr);
+  grid-row-gap: var(--row-gap);
+  animation: slide 8s infinite cubic-bezier(0.01, 1.07, 0.38, 1.02);
+  @include initTranslateY();
+}
+
+@mixin translateY($mutliplicator) {
+  transform: translateY(
+    calc(50% - var(--word-size) / 2 - (var(--word-size) + var(--row-gap)) * #{$mutliplicator})
+  );
+}
+
+@keyframes slide {
+  @for $i from 0 through $numberOfUniqueWords {  
+    @if $i < $numberOfUniqueWords {
+      #{$i/$numberOfUniqueWords*100}% { 
+        @include translateY($i);
+      }
+      // "Pause" the animation
+      #{$i/$numberOfUniqueWords*100+10}% { 
+        @include translateY($i);
+      }
+    } @else {
+      99.9999% { 
+        @include translateY($i);
+      }
+      // We very quickly translate to the top
+      100% { 
+        @include initTranslateY();
+      }
+    }
+  }
+}
+

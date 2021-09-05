@@ -1,0 +1,10 @@
+export { default as MainNavbar } from './mainNavbar/MainNavbar';
+export { default as IconBanner } from './iconBanner/IconBanner';
+export { default as Footer } from './footer/Footer';
+export { default as YellowButton } from './yellowButton/YellowButton';
+export { default as TransparentButton } from './transparentButton/TransparentButton';
+export { default as Heading1 } from './heading1/Heading1';
+export { default as Heading2 } from './heading2/Heading2';
+export { default as DescriptionText } from './descriptionText/DescriptionText';
+export { default as BigBox } from './bigBox/BigBox';
+export { default as BusinessCard } from './businessCard/BusinessCard';

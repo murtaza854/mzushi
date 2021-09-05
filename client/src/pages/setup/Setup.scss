@@ -1,0 +1,46 @@
+.setup {
+    .form-yellow-buttons {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        .form-yellow-btn {
+            padding: 0.2rem 0.5rem;
+            background-color: #f6d33e !important;
+            color: white;
+            cursor: pointer;
+            width: fit-content;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid #f6d33e !important;
+            text-transform: uppercase;
+            border-radius: 30px;
+            transition: ease-in-out 0.3s;
+            margin: 0 0.5rem;
+            margin-bottom: 0.5rem;
+            &:hover {
+                background-color: transparent !important;
+                color: #f6d33e;
+                border: 1px solid #f6d33e !important;
+            }
+            &:active {
+                background-color: #f5d9aa !important;
+                color: white;
+                box-shadow: none;
+            }
+            &:focus {
+                box-shadow: none;
+            }
+        }
+        .active {
+            background-color: #f5d9aa !important;
+            color: white;
+            box-shadow: none;
+            &:hover {
+                background-color: #f5d9aa !important;
+                color: white;
+                border: 1px solid #f6d33e !important;
+            }
+        }
+    }
+}

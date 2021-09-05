@@ -1,0 +1,34 @@
+.business-card {
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 6px 0px;
+    width: 20rem;
+    padding: 1.5rem 1rem 0rem 1rem;
+    border-radius: 15px;
+    margin: 0 2rem;
+    .business-card-head {
+        // border: 1px solid black;
+        border-radius: 15px;
+        position: relative;
+        img {
+            width: 100%;
+            border-radius: 15px;
+        }
+        .business-card-chip {
+            position: absolute;
+            bottom: -0.85rem;
+            left: 1rem;
+            background-color: #f6d33e;
+            color: white;
+            padding: 0.1rem 0.5rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+    }
+    .business-card-body {
+        .MuiRating-root {
+            // color: #8fbedf;
+            // color: #f6d33e;
+            color: black;
+        }
+    }
+}

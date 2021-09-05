@@ -1,0 +1,14 @@
+.transparent-button {
+    text-decoration: none;
+    font-weight: 600;
+    color: black;
+    background-color: transparent;
+    text-align: center;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    transition: .3s ease-in-out;
+    &:hover {
+        color: #F6D33E;
+        background-color: white;
+    }
+}

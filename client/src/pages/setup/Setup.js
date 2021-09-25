@@ -1,14 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
+import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
-import { Heading1 } from '../../components';
+import { ClickButton, Heading1 } from '../../components';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import './Setup.scss';
+import api from '../../api';
 
 function Setup(props) {
     const [alignment, setAlignment] = useState('left');
     const [categories, setCategories] = useState([]);
     const [features, setFeatures] = useState([]);
+
+    const [radios, setRadios] = useState({ delivery: true, service: false });
+
+    const [province, setProvince] = useState({ value: [] });
+    const [provinceList, setProvinceList] = useState([]);
+    const [provinceLoading, setProvinceLoading] = useState(false);
+
+    const changeProvince = async array => {
+        setProvince(prevState => ({ ...prevState, value: array }));
+    }
+
+    const handleProvinceSearch = async (query) => {
+        setProvinceLoading(true);
+        setProvinceList([]);
+        const response = await fetch(`${api}/province/get-provinces-search?provinceText=${query}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-store'
+            },
+            credentials: 'include',
+            withCredentials: true,
+        });
+        const content = await response.json();
+        setTimeout(() => {
+            setProvinceList(content.data);
+            setProvinceLoading(false);
+        }, 1000)
+    };
+    const filterByProvince = () => true;
 
     const handleAlignment = (event, newAlignment) => {
         setAlignment(newAlignment);
@@ -72,8 +104,20 @@ function Setup(props) {
         setFeatures(newArray);
     }
 
+    const handleDeliveryClick = _ => {
+        setRadios({ delivery: true, service: false })
+    }
+
+    const handleServiceClick = _ => {
+        setRadios({ delivery: false, service: true })
+    }
+
+    const handleFileClick = _ => {
+        document.getElementById('logo-upload').click();
+    }
+
     return (
-        <Container fluid className="setup">
+        <Container className="setup">
             <div className="margin-global-top-5" />
             <Row>
                 <Col>
@@ -93,9 +137,18 @@ function Setup(props) {
                         readOnly={true}
                     />
                     <Row className="justify-content-between">
-                        <Form.Group as={Col} md={6} controlId="firstName">
+                        <Form.Group className="form-group-right" as={Col} md={6} controlId="firstName">
                             <Form.Label>Business Name</Form.Label>
                             <Form.Control type="text" />
+                        </Form.Group>
+                        <Form.Group className="form-group-left" as={Col} md={6} controlId="firstName">
+                            <Form.Label>Add your Logo Here</Form.Label>
+                            <input type="file" id="logo-upload" style={{ display: 'none' }} />
+                            <ClickButton
+                                text="Choose Here"
+                                onClick={handleFileClick}
+                                classes=""
+                            />
                         </Form.Group>
                     </Row>
                     <div className="margin-global-top-2" />
@@ -115,22 +168,22 @@ function Setup(props) {
                                 onChange={handleAlignment}
                                 aria-label="text alignment"
                             >
-                                <ToggleButton disableRipple={true} value="left" aria-label="left aligned">
-                                    $
+                                <ToggleButton className="first-toggle" disableRipple={true} value="left" aria-label="left aligned">
+                                    <strong className="bold-900">$</strong>
                                 </ToggleButton>
                                 <ToggleButton disableRipple={true} className="square-toggle" value="center" aria-label="centered">
-                                    $$
+                                    <strong className="bold-900">$$</strong>
                                 </ToggleButton>
                                 <ToggleButton disableRipple={true} className="square-toggle" value="right" aria-label="right aligned">
-                                    $$$
+                                    <strong className="bold-900">$$$</strong>
                                 </ToggleButton>
                                 <ToggleButton className="last-toggle" disableRipple={true} value="justify" aria-label="justified">
-                                    $$$$
+                                    <strong className="bold-900">$$$$</strong>
                                 </ToggleButton>
                             </ToggleButtonGroup>
                         </Form.Group>
                     </Row>
-                    <div className="margin-global-top-4" />
+                    <div className="margin-global-top-1" />
                     <Row>
                         <Form.Group as={Col} controlId="firstName">
                             <Form.Label>Add your Price Range</Form.Label>
@@ -206,6 +259,173 @@ function Setup(props) {
                     <Row>
                         <Form.Group as={Col} controlId="firstName">
                             <Form.Label>Business Address</Form.Label>
+                        </Form.Group>
+                    </Row>
+                    <Row>
+                        <Form.Group className="form-group-right" as={Col} md={6} controlId="firstName">
+                            <Form.Label>Province</Form.Label>
+                            <AsyncTypeahead
+                                filterBy={filterByProvince}
+                                isLoading={provinceLoading}
+                                id="province"
+                                labelKey="name"
+                                minLength={2}
+                                onSearch={handleProvinceSearch}
+                                onChange={changeProvince}
+                                options={provinceList}
+                                selected={province.value}
+                                renderMenuItemChildren={(option, props) => (
+                                    <Fragment>
+                                        <span>{option.name}</span>
+                                    </Fragment>
+                                )}
+                            />
+                        </Form.Group>
+                        <Form.Group className="form-group-left" as={Col} md={6} controlId="firstName">
+                            <Form.Label>Address Line 1</Form.Label>
+                            <Form.Control type="text" />
+                        </Form.Group>
+                    </Row>
+                    <Row>
+                        <Form.Group className="form-group-right" as={Col} md={6} controlId="firstName">
+                            <Form.Label>City</Form.Label>
+                            <AsyncTypeahead
+                                filterBy={filterByProvince}
+                                isLoading={provinceLoading}
+                                id="province"
+                                labelKey="name"
+                                minLength={2}
+                                onSearch={handleProvinceSearch}
+                                onChange={changeProvince}
+                                options={provinceList}
+                                selected={province.value}
+                                renderMenuItemChildren={(option, props) => (
+                                    <Fragment>
+                                        <span>{option.name}</span>
+                                    </Fragment>
+                                )}
+                            />
+                        </Form.Group>
+                        <Form.Group className="form-group-left" as={Col} md={6} controlId="firstName">
+                            <Form.Label>Address Line 2</Form.Label>
+                            <Form.Control type="text" />
+                        </Form.Group>
+                    </Row>
+                    <Row>
+                        <Form.Group className="form-group-right" as={Col} md={6} controlId="firstName">
+                            <Form.Label>Area</Form.Label>
+                            <AsyncTypeahead
+                                filterBy={filterByProvince}
+                                isLoading={provinceLoading}
+                                id="province"
+                                labelKey="name"
+                                minLength={2}
+                                onSearch={handleProvinceSearch}
+                                onChange={changeProvince}
+                                options={provinceList}
+                                selected={province.value}
+                                renderMenuItemChildren={(option, props) => (
+                                    <Fragment>
+                                        <span>{option.name}</span>
+                                    </Fragment>
+                                )}
+                            />
+                        </Form.Group>
+                        <Form.Group className="form-group-left" as={Col} md={6} controlId="firstName">
+                            <Form.Label>Nearest Landmark</Form.Label>
+                            <Form.Control type="text" />
+                        </Form.Group>
+                    </Row>
+                    <div className="margin-global-top-4" />
+                    <Row>
+                        <Form.Group as={Col} controlId="firstName">
+                            <Form.Label>Delivery or Service Areas</Form.Label>
+                        </Form.Group>
+                    </Row>
+                    <Row>
+                        <Form.Group as={Col} md={3} controlId="delivery">
+                            <Form.Check
+                                type='radio'
+                                id="delivery"
+                                label="Delivery"
+                                checked={radios.delivery}
+                                onClick={handleDeliveryClick}
+                                onChange={_ => { }}
+                            />
+                        </Form.Group>
+                        <Form.Group as={Col} md={3} controlId="service">
+                            <Form.Check
+                                type='radio'
+                                id="service"
+                                label="Service"
+                                checked={radios.service}
+                                onClick={handleServiceClick}
+                                onChange={_ => { }}
+                            />
+                        </Form.Group>
+                    </Row>
+                    <div className="margin-global-top-1" />
+                    <Row>
+                        <Form.Group className="form-group-right" as={Col} md={6} controlId="firstName">
+                            <Form.Label>Province</Form.Label>
+                            <AsyncTypeahead
+                                filterBy={filterByProvince}
+                                isLoading={provinceLoading}
+                                id="province"
+                                labelKey="name"
+                                minLength={2}
+                                onSearch={handleProvinceSearch}
+                                onChange={changeProvince}
+                                options={provinceList}
+                                selected={province.value}
+                                renderMenuItemChildren={(option, props) => (
+                                    <Fragment>
+                                        <span>{option.name}</span>
+                                    </Fragment>
+                                )}
+                            />
+                        </Form.Group>
+                    </Row>
+                    <Row>
+                        <Form.Group className="form-group-right" as={Col} md={6} controlId="firstName">
+                            <Form.Label>City</Form.Label>
+                            <AsyncTypeahead
+                                filterBy={filterByProvince}
+                                isLoading={provinceLoading}
+                                id="province"
+                                labelKey="name"
+                                minLength={2}
+                                onSearch={handleProvinceSearch}
+                                onChange={changeProvince}
+                                options={provinceList}
+                                selected={province.value}
+                                renderMenuItemChildren={(option, props) => (
+                                    <Fragment>
+                                        <span>{option.name}</span>
+                                    </Fragment>
+                                )}
+                            />
+                        </Form.Group>
+                    </Row>
+                    <Row>
+                        <Form.Group className="form-group-right" as={Col} md={6} controlId="firstName">
+                            <Form.Label>Area</Form.Label>
+                            <AsyncTypeahead
+                                filterBy={filterByProvince}
+                                isLoading={provinceLoading}
+                                id="province"
+                                labelKey="name"
+                                minLength={2}
+                                onSearch={handleProvinceSearch}
+                                onChange={changeProvince}
+                                options={provinceList}
+                                selected={province.value}
+                                renderMenuItemChildren={(option, props) => (
+                                    <Fragment>
+                                        <span>{option.name}</span>
+                                    </Fragment>
+                                )}
+                            />
                         </Form.Group>
                     </Row>
                     <div className="margin-global-top-2" />

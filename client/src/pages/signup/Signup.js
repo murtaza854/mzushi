@@ -37,29 +37,29 @@ function Signup(props) {
                         readOnly={true}
                     />
                     <Row className="justify-content-between">
-                        <Form.Group as={Col} md={6} controlId="firstName">
+                        <Form.Group className="form-group-right" as={Col} md={6} controlId="firstName">
                             <Form.Label>First Name</Form.Label>
                             <Form.Control type="text" />
                         </Form.Group>
-                        <Form.Group as={Col} md={6} controlId="lastName">
+                        <Form.Group className="form-group-left" as={Col} md={6} controlId="lastName">
                             <Form.Label>Last Name</Form.Label>
                             <Form.Control type="text" />
                         </Form.Group>
                     </Row>
                     <div className="margin-global-top-2" />
                     <Row className="justify-content-between">
-                        <Form.Group as={Col} md={6} controlId="email">
+                        <Form.Group className="form-group-right" as={Col} md={6} controlId="email">
                             <Form.Label>Email</Form.Label>
                             <Form.Control type="email" />
                         </Form.Group>
-                        <Form.Group as={Col} md={6} controlId="contactNumber">
+                        <Form.Group className="form-group-left" as={Col} md={6} controlId="contactNumber">
                             <Form.Label>Contact Number</Form.Label>
                             <Form.Control type="text" />
                         </Form.Group>
                     </Row>
                     <div className="margin-global-top-2" />
                     <Row className="justify-content-between">
-                        <Form.Group as={Col} md={6} controlId="password">
+                        <Form.Group className="form-group-right" as={Col} md={6} controlId="password">
                             <Form.Label>Password</Form.Label>
                             <InputGroup size="lg">
                                 <Form.Control
@@ -68,7 +68,7 @@ function Signup(props) {
                                 <InputGroup.Text><IoMdEye className="icon" /></InputGroup.Text>
                             </InputGroup>
                         </Form.Group>
-                        <Form.Group as={Col} md={6} controlId="confirmPassword">
+                        <Form.Group className="form-group-left" as={Col} md={6} controlId="confirmPassword">
                             <Form.Label>Confirm Password</Form.Label>
                             <InputGroup size="lg">
                                 <Form.Control

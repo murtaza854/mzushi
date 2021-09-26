@@ -56,9 +56,9 @@ const createServer = async (callback) => {
     app.use('/api/country', countryRoutes);
     app.use('/api/auth', authRoutes);
     app.use('/api/ad-package', adPackageRoutes);
-    app.get('*', function (req, res) {
-        res.sendFile('./build/index.html');
-    });
+    // app.get('*', function (req, res) {
+    //     res.sendFile('./build/index.html');
+    // });
     // app.use('/api/orders', orderRoutes);
     // app.get('/login', (req, res) => {
     //   firebase.auth().signInWithEmailAndPassword('murtazashafi11@gmail.com', 'test123')

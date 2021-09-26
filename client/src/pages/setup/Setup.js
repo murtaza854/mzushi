@@ -153,14 +153,14 @@ function Setup(props) {
                     </Row>
                     <div className="margin-global-top-2" />
                     <Row className="justify-content-between">
-                        <Form.Group as={Col} md={6} controlId="email">
+                        <Form.Group className="form-group-right" as={Col} md={6} controlId="email">
                             <Form.Label>Business Description</Form.Label>
                             <textarea maxLength={1250} rows={7} />
                         </Form.Group>
                     </Row>
                     <div className="margin-global-top-4" />
                     <Row>
-                        <Form.Group as={Col} md={6} controlId="email">
+                        <Form.Group className="form-group-right" as={Col} md={6} controlId="email">
                             <ToggleButtonGroup
                                 value={alignment}
                                 size="small"
@@ -181,6 +181,14 @@ function Setup(props) {
                                     <strong className="bold-900">$$$$</strong>
                                 </ToggleButton>
                             </ToggleButtonGroup>
+                        </Form.Group>
+                        <Form.Group className="form-group-left" as={Col} md={6} controlId="email">
+                            <Form.Label>Operational Days & Timings</Form.Label>
+                            <div class="md-form md-outline input-with-post-icon timepicker" twelvehour="true">
+                                <input type="text" id="light-version-examples" class="form-control" placeholder="Select time" />
+                                <label for="light-version-examples">Light version, 12hours</label>
+                                <i class ="fas fa-envelope input-prefix"></i>
+                            </div>
                         </Form.Group>
                     </Row>
                     <div className="margin-global-top-1" />

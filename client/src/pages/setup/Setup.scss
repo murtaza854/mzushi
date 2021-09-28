@@ -43,4 +43,13 @@
             }
         }
     }
+    .MuiInput-underline::before {
+        border-bottom: transparent;
+    }
+    .MuiInput-underline:hover:not(.Mui-disabled)::before {
+        border-bottom: transparent;
+    }
+    .MuiInput-underline::after {
+        border-bottom: transparent;
+    }
 }

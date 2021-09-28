@@ -4,13 +4,20 @@ import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { ClickButton, Heading1 } from '../../components';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import MobileTimePicker from '@mui/lab/MobileTimePicker';
 import './Setup.scss';
 import api from '../../api';
+import { TextField } from '@material-ui/core';
 
 function Setup(props) {
     const [alignment, setAlignment] = useState('left');
     const [categories, setCategories] = useState([]);
     const [features, setFeatures] = useState([]);
+    const [value, setValue] = useState(new Date('2018-01-01T00:00:00.000Z'));
+
+    const [operationCheckboxes, setOperationCheckboxes] = useState({ mondayCheckbox: false, mondayValue: new Date() })
 
     const [radios, setRadios] = useState({ delivery: true, service: false });
 
@@ -184,11 +191,16 @@ function Setup(props) {
                         </Form.Group>
                         <Form.Group className="form-group-left" as={Col} md={6} controlId="email">
                             <Form.Label>Operational Days & Timings</Form.Label>
-                            <div class="md-form md-outline input-with-post-icon timepicker" twelvehour="true">
-                                <input type="text" id="light-version-examples" class="form-control" placeholder="Select time" />
-                                <label for="light-version-examples">Light version, 12hours</label>
-                                <i class ="fas fa-envelope input-prefix"></i>
-                            </div>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <MobileTimePicker
+                                    label=""
+                                    value={operationCheckboxes.mondayValue}
+                                    onChange={(newValue) => {
+                                        setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                    }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                />
+                            </LocalizationProvider>
                         </Form.Group>
                     </Row>
                     <div className="margin-global-top-1" />

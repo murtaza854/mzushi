@@ -69,6 +69,12 @@
     position: relative;
 }
 
+.center-relative-vertical {
+    top: 50%;
+    transform: translateY(-50%);
+    position: relative;
+}
+
 .center-relative {
   position: relative;
   left: 50%;
@@ -147,6 +153,10 @@
     padding: 0;
     margin: 0 0.5rem;
 }
+.margin-global-top-06 {
+    margin-top: 0.6rem;
+}
+
 .margin-global-top-1 {
     margin-top: 1rem;
 }

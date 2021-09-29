@@ -52,4 +52,19 @@
     .MuiInput-underline::after {
         border-bottom: transparent;
     }
+    input[type="checkbox"] {
+        border-radius: 100px;
+        border: 1px solid #f6d33e !important;
+        width: 1.2em;
+        height: 1.2em;
+    }
+    .less-padding {
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        textarea,
+        select {
+            padding: 0.3rem 0.75rem 0.3rem;
+        }
+    }
 }

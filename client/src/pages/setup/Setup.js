@@ -167,69 +167,339 @@ function Setup(props) {
                     </Row>
                     <div className="margin-global-top-4" />
                     <Row>
-                        <Form.Group className="form-group-right" as={Col} md={6} controlId="email">
-                            <ToggleButtonGroup
-                                value={alignment}
-                                size="small"
-                                exclusive
-                                onChange={handleAlignment}
-                                aria-label="text alignment"
-                            >
-                                <ToggleButton className="first-toggle" disableRipple={true} value="left" aria-label="left aligned">
-                                    <strong className="bold-900">$</strong>
-                                </ToggleButton>
-                                <ToggleButton disableRipple={true} className="square-toggle" value="center" aria-label="centered">
-                                    <strong className="bold-900">$$</strong>
-                                </ToggleButton>
-                                <ToggleButton disableRipple={true} className="square-toggle" value="right" aria-label="right aligned">
-                                    <strong className="bold-900">$$$</strong>
-                                </ToggleButton>
-                                <ToggleButton className="last-toggle" disableRipple={true} value="justify" aria-label="justified">
-                                    <strong className="bold-900">$$$$</strong>
-                                </ToggleButton>
-                            </ToggleButtonGroup>
-                        </Form.Group>
-                        <Form.Group className="form-group-left" as={Col} md={6} controlId="email">
-                            <Form.Label>Operational Days & Timings</Form.Label>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <MobileTimePicker
-                                    label=""
-                                    value={operationCheckboxes.mondayValue}
-                                    onChange={(newValue) => {
-                                        setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
-                                    }}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
-                            </LocalizationProvider>
-                        </Form.Group>
-                    </Row>
-                    <div className="margin-global-top-1" />
-                    <Row>
-                        <Form.Group as={Col} controlId="firstName">
-                            <Form.Label>Add your Price Range</Form.Label>
-                        </Form.Group>
-                    </Row>
-                    <Row>
-                        <Form.Group as={Col} md={3} controlId="firstName">
-                            <Form.Label>Minimum Price</Form.Label>
-                            <Form.Control type="text" />
-                        </Form.Group>
-                        <Form.Group as={Col} md={3} controlId="firstName">
-                            <Form.Label>Maximum Price</Form.Label>
-                            <Form.Control type="text" />
-                        </Form.Group>
-                    </Row>
-                    <div className="margin-global-top-2" />
-                    <Row>
-                        <Form.Group as={Col} controlId="firstName">
-                            <Form.Label>Have a Website? [Optional]</Form.Label>
-                        </Form.Group>
-                    </Row>
-                    <Row>
-                        <Form.Group as={Col} md={6} controlId="firstName">
-                            <Form.Label>Enter your URL</Form.Label>
-                            <Form.Control type="text" />
-                        </Form.Group>
+                        <Col md={6} className="form-group-right">
+                            <Row>
+                                <Form.Group controlId="email">
+                                    <ToggleButtonGroup
+                                        value={alignment}
+                                        size="small"
+                                        exclusive
+                                        onChange={handleAlignment}
+                                        aria-label="text alignment"
+                                    >
+                                        <ToggleButton className="first-toggle" disableRipple={true} value="left" aria-label="left aligned">
+                                            <strong className="bold-900">$</strong>
+                                        </ToggleButton>
+                                        <ToggleButton disableRipple={true} className="square-toggle" value="center" aria-label="centered">
+                                            <strong className="bold-900">$$</strong>
+                                        </ToggleButton>
+                                        <ToggleButton disableRipple={true} className="square-toggle" value="right" aria-label="right aligned">
+                                            <strong className="bold-900">$$$</strong>
+                                        </ToggleButton>
+                                        <ToggleButton className="last-toggle" disableRipple={true} value="justify" aria-label="justified">
+                                            <strong className="bold-900">$$$$</strong>
+                                        </ToggleButton>
+                                    </ToggleButtonGroup>
+                                </Form.Group>
+                            </Row>
+                            <div className="margin-global-top-1" />
+                            <Row>
+                                <Form.Group as={Col} controlId="firstName">
+                                    <Form.Label>Add your Price Range</Form.Label>
+                                </Form.Group>
+                            </Row>
+                            <Row>
+                                <Form.Group as={Col} md={6} controlId="firstName">
+                                    <Form.Label>Minimum Price</Form.Label>
+                                    <Form.Control type="text" />
+                                </Form.Group>
+                                <Form.Group as={Col} md={6} controlId="firstName">
+                                    <Form.Label>Maximum Price</Form.Label>
+                                    <Form.Control type="text" />
+                                </Form.Group>
+                            </Row>
+                            <div className="margin-global-top-2" />
+                            <Row>
+                                <Form.Group as={Col} controlId="firstName">
+                                    <Form.Label>Have a Website? [Optional]</Form.Label>
+                                </Form.Group>
+                            </Row>
+                            <Row>
+                                <Form.Group as={Col} md={12} controlId="firstName">
+                                    <Form.Label>Enter your URL</Form.Label>
+                                    <Form.Control type="text" />
+                                </Form.Group>
+                            </Row>
+                        </Col>
+                        <Col className="form-group-left" md={6}>
+                            <Row>
+                                <Form.Label>Operational Days & Timings</Form.Label>
+                            </Row>
+                            <Row>
+                                <Col xs={3} controlId="email" />
+                                <Col xs={4}>
+                                    <Form.Label>Starting Time</Form.Label>
+                                </Col>
+                                <Col xs={4}>
+                                    <Form.Label>Ending Time</Form.Label>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Form.Group as={Col} md={3} controlId="email">
+                                    <Form.Check
+                                        className="center-relative-vertical"
+                                        type='checkbox'
+                                        id="service"
+                                        label="Monday"
+                                    // checked={radios.service}
+                                    // onClick={handleServiceClick}
+                                    // onChange={_ => { }}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <MobileTimePicker
+                                            label=""
+                                            value={operationCheckboxes.mondayValue}
+                                            onChange={(newValue) => {
+                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                            }}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />
+                                    </LocalizationProvider>
+                                </Form.Group>
+                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <MobileTimePicker
+                                            label=""
+                                            value={operationCheckboxes.mondayValue}
+                                            onChange={(newValue) => {
+                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                            }}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />
+                                    </LocalizationProvider>
+                                </Form.Group>
+                            </Row>
+                    <div className="margin-global-top-06" />
+                            <Row>
+                                <Form.Group as={Col} md={3} controlId="email">
+                                    <Form.Check
+                                        className="center-relative-vertical"
+                                        type='checkbox'
+                                        id="service"
+                                        label="Tuesday"
+                                    // checked={radios.service}
+                                    // onClick={handleServiceClick}
+                                    // onChange={_ => { }}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <MobileTimePicker
+                                            label=""
+                                            value={operationCheckboxes.mondayValue}
+                                            onChange={(newValue) => {
+                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                            }}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />
+                                    </LocalizationProvider>
+                                </Form.Group>
+                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <MobileTimePicker
+                                            label=""
+                                            value={operationCheckboxes.mondayValue}
+                                            onChange={(newValue) => {
+                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                            }}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />
+                                    </LocalizationProvider>
+                                </Form.Group>
+                            </Row>
+                    <div className="margin-global-top-06" />
+                            <Row>
+                                <Form.Group as={Col} md={3} controlId="email">
+                                    <Form.Check
+                                        className="center-relative-vertical"
+                                        type='checkbox'
+                                        id="service"
+                                        label="Wednesday"
+                                    // checked={radios.service}
+                                    // onClick={handleServiceClick}
+                                    // onChange={_ => { }}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <MobileTimePicker
+                                            label=""
+                                            value={operationCheckboxes.mondayValue}
+                                            onChange={(newValue) => {
+                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                            }}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />
+                                    </LocalizationProvider>
+                                </Form.Group>
+                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <MobileTimePicker
+                                            label=""
+                                            value={operationCheckboxes.mondayValue}
+                                            onChange={(newValue) => {
+                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                            }}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />
+                                    </LocalizationProvider>
+                                </Form.Group>
+                            </Row>
+                    <div className="margin-global-top-06" />
+                            <Row>
+                                <Form.Group as={Col} md={3} controlId="email">
+                                    <Form.Check
+                                        className="center-relative-vertical"
+                                        type='checkbox'
+                                        id="service"
+                                        label="Thursday"
+                                    // checked={radios.service}
+                                    // onClick={handleServiceClick}
+                                    // onChange={_ => { }}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <MobileTimePicker
+                                            label=""
+                                            value={operationCheckboxes.mondayValue}
+                                            onChange={(newValue) => {
+                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                            }}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />
+                                    </LocalizationProvider>
+                                </Form.Group>
+                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <MobileTimePicker
+                                            label=""
+                                            value={operationCheckboxes.mondayValue}
+                                            onChange={(newValue) => {
+                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                            }}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />
+                                    </LocalizationProvider>
+                                </Form.Group>
+                            </Row>
+                    <div className="margin-global-top-06" />
+                            <Row>
+                                <Form.Group as={Col} md={3} controlId="email">
+                                    <Form.Check
+                                        className="center-relative-vertical"
+                                        type='checkbox'
+                                        id="service"
+                                        label="Friday"
+                                    // checked={radios.service}
+                                    // onClick={handleServiceClick}
+                                    // onChange={_ => { }}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <MobileTimePicker
+                                            label=""
+                                            value={operationCheckboxes.mondayValue}
+                                            onChange={(newValue) => {
+                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                            }}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />
+                                    </LocalizationProvider>
+                                </Form.Group>
+                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <MobileTimePicker
+                                            label=""
+                                            value={operationCheckboxes.mondayValue}
+                                            onChange={(newValue) => {
+                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                            }}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />
+                                    </LocalizationProvider>
+                                </Form.Group>
+                            </Row>
+                    <div className="margin-global-top-06" />
+                            <Row>
+                                <Form.Group as={Col} md={3} controlId="email">
+                                    <Form.Check
+                                        className="center-relative-vertical"
+                                        type='checkbox'
+                                        id="service"
+                                        label="Saturday"
+                                    // checked={radios.service}
+                                    // onClick={handleServiceClick}
+                                    // onChange={_ => { }}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <MobileTimePicker
+                                            label=""
+                                            value={operationCheckboxes.mondayValue}
+                                            onChange={(newValue) => {
+                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                            }}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />
+                                    </LocalizationProvider>
+                                </Form.Group>
+                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <MobileTimePicker
+                                            label=""
+                                            value={operationCheckboxes.mondayValue}
+                                            onChange={(newValue) => {
+                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                            }}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />
+                                    </LocalizationProvider>
+                                </Form.Group>
+                            </Row>
+                    <div className="margin-global-top-06" />
+                            <Row>
+                                <Form.Group as={Col} md={3} controlId="email">
+                                    <Form.Check
+                                        className="center-relative-vertical"
+                                        type='checkbox'
+                                        id="service"
+                                        label="Sunday"
+                                    // checked={radios.service}
+                                    // onClick={handleServiceClick}
+                                    // onChange={_ => { }}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <MobileTimePicker
+                                            label=""
+                                            value={operationCheckboxes.mondayValue}
+                                            onChange={(newValue) => {
+                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                            }}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />
+                                    </LocalizationProvider>
+                                </Form.Group>
+                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <MobileTimePicker
+                                            label=""
+                                            value={operationCheckboxes.mondayValue}
+                                            onChange={(newValue) => {
+                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                            }}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />
+                                    </LocalizationProvider>
+                                </Form.Group>
+                            </Row>
+                        </Col>
                     </Row>
                     <div className="margin-global-top-4" />
                     <Row>

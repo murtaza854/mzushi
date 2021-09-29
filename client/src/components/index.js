@@ -9,3 +9,5 @@ export { default as DescriptionText } from './descriptionText/DescriptionText';
 export { default as BigBox } from './bigBox/BigBox';
 export { default as BusinessCard } from './businessCard/BusinessCard';
 export { default as ClickButton } from './clickButton/ClickButton';
+export { default as SearchBar } from './searchBar/SearchBar';
+export { default as BusinessBigCard } from './businessBigCard/BusinessBigCard';

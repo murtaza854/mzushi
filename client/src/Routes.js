@@ -5,7 +5,7 @@ import {
     useLocation,
 } from "react-router-dom";
 import { MainNavbar, IconBanner, Footer } from './components';
-import { Home, Signup, Login, Setup } from './pages';
+import { Home, Signup, Login, Setup, Businesses } from './pages';
 // import { ComingSoon } from './pages';
 // import { Dashboard } from './dashboard';
 // import CartContext from './contexts/cart';
@@ -158,6 +158,10 @@ function Routes(props) {
                             <Route path="/login">
                                 <MainNavbar />
                                 <Login />
+                            </Route>
+                            <Route path="/directory">
+                                <MainNavbar />
+                                <Businesses />
                             </Route>
                             <Route path="/setup">
                                 <MainNavbar />

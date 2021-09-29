@@ -1,10 +1,9 @@
 .search-bar {
-    height: 40rem;
     position: relative;
     .form-style {
-        position: relative;
-        top: 50%;
-        transform: translateY(-50%);
+        .btn {
+            padding: 0;
+        }
     }
     .input-form-group {
         width: fit-content;
@@ -40,4 +39,8 @@
         width: 9rem !important;
         font-weight: 600 !important;
     }
+}
+
+.search-bar-height {
+    height: 40rem;
 }

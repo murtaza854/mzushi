@@ -271,7 +271,7 @@ function Setup(props) {
                                     </LocalizationProvider>
                                 </Form.Group>
                             </Row>
-                    <div className="margin-global-top-06" />
+                            <div className="margin-global-top-06" />
                             <Row>
                                 <Form.Group as={Col} md={3} controlId="email">
                                     <Form.Check
@@ -309,7 +309,7 @@ function Setup(props) {
                                     </LocalizationProvider>
                                 </Form.Group>
                             </Row>
-                    <div className="margin-global-top-06" />
+                            <div className="margin-global-top-06" />
                             <Row>
                                 <Form.Group as={Col} md={3} controlId="email">
                                     <Form.Check
@@ -347,7 +347,7 @@ function Setup(props) {
                                     </LocalizationProvider>
                                 </Form.Group>
                             </Row>
-                    <div className="margin-global-top-06" />
+                            <div className="margin-global-top-06" />
                             <Row>
                                 <Form.Group as={Col} md={3} controlId="email">
                                     <Form.Check
@@ -385,7 +385,7 @@ function Setup(props) {
                                     </LocalizationProvider>
                                 </Form.Group>
                             </Row>
-                    <div className="margin-global-top-06" />
+                            <div className="margin-global-top-06" />
                             <Row>
                                 <Form.Group as={Col} md={3} controlId="email">
                                     <Form.Check
@@ -423,7 +423,7 @@ function Setup(props) {
                                     </LocalizationProvider>
                                 </Form.Group>
                             </Row>
-                    <div className="margin-global-top-06" />
+                            <div className="margin-global-top-06" />
                             <Row>
                                 <Form.Group as={Col} md={3} controlId="email">
                                     <Form.Check
@@ -461,7 +461,7 @@ function Setup(props) {
                                     </LocalizationProvider>
                                 </Form.Group>
                             </Row>
-                    <div className="margin-global-top-06" />
+                            <div className="margin-global-top-06" />
                             <Row>
                                 <Form.Group as={Col} md={3} controlId="email">
                                     <Form.Check
@@ -501,7 +501,7 @@ function Setup(props) {
                             </Row>
                         </Col>
                     </Row>
-                    <div className="margin-global-top-4" />
+                    <div className="margin-global-top-3" />
                     <Row>
                         <Form.Group as={Col} controlId="firstName">
                             <Form.Label>What Category does your Business fall in?</Form.Label>

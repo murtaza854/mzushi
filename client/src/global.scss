@@ -75,6 +75,10 @@
     position: relative;
 }
 
+.fit-content {
+    width: fit-content;
+}
+
 .center-relative {
   position: relative;
   left: 50%;
@@ -152,6 +156,9 @@
     width: 0;
     padding: 0;
     margin: 0 0.5rem;
+}
+.margin-global-top-02 {
+    margin-top: 0.2rem;
 }
 .margin-global-top-06 {
     margin-top: 0.6rem;

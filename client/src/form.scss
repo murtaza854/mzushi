@@ -57,11 +57,11 @@
         border-radius: 10px;
     }
     .MuiToggleButton-root.Mui-selected:hover {
-        background-color: rgba($color: #f6d33e, $alpha: 0.15);
+        background-color: rgba($color: #f6d33e, $alpha: 0.5);
     }
     .MuiToggleButton-root.Mui-selected {
         color: rgba($color: #000000, $alpha: 0.54);
-        background-color: rgba($color: #f6d33e, $alpha: 0.12);
+        background-color: rgba($color: #f6d33e, $alpha: 0.5);
         border-top-left-radius: 10px;
         border-bottom-left-radius: 10px;
     }
@@ -98,7 +98,7 @@
     select {
         background-color: transparent;
         border: 2px solid #f6d33e;
-        padding: 0.938rem 0.75rem 0.938rem;
+        padding: 0.6rem 0.75rem 0.6rem;
         border-radius: 10px;
         font-size: 1rem;
         &:focus {

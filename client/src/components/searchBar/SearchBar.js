@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Fragment } from 'react';
 import { Form, Col, Container, Row, Button } from 'react-bootstrap';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
-import api from '../../../../api';
+import api from '../../api';
 import './SearchBar.scss';
 
 function SearchBar(props) {
@@ -35,13 +35,14 @@ function SearchBar(props) {
 
     const filterByCountry = () => true;
     return (
-        <Container className="search-bar" fluid>
-            <Form className="form-style">
+        <Container className={`search-bar ${props.classes}`} fluid>
+            <Form className={`form-style ${props.centerclass}`}>
                 <Row className="justify-content-center">
                     <Form.Group as={Col} md={3} controlId="country">
                         <AsyncTypeahead
                             filterBy={filterByCountry}
                             isLoading={countryLoading}
+                            placeholder="Search our Directory"
                             id="country"
                             labelKey="name"
                             minLength={2}

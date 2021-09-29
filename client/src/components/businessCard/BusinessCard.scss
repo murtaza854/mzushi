@@ -1,9 +1,9 @@
 .business-card {
     box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 6px 0px;
-    width: 20rem;
+    width: 18rem;
     padding: 1.5rem 1rem 0rem 1rem;
     border-radius: 15px;
-    margin: 0 2rem;
+    margin: 0 1rem;
     .business-card-head {
         // border: 1px solid black;
         border-radius: 15px;
@@ -29,6 +29,7 @@
             // color: #8fbedf;
             // color: #f6d33e;
             color: black;
+            font-size: 1.3rem;
         }
     }
 }

@@ -1,0 +1,29 @@
+.small-gallery {
+    display: flex;
+    img {
+        width: 15rem;
+        border-radius: 15px;
+        margin: 0 0.4rem;
+    }
+    .show-more {
+        position: relative;
+        background-color: #8FBEDF;
+        border-radius: 15px;
+        width: 15rem;
+        transition: .3s ease-in-out;
+        p {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 0;
+            color: white;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        &:hover {
+            background-color: white;
+            p {
+                color: #8FBEDF;
+            }
+        }
+    }
+}

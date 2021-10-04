@@ -9,6 +9,30 @@ function BusinessList(props) {
             <Row>
                 <BusinessBigCard classes="" />
             </Row>
+            <div className="margin-global-top-1" />
+            <Row>
+                <BusinessBigCard classes="" />
+            </Row>
+            <div className="margin-global-top-1" />
+            <Row>
+                <BusinessBigCard classes="" />
+            </Row>
+            <div className="margin-global-top-1" />
+            <Row>
+                <BusinessBigCard classes="" />
+            </Row>
+            <div className="margin-global-top-1" />
+            <Row>
+                <BusinessBigCard classes="" />
+            </Row>
+            <div className="margin-global-top-1" />
+            <Row>
+                <BusinessBigCard classes="" />
+            </Row>
+            <div className="margin-global-top-1" />
+            <Row>
+                <BusinessBigCard classes="" />
+            </Row>
         </div>
     );
 }

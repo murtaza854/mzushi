@@ -1,38 +1,28 @@
 import React, { useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { BusinessTitle } from '..';
 import Rating from '@material-ui/lab/Rating';
 import { IoLocationOutline } from 'react-icons/io5'
 import { AiOutlineClockCircle, AiOutlineClose } from 'react-icons/ai'
 import { FiCheck } from 'react-icons/fi'
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import './BusinessBigCard.scss';
+import './Details.scss';
 
-function BusinessBigCard(props) {
+function Details(props) {
     const [alignment] = useState('left');
     return (
-        <div className={`business-big-card center-relative-horizontal ${props.classes}`}>
-            <Row>
-                <Col md={3}>
-                    <img
-                        src="https://s3-media0.fl.yelpcdn.com/bphoto/JMaVR5nUiDXz2XDbyZvc8Q/l.jpg"
-                        alt="Test"
-                    />
-                </Col>
-                <Col md={9}>
+        <div className="details">
+            <Row className="justify-content-center">
+                <Col md={11}>
                     <Row className="justify-content-between">
-                        <BusinessTitle
-                            text="Business Name"
-                            blue=""
-                            classes="margin-bottom-0 fit-content"
-                            text2=""
-                        />
+                        <div className="business-card-chip">
+                            Category
+                        </div>
                         <ToggleButtonGroup
                             value={alignment}
                             size="small"
                             exclusive
-                            onChange={_ => {}}
+                            onChange={_ => { }}
                             aria-label="text alignment"
                             className="fit-content"
                         >
@@ -50,19 +40,18 @@ function BusinessBigCard(props) {
                             </ToggleButton>
                         </ToggleButtonGroup>
                     </Row>
-                    <div className="business-card-chip">
-                        Category
-                    </div>
-                    <div className="margin-global-top-02" />
+                    <div className="margin-global-top-06" />
                     <Rating size="medium" name="read-only" value={3} readOnly />
                     <div className="icon-text">
                         <IoLocationOutline className="icon" />
                         <p>Lorem Ipsum</p>
                     </div>
+                    <div className="margin-global-top-06" />
                     <div className="icon-text">
                         <AiOutlineClockCircle className="icon" />
                         <p>Today - 00:00 to 00:00</p>
                     </div>
+                    <div className="margin-global-top-06" />
                     <Row>
                         <Col md={4} className="icon-text yellow">
                             <FiCheck className="icon" />
@@ -107,4 +96,4 @@ function BusinessBigCard(props) {
     );
 }
 
-export default BusinessBigCard;
+export default Details;

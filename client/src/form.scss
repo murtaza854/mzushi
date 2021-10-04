@@ -175,12 +175,28 @@
         margin-top: 1.875rem;
         margin-bottom: 0.625rem;
     }
+    input[type="checkbox"] {
+        border-radius: 100px;
+        border: 1px solid #f6d33e !important;
+        width: 1.2em;
+        height: 1.2em;
+    }
 }
 
 // X-Large devices (large desktops, less than 1400px)
 @media (max-width: 87.49875em) {
     .form-style {
-        // padding: 5rem 2.5rem 2.5rem;
+        padding: 0 0 2.5rem;
+        .form-label,
+        .MuiFormControlLabel-label {
+            font-size: 1rem;
+        }
+        .form-group-left {
+            padding-left: 2rem;
+        }
+        .form-group-right {
+            padding-right: 2rem;
+        }
         .btn {
             font-size: 1.33rem;
         }
@@ -191,12 +207,18 @@
 @media (max-width: 74.99875em) {
     .form-style {
         // padding: 5rem 2rem 2.5rem;
+        .form-group-left {
+            padding-left: 1rem;
+        }
+        .form-group-right {
+            padding-right: 1rem;
+        }
         .btn {
             width: 12rem;
             font-size: 1.26rem;
         }
         .form-group {
-            padding: 0 2rem;
+            padding: 0 1rem;
         }
     }
 }
@@ -204,7 +226,7 @@
 // Medium devices (tablets, less than 992px)
 @media (max-width: 61.99875em) {
     .form-style {
-        padding: 3rem 2rem 2.5rem;
+        // padding: 3rem 2rem 2.5rem;
         .btn {
             width: 10rem;
             font-size: 1.19rem;
@@ -216,7 +238,7 @@
             width: 70%;
         }
         .form-group {
-            padding: 0 0.5rem;
+            padding: 0 1rem;
         }
     }
 }
@@ -238,6 +260,15 @@
 // X-Small devices (portrait phones, less than 576px)
 @media (max-width: 35.99875em) {
     .form-style {
+        // padding-right: calc(var(--bs-gutter-x) * 0.5);
+        // padding-left: calc(var(--bs-gutter-x) * 0.5);
+        .form-group-left {
+            padding-left: 1rem;
+        }
+        .form-group-right {
+            padding-right: 1rem;
+        }
+        padding: 0 1rem 2.5rem;
         .btn {
             font-size: 1.05rem;
         }

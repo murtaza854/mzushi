@@ -38,7 +38,7 @@ function SearchBar(props) {
         <Container className={`search-bar ${props.classes}`} fluid>
             <Form className={`form-style ${props.centerclass}`}>
                 <Row className="justify-content-center">
-                    <Form.Group as={Col} md={3} controlId="country">
+                    <Form.Group as={Col} xs={4} controlId="country">
                         <AsyncTypeahead
                             filterBy={filterByCountry}
                             isLoading={countryLoading}
@@ -57,14 +57,14 @@ function SearchBar(props) {
                             )}
                         />
                     </Form.Group>
-                    <Form.Group className="input-form-group" controlId="country">
+                    <Form.Group as={Col} xs={4} className="input-form-group fit-content" controlId="country">
                         <select className="browser-default ustom-select">
                             <option value="Karachi">Karachi</option>
                             <option value="Islamabad">Islamabad</option>
                             <option value="3">Option 3</option>
                         </select>
                     </Form.Group>
-                    <Button type="submit">
+                    <Button className="searchbar-width" type="submit">
                         Search
                     </Button>
                 </Row>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { BusinessCard, SearchBar } from '../../components';
-import { BusinessList } from './components'
+import { BusinessList, FilterPanel } from './components'
 
 function Businesses(props) {
     return (
@@ -18,9 +18,9 @@ function Businesses(props) {
             <div className="margin-global-top-5" />
             <Row>
                 <Col md={2}>
-                    s
+                    <FilterPanel />
                 </Col>
-                <Col md={10}>
+                <Col md={8}>
                     <BusinessList />
                 </Col>
             </Row>

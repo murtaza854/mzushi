@@ -15,7 +15,7 @@ function Signup(props) {
             history.push('/');
         }
     }, [history, user.userState]);
-    
+
     return (
         <Container>
             <div className="margin-global-top-5" />
@@ -41,6 +41,7 @@ function Signup(props) {
                             <Form.Label>First Name</Form.Label>
                             <Form.Control type="text" />
                         </Form.Group>
+                        <div className="margin-global-top-2 unhide-768" />
                         <Form.Group className="form-group-left" as={Col} md={6} controlId="lastName">
                             <Form.Label>Last Name</Form.Label>
                             <Form.Control type="text" />
@@ -52,6 +53,7 @@ function Signup(props) {
                             <Form.Label>Email</Form.Label>
                             <Form.Control type="email" />
                         </Form.Group>
+                        <div className="margin-global-top-2 unhide-768" />
                         <Form.Group className="form-group-left" as={Col} md={6} controlId="contactNumber">
                             <Form.Label>Contact Number</Form.Label>
                             <Form.Control type="text" />
@@ -68,6 +70,7 @@ function Signup(props) {
                                 <InputGroup.Text><IoMdEye className="icon" /></InputGroup.Text>
                             </InputGroup>
                         </Form.Group>
+                        <div className="margin-global-top-2 unhide-768" />
                         <Form.Group className="form-group-left" as={Col} md={6} controlId="confirmPassword">
                             <Form.Label>Confirm Password</Form.Label>
                             <InputGroup size="lg">

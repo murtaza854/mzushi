@@ -59,6 +59,10 @@
     display: none;
 }
 
+.unhide-768 {
+    display: none;
+}
+
 .text-uppercase {
     text-transform: uppercase;
 }
@@ -76,7 +80,7 @@
 }
 
 .fit-content {
-    width: fit-content;
+    width: fit-content !important;
 }
 
 .center-relative {
@@ -133,6 +137,9 @@
 
 .bold-400 {
     font-weight: 400;
+}
+.bold-600 {
+    font-weight: 600;
 }
 .bold-900 {
     font-weight: 900;
@@ -217,6 +224,12 @@
     margin-left: 3rem;
 }
 
+.content-read {
+    color: black;
+    text-align: justify;
+    font-size: 1rem;
+}
+
 // Devices (less than 1700px)
 @media (max-width: 106.1875em) {
 }
@@ -246,6 +259,9 @@
 
 // Medium devices (tablets, less than 992px)
 @media (max-width: 61.99875em) {
+    .margin-global-top-2-xs {
+        margin-top: 2rem;
+    }
     .center-relative-992 {
       position: relative;
       left: 50%;
@@ -264,6 +280,44 @@
 @media (max-width: 47.99875em) {
     .hide-768 {
         display: none;
+    }
+    .unhide-768 {
+        display: block;
+    }
+    .margin-global-top-2 {
+        margin-top: 1rem;
+    }
+    
+    .margin-global-top-3 {
+        margin-top: 2rem;
+    }
+    
+    .margin-global-top-4 {
+        margin-top: 3rem;
+    }
+    
+    .margin-global-top-5 {
+        margin-top: 4rem;
+    }
+    
+    .margin-global-top-6 {
+        margin-top: 5rem;
+    }
+    
+    .margin-global-top-7 {
+        margin-top: 6rem;
+    }
+    
+    .margin-global-top-8 {
+        margin-top: 7rem;
+    }
+    
+    .margin-global-top-9 {
+        margin-top: 8rem;
+    }
+    
+    .margin-global-top-10 {
+        margin-top: 9rem;
     }
 }
 

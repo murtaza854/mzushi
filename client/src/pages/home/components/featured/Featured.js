@@ -16,58 +16,80 @@ function Featured(props) {
             <Row className="justify-content-center">
                 <BigBox
                     text="Female Run"
-                    text1="Business"
+                    text1="Businesses"
                     size={4}
-                    classes="text-center"
-                    classes_p=""
+                    classes="text-center yellow-big-box big-box-fixed-size"
+                    classes_p="center-absolute"
                     to="/"
+                    img=""
                 />
-                <div className="spacing"></div>
                 <BigBox
                     text="Explore"
                     text1="More Categories"
                     size={4}
-                    classes="text-center blue"
-                    classes_p=""
+                    classes="text-center blue-big-box big-box-fixed-size"
+                    classes_p="center-absolute"
                     to="/"
+                    img=""
                 />
             </Row>
             <div className="margin-global-top-1" />
             <Row className="justify-content-center">
                 <BigBox
-                    text="Female Run"
-                    text1="Business"
+                    text="Restaurants"
+                    text1=""
                     size={2}
-                    classes="text-center"
-                    classes_p=""
+                    classes="text-center big-box-fixed-size-small"
+                    classes_p="center-absolute"
                     to="/"
+                    img={
+                        <img
+                            src="https://s3-media0.fl.yelpcdn.com/bphoto/JMaVR5nUiDXz2XDbyZvc8Q/l.jpg"
+                            alt="Test"
+                        />
+                    }
                 />
-                <div className="spacing-1"></div>
                 <BigBox
-                    text="Explore"
-                    text1="More Categories"
+                    text="Plumbers"
+                    text1=""
                     size={2}
-                    classes="text-center"
-                    classes_p=""
+                    classes="text-center big-box-fixed-size-small"
+                    classes_p="center-absolute"
                     to="/"
+                    img={
+                        <img
+                            src="https://s3-media0.fl.yelpcdn.com/bphoto/JMaVR5nUiDXz2XDbyZvc8Q/l.jpg"
+                            alt="Test"
+                        />
+                    }
                 />
-                <div className="spacing-1"></div>
                 <BigBox
-                    text="Female Run"
-                    text1="Business"
+                    text="Carpenters"
+                    text1=""
                     size={2}
-                    classes="text-center"
-                    classes_p=""
+                    classes="text-center big-box-fixed-size-small hide-992"
+                    classes_p="center-absolute"
                     to="/"
+                    img={
+                        <img
+                            src="https://s3-media0.fl.yelpcdn.com/bphoto/JMaVR5nUiDXz2XDbyZvc8Q/l.jpg"
+                            alt="Test"
+                        />
+                    }
                 />
-                <div className="spacing-1"></div>
                 <BigBox
-                    text="Explore"
-                    text1="More Categories"
+                    text="Gardeners"
+                    text1=""
                     size={2}
-                    classes="text-center"
-                    classes_p=""
+                    classes="text-center big-box-fixed-size-small hide-992"
+                    classes_p="center-absolute"
                     to="/"
+                    img={
+                        <img
+                            src="https://s3-media0.fl.yelpcdn.com/bphoto/JMaVR5nUiDXz2XDbyZvc8Q/l.jpg"
+                            alt="Test"
+                        />
+                    }
                 />
             </Row>
         </Container>

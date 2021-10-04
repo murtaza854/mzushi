@@ -1,13 +1,12 @@
 import React from 'react';
-// import { Col } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import './BigBox.scss';
+import './BigBox1.scss';
 
-function BigBox(props) {
+function BigBox1(props) {
     return (
-        <Link className={`big-box ${props.classes}`} to={props.to}>
-            <div>
-                {props.img}
+        <Col md={props.size} className={`big-box1 ${props.classes}`}>
+            <Link to={props.to}>
                 <p className={`${props.classes_p}`}>
                     <span>{props.text}</span>
                     {
@@ -19,9 +18,9 @@ function BigBox(props) {
                         ) : null
                     }
                 </p>
-            </div>
-        </Link>
+            </Link>
+        </Col>
     );
 }
 
-export default BigBox;
+export default BigBox1;

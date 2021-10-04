@@ -1,10 +1,11 @@
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { BusinessCard, Heading2, YellowButton } from '../../../../components';
+import './MzushiChoice.scss';
 
 function MzushiChoice(props) {
     return (
-        <Container fluid>
+        <Container fluid className="mzushi-choice">
             <Container>
                 <Heading2
                     text=""
@@ -13,36 +14,36 @@ function MzushiChoice(props) {
                     text2="Choice"
                 />
                 <div className="margin-global-top-2" />
-                <Row>
-                    <Col>
+                <Row className="justify-content-center">
+                    <Col xs={2}>
                         <YellowButton
                             to="/"
                             text="Karachi"
                             classes="text-uppercase width-high horizontal-center-relative"
                         />
                     </Col>
-                    <Col>
+                    <Col xs={2}>
                         <YellowButton
                             to="/"
                             text="Lahore"
                             classes="text-uppercase width-high horizontal-center-relative"
                         />
                     </Col>
-                    <Col>
+                    <Col xs={2}>
                         <YellowButton
                             to="/"
                             text="Islamabad"
                             classes="text-uppercase width-high horizontal-center-relative"
                         />
                     </Col>
-                    <Col>
+                    <Col xs={2}>
                         <YellowButton
                             to="/"
                             text="Quetta"
                             classes="text-uppercase width-high horizontal-center-relative"
                         />
                     </Col>
-                    <Col>
+                    <Col xs={2}>
                         <YellowButton
                             to="/"
                             text="Peshawer"

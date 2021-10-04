@@ -1,49 +1,8 @@
-.business-big-card {
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 6px 0px;
-    // width: 79rem;
-    padding: 1.5rem 1rem;
-    border-radius: 15px;
-    margin-bottom: 1rem;
-    img {
-        width: 100%;
-        border-radius: 15px;
-    }
-    .business-card-chip {
-        background-color: #8fbedf;
-        color: white;
-        padding: 0.1rem 0.5rem;
-        border-radius: 10px;
-        width: fit-content;
-        font-size: 1rem;
-        font-weight: 600;
-    }
-    .MuiRating-root {
-        // color: #8fbedf;
-        // color: #f6d33e;
-        color: #f6d33e;
-    }
-    .icon-text {
-        position: relative;
-        .icon {
-            font-size: 1.3rem;
-            position: absolute;
-            color: #8fbedf;
-        }
-        p {
-            font-size: 1rem;
-            text-indent: 1.6rem;
-            color: black;
-            margin-bottom: 0;
-        }
-    }
-    .yellow {
-        .icon {
-            color: #f6d33e;
-        }
-    }
+.filter-panel {
     .MuiToggleButtonGroup-root {
         border: 0px solid #f6d33e;
         border-radius: 10px;
+        width: fit-content;
     }
     .MuiToggleButton-root.Mui-selected:hover {
         background-color: rgba($color: #f6d33e, $alpha: 0.5);
@@ -74,11 +33,29 @@
         border-radius: 0;
     }
     .MuiToggleButton-root:hover {
-        background-color: rgba($color: #f6d33e, $alpha: 0);
-        cursor: initial;
+        background-color: rgba($color: #f6d33e, $alpha: 0.05);
     }
     .MuiToggleButton-sizeSmall {
         border: 2px solid #f6d33e;
         width: 3rem;
+    }
+    input[type="checkbox"] {
+        border-radius: 6px;
+        border: 1px solid #f6d33e !important;
+        width: 1.2em;
+        height: 1.2em;
+        &:focus {
+            box-shadow: none;
+        }
+        &:checked {
+            background-color: #f6d33e;
+        }
+    }
+    .filter-panel-section-width {
+        width: 13rem;
+    }
+    .filter-panel-section-list {
+        height: 6.5rem;
+        overflow-y: scroll;
     }
 }

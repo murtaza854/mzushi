@@ -1,37 +1,29 @@
-.business-big-card {
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 6px 0px;
-    // width: 79rem;
-    padding: 1.5rem 1rem;
-    border-radius: 15px;
-    margin-bottom: 1rem;
-    img {
-        width: 100%;
-        border-radius: 15px;
-    }
+.details {
     .business-card-chip {
         background-color: #8fbedf;
         color: white;
-        padding: 0.1rem 0.5rem;
+        padding: 0.1rem 2rem;
         border-radius: 10px;
         width: fit-content;
-        font-size: 1rem;
+        font-size: 1.6rem;
         font-weight: 600;
     }
     .MuiRating-root {
         // color: #8fbedf;
         // color: #f6d33e;
         color: #f6d33e;
+        font-size: 2rem;
     }
     .icon-text {
         position: relative;
         .icon {
-            font-size: 1.3rem;
+            font-size: 1.7rem;
             position: absolute;
             color: #8fbedf;
         }
         p {
             font-size: 1rem;
-            text-indent: 1.6rem;
+            text-indent: 2.3rem;
             color: black;
             margin-bottom: 0;
         }

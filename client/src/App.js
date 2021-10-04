@@ -18,21 +18,21 @@ function App() {
   useEffect(() => {
     (
       async () => {
-        const response = await fetch(`${api}/admin-user/logged-in`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          withCredentials: true,
-        });
-        const content = await response.json();
-        try {
-          const user = content.data;
-          setUserState(user);
-        } catch (error) {
-          setUserState(null);
-        }
+        // const response = await fetch(`${api}/admin-user/logged-in`, {
+        //   method: 'GET',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        //   credentials: 'include',
+        //   withCredentials: true,
+        // });
+        // const content = await response.json();
+        // try {
+        //   const user = content.data;
+        //   setUserState(user);
+        // } catch (error) {
+        //   setUserState(null);
+        // }
         setLoading(false)
       })();
   }, []);

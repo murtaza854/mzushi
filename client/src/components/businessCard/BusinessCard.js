@@ -1,8 +1,8 @@
 import React from 'react';
 import Rating from '@material-ui/lab/Rating';
 import './BusinessCard.scss';
-import Heading2 from '../heading2/Heading2';
 import YellowButton from '../yellowButton/YellowButton';
+import { BusinessTitle } from '..';
 
 function BusinessCard(props) {
     return (
@@ -18,7 +18,7 @@ function BusinessCard(props) {
             </div>
             <div className="margin-global-top-1" />
             <div className="business-card-body">
-                <Heading2
+                <BusinessTitle
                     text="Business Name"
                     blue=""
                     classes="margin-bottom-0"

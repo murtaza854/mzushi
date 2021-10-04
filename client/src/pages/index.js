@@ -4,3 +4,5 @@ export { default as Signup } from './signup/Signup';
 export { default as Login } from './login/Login';
 export { default as Setup } from './setup/Setup';
 export { default as Businesses } from './businesses/Businesses';
+export { default as Business } from './business/Business';
+export { default as PackageSelection } from './packageSelection/PackageSelection';

@@ -1,0 +1,46 @@
+.button-tab {
+    text-decoration: none;
+    font-weight: 600;
+    color: white;
+    background-color: #8fbedf;
+    text-align: center;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid #8fbedf;
+    transition: .3s ease-in-out;
+    padding: 0.1rem 0;
+    &:hover {
+        color: #8fbedf;
+        background-color: transparent;
+    }
+}
+
+.active-button {
+    color: #8fbedf;
+    background-color: transparent;
+}
+
+.small-button-tab {
+    font-size: 1rem;
+    width: 7rem;
+    display: block;
+}
+
+// .width-medium {
+//     width: 9rem;
+//     display: block;
+// }
+// .width-high {
+//     width: 12rem;
+//     display: block;
+// }
+// .width-full {
+//     width: 14rem;
+//     display: block;
+// }
+
+.button-tab-fit-content {
+    width: fit-content;
+    padding: 0.1rem 2rem;
+    margin: 0 0.4rem;
+}

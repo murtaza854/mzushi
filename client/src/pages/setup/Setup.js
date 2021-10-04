@@ -15,7 +15,7 @@ function Setup(props) {
     const [alignment, setAlignment] = useState('left');
     const [categories, setCategories] = useState([]);
     const [features, setFeatures] = useState([]);
-    const [value, setValue] = useState(new Date('2018-01-01T00:00:00.000Z'));
+    // const [value, setValue] = useState(new Date('2018-01-01T00:00:00.000Z'));
 
     const [operationCheckboxes, setOperationCheckboxes] = useState({ mondayCheckbox: false, mondayValue: new Date() })
 
@@ -122,6 +122,27 @@ function Setup(props) {
     const handleFileClick = _ => {
         document.getElementById('logo-upload').click();
     }
+    const logoChange = event => {
+        let reader = new FileReader();
+        if (event.target.files && event.target.files[0]) {
+            if (event.target.files[0].size / 1024 < 300) {
+                reader.readAsDataURL(event.target.files[0]);
+                // const objectUrl = URL.createObjectURL(event.target.files[0]);
+                reader.onload = ((theFile) => {
+                    var image = new Image();
+                    image.src = theFile.target.result;
+
+                    image.onload = function () {
+                        // access image size here 
+                        console.log(this.width, this.height);
+                        if (this.width / this.height !== 1) alert("Please upload a square logo.")
+                    };
+                });
+            } else {
+                // setImageState(prevState => ({ ...prevState, helperText: 'The maximum size for an image can be 300 KB!', error: true }));
+            }
+        }
+    }
 
     return (
         <Container className="setup">
@@ -144,30 +165,43 @@ function Setup(props) {
                         readOnly={true}
                     />
                     <Row className="justify-content-between">
-                        <Form.Group className="form-group-right" as={Col} md={6} controlId="firstName">
-                            <Form.Label>Business Name</Form.Label>
-                            <Form.Control type="text" />
-                        </Form.Group>
-                        <Form.Group className="form-group-left" as={Col} md={6} controlId="firstName">
-                            <Form.Label>Add your Logo Here</Form.Label>
-                            <input type="file" id="logo-upload" style={{ display: 'none' }} />
-                            <ClickButton
-                                text="Choose Here"
-                                onClick={handleFileClick}
-                                classes=""
+                        <Col className="form-group-right" lg={6}>
+                            <Row>
+                                <Form.Group controlId="firstName">
+                                    <Form.Label className="bold-600">Business Name</Form.Label>
+                                    <Form.Control type="text" />
+                                </Form.Group>
+                            </Row>
+                            <div className="margin-global-top-2" />
+                            <Row>
+                                <Form.Group controlId="email">
+                                    <Form.Label className="bold-600">Business Description</Form.Label>
+                                    <textarea maxLength={1250} rows={7} />
+                                </Form.Group>
+                            </Row>
+                        </Col>
+                        <Col className="form-group-left margin-global-top-2-xs" lg={6}>
+                            <Form.Group controlId="firstName">
+                                <Form.Label className="bold-600">Add your Logo Here</Form.Label>
+                                <input onChange={logoChange} accept="image/*" type="file" id="logo-upload" style={{ display: 'none' }} />
+                                <ClickButton
+                                    text="Choose Here"
+                                    onClick={handleFileClick}
+                                    classes=""
+                                />
+                            </Form.Group>
+                            <div className="margin-global-top-2" />
+                            <img
+                                src="https://s3-media0.fl.yelpcdn.com/bphoto/JMaVR5nUiDXz2XDbyZvc8Q/l.jpg"
+                                alt="Test"
                             />
-                        </Form.Group>
+                        </Col>
                     </Row>
-                    <div className="margin-global-top-2" />
                     <Row className="justify-content-between">
-                        <Form.Group className="form-group-right" as={Col} md={6} controlId="email">
-                            <Form.Label>Business Description</Form.Label>
-                            <textarea maxLength={1250} rows={7} />
-                        </Form.Group>
                     </Row>
                     <div className="margin-global-top-4" />
                     <Row>
-                        <Col md={6} className="form-group-right">
+                        <Col lg={6} className="form-group-right">
                             <Row>
                                 <Form.Group controlId="email">
                                     <ToggleButtonGroup
@@ -195,15 +229,15 @@ function Setup(props) {
                             <div className="margin-global-top-1" />
                             <Row>
                                 <Form.Group as={Col} controlId="firstName">
-                                    <Form.Label>Add your Price Range</Form.Label>
+                                    <Form.Label className="bold-600">Add your Price Range</Form.Label>
                                 </Form.Group>
                             </Row>
                             <Row>
-                                <Form.Group as={Col} md={6} controlId="firstName">
+                                <Form.Group as={Col} xs={6} controlId="firstName">
                                     <Form.Label>Minimum Price</Form.Label>
                                     <Form.Control type="text" />
                                 </Form.Group>
-                                <Form.Group as={Col} md={6} controlId="firstName">
+                                <Form.Group as={Col} xs={6} controlId="firstName">
                                     <Form.Label>Maximum Price</Form.Label>
                                     <Form.Control type="text" />
                                 </Form.Group>
@@ -211,31 +245,31 @@ function Setup(props) {
                             <div className="margin-global-top-2" />
                             <Row>
                                 <Form.Group as={Col} controlId="firstName">
-                                    <Form.Label>Have a Website? [Optional]</Form.Label>
+                                    <Form.Label className="bold-600">Have a Website? [Optional]</Form.Label>
                                 </Form.Group>
                             </Row>
                             <Row>
-                                <Form.Group as={Col} md={12} controlId="firstName">
+                                <Form.Group as={Col} lg={12} controlId="firstName">
                                     <Form.Label>Enter your URL</Form.Label>
                                     <Form.Control type="text" />
                                 </Form.Group>
                             </Row>
                         </Col>
-                        <Col className="form-group-left" md={6}>
+                        <Col className="form-group-left margin-global-top-2-xs" lg={6}>
                             <Row>
-                                <Form.Label>Operational Days & Timings</Form.Label>
+                                <Form.Label className="bold-600">Operational Days & Timings</Form.Label>
                             </Row>
                             <Row>
-                                <Col xs={3} controlId="email" />
+                                <Col className="datetime-col-xs" xs={3} />
                                 <Col xs={4}>
-                                    <Form.Label>Starting Time</Form.Label>
+                                    <Form.Label className="text-center">Starting Time</Form.Label>
                                 </Col>
                                 <Col xs={4}>
-                                    <Form.Label>Ending Time</Form.Label>
+                                    <Form.Label className="text-center">Ending Time</Form.Label>
                                 </Col>
                             </Row>
                             <Row>
-                                <Form.Group as={Col} md={3} controlId="email">
+                                <Form.Group className="datetime-col-xs" as={Col} xs={3} controlId="email">
                                     <Form.Check
                                         className="center-relative-vertical"
                                         type='checkbox'
@@ -246,7 +280,7 @@ function Setup(props) {
                                     // onChange={_ => { }}
                                     />
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
@@ -258,7 +292,7 @@ function Setup(props) {
                                         />
                                     </LocalizationProvider>
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
@@ -273,7 +307,7 @@ function Setup(props) {
                             </Row>
                             <div className="margin-global-top-06" />
                             <Row>
-                                <Form.Group as={Col} md={3} controlId="email">
+                                <Form.Group className="datetime-col-xs" as={Col} xs={3} controlId="email">
                                     <Form.Check
                                         className="center-relative-vertical"
                                         type='checkbox'
@@ -284,7 +318,7 @@ function Setup(props) {
                                     // onChange={_ => { }}
                                     />
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
@@ -296,7 +330,7 @@ function Setup(props) {
                                         />
                                     </LocalizationProvider>
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
@@ -311,7 +345,7 @@ function Setup(props) {
                             </Row>
                             <div className="margin-global-top-06" />
                             <Row>
-                                <Form.Group as={Col} md={3} controlId="email">
+                                <Form.Group className="datetime-col-xs" as={Col} xs={3} controlId="email">
                                     <Form.Check
                                         className="center-relative-vertical"
                                         type='checkbox'
@@ -322,7 +356,7 @@ function Setup(props) {
                                     // onChange={_ => { }}
                                     />
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
@@ -334,7 +368,7 @@ function Setup(props) {
                                         />
                                     </LocalizationProvider>
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
@@ -349,7 +383,7 @@ function Setup(props) {
                             </Row>
                             <div className="margin-global-top-06" />
                             <Row>
-                                <Form.Group as={Col} md={3} controlId="email">
+                                <Form.Group className="datetime-col-xs" as={Col} xs={3} controlId="email">
                                     <Form.Check
                                         className="center-relative-vertical"
                                         type='checkbox'
@@ -360,7 +394,7 @@ function Setup(props) {
                                     // onChange={_ => { }}
                                     />
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
@@ -372,7 +406,7 @@ function Setup(props) {
                                         />
                                     </LocalizationProvider>
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
@@ -387,7 +421,7 @@ function Setup(props) {
                             </Row>
                             <div className="margin-global-top-06" />
                             <Row>
-                                <Form.Group as={Col} md={3} controlId="email">
+                                <Form.Group className="datetime-col-xs" as={Col} xs={3} controlId="email">
                                     <Form.Check
                                         className="center-relative-vertical"
                                         type='checkbox'
@@ -398,7 +432,7 @@ function Setup(props) {
                                     // onChange={_ => { }}
                                     />
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
@@ -410,7 +444,7 @@ function Setup(props) {
                                         />
                                     </LocalizationProvider>
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
@@ -425,7 +459,7 @@ function Setup(props) {
                             </Row>
                             <div className="margin-global-top-06" />
                             <Row>
-                                <Form.Group as={Col} md={3} controlId="email">
+                                <Form.Group className="datetime-col-xs" as={Col} xs={3} controlId="email">
                                     <Form.Check
                                         className="center-relative-vertical"
                                         type='checkbox'
@@ -436,7 +470,7 @@ function Setup(props) {
                                     // onChange={_ => { }}
                                     />
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
@@ -448,7 +482,7 @@ function Setup(props) {
                                         />
                                     </LocalizationProvider>
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
@@ -463,7 +497,7 @@ function Setup(props) {
                             </Row>
                             <div className="margin-global-top-06" />
                             <Row>
-                                <Form.Group as={Col} md={3} controlId="email">
+                                <Form.Group className="datetime-col-xs" as={Col} xs={3} controlId="email">
                                     <Form.Check
                                         className="center-relative-vertical"
                                         type='checkbox'
@@ -474,7 +508,7 @@ function Setup(props) {
                                     // onChange={_ => { }}
                                     />
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
@@ -486,7 +520,7 @@ function Setup(props) {
                                         />
                                     </LocalizationProvider>
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} md={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
@@ -504,11 +538,11 @@ function Setup(props) {
                     <div className="margin-global-top-3" />
                     <Row>
                         <Form.Group as={Col} controlId="firstName">
-                            <Form.Label>What Category does your Business fall in?</Form.Label>
+                            <Form.Label className="bold-600">What Category does your Business fall in?</Form.Label>
                         </Form.Group>
                     </Row>
                     <Row>
-                        <Form.Group as={Col} md={8} controlId="firstName">
+                        <Form.Group as={Col} lg={8} controlId="firstName">
                             <Form.Label>Choose the Most Relevant Option</Form.Label>
                             <div className="form-yellow-buttons">
                                 {
@@ -526,11 +560,11 @@ function Setup(props) {
                     <div className="margin-global-top-4" />
                     <Row>
                         <Form.Group as={Col} controlId="firstName">
-                            <Form.Label>What Features does your Business offer?</Form.Label>
+                            <Form.Label className="bold-600">What Features does your Business offer?</Form.Label>
                         </Form.Group>
                     </Row>
                     <Row>
-                        <Form.Group as={Col} md={8} controlId="firstName">
+                        <Form.Group as={Col} lg={8} controlId="firstName">
                             <Form.Label>Choose the Option(s) that Apply</Form.Label>
                             <div className="form-yellow-buttons">
                                 {
@@ -548,7 +582,7 @@ function Setup(props) {
                     <div className="margin-global-top-4" />
                     <Row>
                         <Form.Group as={Col} controlId="firstName">
-                            <Form.Label>Business Address</Form.Label>
+                            <Form.Label className="bold-600">Business Address</Form.Label>
                         </Form.Group>
                     </Row>
                     <Row>
@@ -629,11 +663,11 @@ function Setup(props) {
                     <div className="margin-global-top-4" />
                     <Row>
                         <Form.Group as={Col} controlId="firstName">
-                            <Form.Label>Delivery or Service Areas</Form.Label>
+                            <Form.Label className="bold-600">Delivery or Service Areas</Form.Label>
                         </Form.Group>
                     </Row>
                     <Row>
-                        <Form.Group as={Col} md={3} controlId="delivery">
+                        <Form.Group as={Col} xs={3} controlId="delivery">
                             <Form.Check
                                 type='radio'
                                 id="delivery"
@@ -643,7 +677,7 @@ function Setup(props) {
                                 onChange={_ => { }}
                             />
                         </Form.Group>
-                        <Form.Group as={Col} md={3} controlId="service">
+                        <Form.Group as={Col} xs={3} controlId="service">
                             <Form.Check
                                 type='radio'
                                 id="service"
@@ -656,7 +690,7 @@ function Setup(props) {
                     </Row>
                     <div className="margin-global-top-1" />
                     <Row>
-                        <Form.Group className="form-group-right" as={Col} md={6} controlId="firstName">
+                        <Form.Group className="form-group-right" as={Col} lg={6} controlId="firstName">
                             <Form.Label>Province</Form.Label>
                             <AsyncTypeahead
                                 filterBy={filterByProvince}
@@ -677,7 +711,7 @@ function Setup(props) {
                         </Form.Group>
                     </Row>
                     <Row>
-                        <Form.Group className="form-group-right" as={Col} md={6} controlId="firstName">
+                        <Form.Group className="form-group-right" as={Col} lg={6} controlId="firstName">
                             <Form.Label>City</Form.Label>
                             <AsyncTypeahead
                                 filterBy={filterByProvince}
@@ -698,7 +732,7 @@ function Setup(props) {
                         </Form.Group>
                     </Row>
                     <Row>
-                        <Form.Group className="form-group-right" as={Col} md={6} controlId="firstName">
+                        <Form.Group className="form-group-right" as={Col} lg={6} controlId="firstName">
                             <Form.Label>Area</Form.Label>
                             <AsyncTypeahead
                                 filterBy={filterByProvince}

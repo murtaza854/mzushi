@@ -9,7 +9,7 @@ import Routes from './Routes';
 import { Admin } from './admin';
 import { AuthCheck } from './auth';
 import UserContext from "./contexts/userContext";
-import api from './api';
+// import api from './api';
 
 function App() {
   const [userState, setUserState] = useState(null);

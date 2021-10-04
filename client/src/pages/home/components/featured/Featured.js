@@ -67,7 +67,7 @@ function Featured(props) {
                     text="Carpenters"
                     text1=""
                     size={2}
-                    classes="text-center big-box-fixed-size-small hide-992"
+                    classes="text-center big-box-fixed-size-small margin-global-top-1-xs"
                     classes_p="center-absolute"
                     to="/"
                     img={
@@ -81,7 +81,7 @@ function Featured(props) {
                     text="Gardeners"
                     text1=""
                     size={2}
-                    classes="text-center big-box-fixed-size-small hide-992"
+                    classes="text-center big-box-fixed-size-small margin-global-top-1-xs"
                     classes_p="center-absolute"
                     to="/"
                     img={

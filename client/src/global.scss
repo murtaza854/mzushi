@@ -259,6 +259,9 @@
 
 // Medium devices (tablets, less than 992px)
 @media (max-width: 61.99875em) {
+    .margin-global-top-1-xs {
+        margin-top: 1rem;
+    }
     .margin-global-top-2-xs {
         margin-top: 2rem;
     }

@@ -64,7 +64,7 @@ function SearchBar(props) {
                             <option value="3">Option 3</option>
                         </select>
                     </Form.Group>
-                    <Button className="searchbar-width" type="submit">
+                    <Button className="searchbar-width border-radius-btn" type="submit">
                         Search
                     </Button>
                 </Row>

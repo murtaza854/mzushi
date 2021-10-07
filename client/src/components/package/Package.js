@@ -12,8 +12,8 @@ function Package(props) {
                     props.features.map((value, index) => {
                         return (
                             <Row className="Justify-content-between icon-text" key={index}>
-                                <Col md={7}><p>{value.text}</p></Col>
-                                <Col md={2}>{value.icon}</Col>
+                                <Col xs={9}><p>{value.text}</p></Col>
+                                <Col xs={2}>{value.icon}</Col>
                             </Row>
                         )
                     })
@@ -21,7 +21,7 @@ function Package(props) {
             </div>
             <div className="margin-global-top-1" />
             <h3 className="text-center plan-price">PKR.{props.price}</h3>
-            <Link className="get-it-link" to="">Get it</Link>
+            <Link className="get-it-link" to={props.to}>Get it</Link>
         </div>
     );
 }

@@ -5,7 +5,8 @@ import {
     useLocation,
 } from "react-router-dom";
 import { MainNavbar, IconBanner, Footer } from './components';
-import { Home, Signup, Login, Setup, Businesses, Business, PackageSelection } from './pages';
+import { Home, Signup, Login, Setup, Businesses, Business, PackageSelection, Premium } from './pages';
+import Auth from './auth/Auth';
 // import { ComingSoon } from './pages';
 // import { Dashboard } from './dashboard';
 // import CartContext from './contexts/cart';
@@ -18,7 +19,6 @@ import {
 //   import './App.scss';
 import './form.scss';
 import './global.scss';
-// import Auth from './auth/Auth';
 
 function Routes(props) {
     //   const [cart, setCart] = useState({ data: {}, count: 0 });
@@ -151,6 +151,10 @@ function Routes(props) {
                 >
                     <div className="page">
                         <Switch location={location}>
+                            <Route path="/__/auth/action">
+                                <MainNavbar />
+                                <Auth />
+                            </Route>
                             <Route path="/directory/business">
                                 <MainNavbar />
                                 <Business />
@@ -158,6 +162,10 @@ function Routes(props) {
                             <Route path="/directory">
                                 <MainNavbar />
                                 <Businesses />
+                            </Route>
+                            <Route path="/premium">
+                                <MainNavbar />
+                                <Premium />
                             </Route>
                             <Route path="/packages">
                                 <MainNavbar />
@@ -187,9 +195,9 @@ function Routes(props) {
                 </CSSTransition>
             </TransitionGroup>
         </div>
-    //   {/* </DiscountContext.Provider>
-    // </CartContext.Provider> */}
-  );
+        //   {/* </DiscountContext.Provider>
+        // </CartContext.Provider> */}
+    );
 }
 
 export default Routes;

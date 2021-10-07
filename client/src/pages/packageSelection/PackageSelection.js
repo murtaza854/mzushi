@@ -6,6 +6,23 @@ import { FiCheck } from 'react-icons/fi'
 import './PackageSelection.scss';
 
 function PackageSelection(props) {
+    const standard = [
+        { text: 'Business listed', icon: <FiCheck className="icon" /> },
+        { text: 'Business dashboard', icon: <FiCheck className="icon" /> },
+        { text: 'Business about page', icon: <FiCheck className="icon" /> },
+        { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
+        { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
+        { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
+        { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
+        { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
+        { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
+        { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
+        { text: 'Lorem Ipsum', icon: <AiOutlineClose className="icon" /> },
+        { text: 'Lorem Ipsum', icon: <AiOutlineClose className="icon" /> },
+        { text: 'Lorem Ipsum', icon: <AiOutlineClose className="icon" /> },
+        { text: 'Lorem Ipsum', icon: <AiOutlineClose className="icon" /> },
+        { text: 'Lorem Ipsum', icon: <AiOutlineClose className="icon" /> },
+    ];
     const features = [
         { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
         { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
@@ -22,7 +39,7 @@ function PackageSelection(props) {
         { text: 'Lorem Ipsum', icon: <AiOutlineClose className="icon" /> },
         { text: 'Lorem Ipsum', icon: <AiOutlineClose className="icon" /> },
         { text: 'Lorem Ipsum', icon: <AiOutlineClose className="icon" /> },
-    ]
+    ];
     return (
         <Container>
             <div className="margin-global-top-5" />
@@ -35,16 +52,18 @@ function PackageSelection(props) {
             <div className="margin-global-top-5" />
             <Row className="justify-content-center">
                 <Package
-                    heading="PLAN A"
-                    features={features}
-                    price="00000"
+                    heading="STANDARD"
+                    features={standard}
+                    price="0"
                     classes=""
+                    to="/setup"
                 />
                 <Package
                     heading="PLAN A"
                     features={features}
-                    price="00000"
+                    price="250"
                     classes=""
+                    to="/premium"
                 />
             </Row>
         </Container>

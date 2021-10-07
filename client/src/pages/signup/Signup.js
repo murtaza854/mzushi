@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Container, Form, Col, Row, InputGroup, Button } from 'react-bootstrap';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 import { useHistory } from 'react-router-dom';
+import api from '../../api';
 import { DescriptionText, Heading1 } from '../../components';
 import UserContext from '../../contexts/userContext';
 import './Signup.scss';
@@ -17,20 +18,26 @@ function Signup(props) {
     const [password, setPassword] = useState({ name: '', errorText: '', error: false, showPassword: false });
     const [confirmPassword, setConfirmPassword] = useState({ name: '', errorText: '', error: false, showPassword: false });
 
+    const [disable, setDisable] = useState(true);
+
     const changeFirstName = event => {
-        if (event.target.value === '') setFirstName(prevState => ({ ...prevState, errorText: 'First name is required!', error: true }));
+        if (event.target.value === '') setFirstName({ name: event.target.value, errorText: 'First name is required!', error: true });
         else setFirstName({ name: event.target.value, errorText: '', error: false });
     }
     const changeLastName = event => {
-        if (event.target.value === '') setLastName(prevState => ({ ...prevState, errorText: 'Last name is required!', error: true }));
+        if (event.target.value === '') setLastName({ name: event.target.value, errorText: 'Last name is required!', error: true });
         else setLastName({ name: event.target.value, errorText: '', error: false });
     }
     const changeEmail = event => {
-        if (event.target.value === '') setEmail(prevState => ({ ...prevState, errorText: 'Email is required!', error: true }));
+        const mailformat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+        if (event.target.value === '') setEmail({ name: '', errorText: 'Email address is required!', error: true });
+        else if (!event.target.value.match(mailformat)) setEmail({ name: event.target.value, errorText: 'Please enter a valid email address!', error: true });
         else setEmail({ name: event.target.value, errorText: '', error: false });
     }
     const changeContactNumber = event => {
-        if (event.target.value === '') setContactNumber(prevState => ({ ...prevState, errorText: 'Contact number is required!', error: true }));
+        const phoneno = /^\(?92 ([0-9]{3})\)?[ ]?([0-9]{7})$/;
+        if (event.target.value === '') setContactNumber({ name: event.target.value, errorText: 'Contact number is required!', error: true });
+        else if (!event.target.value.match(phoneno)) setContactNumber({ name: event.target.value, errorText: "Correct format for contact number is '92 XXX XXXXXXX'!", error: true });
         else setContactNumber({ name: event.target.value, errorText: '', error: false });
     }
     const handleClickShowPassword = _ => {
@@ -40,7 +47,11 @@ function Signup(props) {
         event.preventDefault();
     }
     const changePassword = event => {
-        setPassword(prevState => ({ ...prevState, name: event.target.value }));
+        const { value } = event.target;
+        const passwReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+        setPassword(prevState => ({ ...prevState, name: value }));
+        if (!value.match(passwReg)) setPassword(prevState => ({ ...prevState, errorText: 'Password must contain atleast 1 lowercase alhpabetical character, atleast 1 uppercase alhpabetical character, atleast 1 numericical character, 1 special character and must be of atleast 8 characters', error: true }));
+        else setPassword(prevState => ({ ...prevState, errorText: '', error: false }));
     }
     const handleClickShowConfirmPassword = _ => {
         setConfirmPassword(prevState => ({ ...prevState, showPassword: !confirmPassword.showPassword }));
@@ -52,11 +63,57 @@ function Signup(props) {
         setConfirmPassword(prevState => ({ ...prevState, name: event.target.value }));
     }
 
+    const onSubmit = async e => {
+        e.preventDefault();
+        try {
+            const response = await fetch(`${api}/startup/signup`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-store'
+                },
+                body: JSON.stringify({ firstName, lastName, email, contactNumber, password }),
+            });
+            const content = await response.json();
+            if (content.data) {
+                alert("Account created. Please verify email");
+            } else alert("Error creating account, please contact support if this issue persists.");
+        } catch (error) {
+            alert("Error creating account, please contact support if this issue persists.");
+        }
+    };
+
+    useEffect(() => {
+        let flag = true;
+        if (firstName.error === true) flag = true;
+        else if (firstName.name.length === 0) flag = true;
+        else if (lastName.error === true) flag = true;
+        else if (lastName.name.length === 0) flag = true;
+        else if (email.error === true) flag = true;
+        else if (email.name.length === 0) flag = true;
+        else if (contactNumber.error === true) flag = true;
+        else if (contactNumber.name.length === 0) flag = true;
+        else if (password.error === true) flag = true;
+        else if (password.name.length === 0) flag = true;
+        else if (confirmPassword.error === true) flag = true;
+        else if (confirmPassword.name.length === 0) flag = true;
+        else flag = false;
+        setDisable(flag);
+    }, [firstName, lastName, email, contactNumber, password, confirmPassword]);
+
     useEffect(() => {
         if (user.userState) {
             history.push('/');
         }
     }, [history, user.userState]);
+
+    useEffect(() => {
+        (
+            () => {
+                if (confirmPassword.name !== password.name) setConfirmPassword(prevState => ({ ...prevState, errorText: 'Password does not match', error: true }));
+                else setConfirmPassword(prevState => ({ ...prevState, errorText: '', error: false }));
+            })();
+    }, [confirmPassword.name, password.name]);
 
     return (
         <Container>
@@ -70,7 +127,7 @@ function Signup(props) {
                 </Col>
             </Row>
             <Row>
-                <Form className="form-style margin-global-top-1">
+                <Form onSubmit={onSubmit} className="form-style margin-global-top-1">
                     <input
                         type="password"
                         autoComplete="on"
@@ -183,7 +240,7 @@ function Signup(props) {
                     </Row>
                     <div className="margin-global-top-2" />
                     <Row className="justify-content-center">
-                        <Button type="submit">
+                        <Button disabled={disable} type="submit">
                             Signup
                         </Button>
                     </Row>

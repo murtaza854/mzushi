@@ -7,8 +7,8 @@ import {
 import './App.scss';
 import Routes from './Routes';
 import { Admin } from './admin';
-import { AuthCheck } from './auth';
 import UserContext from "./contexts/userContext";
+// import Auth from './auth/Auth';
 // import api from './api';
 
 function App() {
@@ -33,7 +33,7 @@ function App() {
         // } catch (error) {
         //   setUserState(null);
         // }
-        setLoading(false)
+        setLoading(false);
       })();
   }, []);
 
@@ -41,9 +41,6 @@ function App() {
     <UserContext.Provider value={{ userState: userState, setUserState: setUserState }}>
       <Router>
         <Switch>
-          <Route path ="/__/auth/action">
-            <AuthCheck />
-          </Route>
           <Route path="/admin">
             <Admin loading={loading} />
           </Route>

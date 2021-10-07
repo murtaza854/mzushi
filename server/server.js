@@ -44,6 +44,7 @@ const createServer = async (callback) => {
     const countryRoutes = require('./routes/country');
     const authRoutes = require('./routes/auth');
     const adPackageRoutes = require('./routes/adPackage');
+    const startupRoutes = require('./routes/startup');
 
     app.use('/api/admin-user', adminUserRoutes);
     app.use('/api/product-brand', productBrandRoutes);
@@ -56,6 +57,7 @@ const createServer = async (callback) => {
     app.use('/api/country', countryRoutes);
     app.use('/api/auth', authRoutes);
     app.use('/api/ad-package', adPackageRoutes);
+    app.use('/api/startup', startupRoutes);
     // app.get('*', function (req, res) {
     //     res.sendFile('./build/index.html');
     // });

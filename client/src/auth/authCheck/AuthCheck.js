@@ -4,7 +4,7 @@ import { Container, Row } from 'react-bootstrap';
 import './AuthCheck.scss';
 
 function AuthCheck(props) {
-  // const mode = window.location.search
+  // const mode = window.location.search;
   const params = new URLSearchParams(window.location.search);
   const mode = params.get('mode');
   const oobCode = params.get('oobCode');

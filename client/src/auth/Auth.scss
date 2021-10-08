@@ -1,5 +1,16 @@
 .auth {
+    text-align: center;
     img {
         width: 18rem;
+    }
+    h1 {
+        text-transform: uppercase;
+        color: black;
+        font-weight: 600;
+    }
+    a {
+        font-weight: 700;
+        color: black;
+        text-decoration: none;
     }
 }

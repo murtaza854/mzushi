@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Row } from 'react-bootstrap';
-import { EmailVerified } from './components';
+import { EmailVerified, AccountCreation } from './components';
 import './Auth.scss';
 // import { Heading1 } from '../components';
 // import resetPasswordCheck from './functions/resetPasswordCheck';
@@ -16,6 +16,7 @@ function Auth(props) {
 
     let comp = <div />;
     if (mode === 'verifyEmail') comp = <EmailVerified />
+    else if (mode === 'accountCreation') comp = <AccountCreation />
     // const [heading, setHeading] = useState('');
     // const [headingAuth, setHeadingAuth] = useState({first: '', bold: ''});
     // const [line1First, setline1First] = useState('');

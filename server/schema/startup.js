@@ -27,6 +27,7 @@ const startupSchema = new mongoose.Schema({
     serviceCities: [{ type: Schema.Types.ObjectId, ref: 'cities', required: true }],
     serviceProvinces: [{ type: Schema.Types.ObjectId, ref: 'provinces', required: true }],
     availableAds: { type: Number, required: true, default: 0 },
+    uid: { type: String, required: true },
 });
 
 const Startup = mongoose.model('startups', startupSchema);

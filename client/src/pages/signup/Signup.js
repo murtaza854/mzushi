@@ -76,7 +76,7 @@ function Signup(props) {
             });
             const content = await response.json();
             if (content.data) {
-                alert("Account created. Please verify email");
+                history.push("/__/auth/action?mode=accountCreation");
             } else alert("Error creating account, please contact support if this issue persists.");
         } catch (error) {
             alert("Error creating account, please contact support if this issue persists.");

@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import { Heading1, Package } from '../../components';
 import { AiOutlineClose } from 'react-icons/ai'
 import { FiCheck } from 'react-icons/fi'
 import './PackageSelection.scss';
+import UserContext from '../../contexts/userContext';
+import { useHistory } from 'react-router';
 
 function PackageSelection(props) {
+    const user = useContext(UserContext);
+    const history = useHistory();
+
+    useEffect(() => {
+        if (user.userState) {
+            if (user.userState.accountSetup) history.push('/');
+        }
+    }, [history, user.userState]);
     const standard = [
         { text: 'Business listed', icon: <FiCheck className="icon" /> },
         { text: 'Business dashboard', icon: <FiCheck className="icon" /> },
@@ -59,7 +69,7 @@ function PackageSelection(props) {
                     to="/setup"
                 />
                 <Package
-                    heading="PLAN A"
+                    heading="PREMIUM"
                     features={features}
                     price="250"
                     classes=""

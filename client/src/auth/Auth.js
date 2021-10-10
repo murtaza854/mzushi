@@ -12,10 +12,10 @@ function Auth(props) {
     const params = new URLSearchParams(window.location.search);
     const mode = params.get('mode') || null;
     const actionCode = params.get('oobCode') || null;
-    console.log(mode, actionCode);
 
     let comp = <div />;
-    if (mode === 'verifyEmail') comp = <EmailVerified />
+    if (mode === 'verifyEmail') comp = <EmailVerified mode={mode} actionCode={actionCode}/>
+    else if (mode === 'emailNotVerified') comp = <EmailVerified mode={mode} actionCode=""/>
     else if (mode === 'accountCreation') comp = <AccountCreation />
     // const [heading, setHeading] = useState('');
     // const [headingAuth, setHeadingAuth] = useState({first: '', bold: ''});

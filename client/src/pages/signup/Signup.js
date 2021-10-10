@@ -65,6 +65,7 @@ function Signup(props) {
 
     const onSubmit = async e => {
         e.preventDefault();
+        setDisable(true);
         try {
             const response = await fetch(`${api}/startup/signup`, {
                 method: 'POST',

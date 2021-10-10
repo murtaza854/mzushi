@@ -11,6 +11,8 @@ function Login(props) {
     const [password, setPassword] = useState({ name: '', errorText: '', error: false, showPassword: false });
     const history = useHistory();
 
+    const [disable, setDisable] = useState(false);
+
     const user = useContext(UserContext);
 
     const handleClickShowPassword = _ => {
@@ -29,31 +31,46 @@ function Login(props) {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        const response = await fetch(`${api}/user/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            withCredentials: true,
-            body: JSON.stringify({ email: email.name, password: password.name })
-        });
-        const content = await response.json();
+        setDisable(true);
         try {
-            const userLoggedin = content.data;
-            if (userLoggedin === null) {
+            const response = await fetch(`${api}/startup/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                withCredentials: true,
+                body: JSON.stringify({ email, password })
+            });
+            const content = await response.json();
+            if (content.error === "Email not verified") {
+                history.push("/__/auth/action?mode=emailNotVerified");
+            } else if (content.error) {
                 setEmail(prevState => ({ ...prevState, name: '', errorText: 'Invalid Credentials!', error: true }));
                 setPassword(prevState => ({ ...prevState, name: '', errorText: 'Invalid Credentials!', error: true, showPassword: false }));
+                setDisable(false);
             } else {
-                user.setUserState(userLoggedin);
+                const { displayName, email, emailVerified, accountSetup, admin } = content.data;
+                user.setUserState({ displayName, email, emailVerified, accountSetup, admin });
+                if (accountSetup) history.push("/");
+                // else history.push("/packages");
+                // history.push("/packages");
             }
+            // if (userLoggedin === null) {
+            //     setEmail(prevState => ({ ...prevState, name: '', errorText: 'Invalid Credentials!', error: true }));
+            //     setPassword(prevState => ({ ...prevState, name: '', errorText: 'Invalid Credentials!', error: true, showPassword: false }));
+            // } else {
+            //     user.setUserState(userLoggedin);
+            // }
         } catch (error) {
+            setDisable(false);
         }
     }
 
     useEffect(() => {
         if (user.userState) {
-            history.push('/');
+            if (user.userState.accountSetup) history.push('/');
+            else history.push('/packages');
         }
     }, [history, user.userState]);
 
@@ -119,7 +136,7 @@ function Login(props) {
                     </Row>
                     <div className="margin-global-top-2" />
                     <Row className="justify-content-center">
-                        <Button type="submit">
+                        <Button disabled={disable} type="submit">
                             Login
                         </Button>
                     </Row>

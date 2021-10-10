@@ -27,22 +27,6 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.get('/logged-in', async (req, res) => {
-    try {
-        const user = firebase.auth().currentUser;
-        if (user) {
-            const idTokenResult = await user.getIdTokenResult();
-            const displayName = user.displayName;
-            const email = user.email;
-            const emailVerified = user.emailVerified;
-            const admin = idTokenResult.claims.admin;
-            res.json({ data: { displayName: displayName, email: email, emailVerified: emailVerified, admin: admin } });
-        } else res.json({ data: null })
-    } catch (error) {
-        res.json({ data: null, error: error });
-    }
-});
-
 router.post('/logout', async (req, res) => {
     try {
         await firebase.auth().signOut();

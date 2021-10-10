@@ -3,6 +3,12 @@ const Province = require('../schema').province;
 const City = require('../schema').city;
 const Area = require('../schema').area;
 
+router.get('/get-provinces-search', async (req, res) => {
+    const { provinceText } = req.query;
+    const provinces = await Province.find({ name: { "$regex": provinceText, "$options": "i" } });
+    res.json({ data: provinces });
+});
+
 router.get('/table-data', async (req, res) => {
     const provinces = await Province.find({}).populate('country');
     if (!provinces) res.json({ data: [] });

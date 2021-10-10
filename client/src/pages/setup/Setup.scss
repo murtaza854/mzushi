@@ -3,6 +3,22 @@
         width: 15rem;
         border-radius: 15px;
     }
+    .rbt-input-multi {
+        background-color: transparent;
+        border: 2px solid #f6d33e;
+        padding: 0.6rem 0.75rem 0.6rem;
+        border-radius: 10px;
+        font-size: 1rem;
+    }
+    .rbt-token-remove-button {
+        background-color: white;
+        border: 2px solid #f6d33e;
+        border-radius: 10px;
+        margin-left: 0.5rem;
+        span {
+            font-size: 1.5rem;
+        }
+    }
     .form-yellow-buttons {
         display: flex;
         flex-direction: row;

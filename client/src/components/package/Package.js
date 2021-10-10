@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import UserContext from '../../contexts/userContext';
 import './Package.scss'
 
 function Package(props) {
+    const user = useContext(UserContext);
+    const history = useHistory();
+
+    useEffect(() => {
+        if (user.userState) {
+            if (user.userState.accountSetup) history.push('/');
+        } else history.push('/login');
+    }, [history, user.userState]);
+
     return (
         <div className={`package ${props.classes}`}>
             <h3 className="text-center">{props.heading}</h3>

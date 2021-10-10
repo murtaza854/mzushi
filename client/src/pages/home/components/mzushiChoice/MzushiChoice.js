@@ -1,12 +1,84 @@
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
+import Slider from "react-slick";
 import { BusinessCard, Heading2, YellowButton } from '../../../../components';
 import './MzushiChoice.scss';
 
 function MzushiChoice(props) {
+    const settingsCities = {
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        // initialSlide: 0,
+        arrows: false,
+        responsive: [
+            {
+                breakpoint: 991,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                    centerMode: true,
+                }
+            },
+            {
+                breakpoint: 767,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                    centerMode: true,
+                }
+            },
+            {
+                breakpoint: 567,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    centerMode: true
+                }
+            }
+        ]
+    };
+    const cards = [<BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />]
+    const settingsCards = {
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: cards.length,
+        slidesToScroll: 1,
+        // initialSlide: 0,
+        arrows: false,
+        responsive: [
+            {
+                breakpoint: 1250,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                    centerMode: true,
+                }
+            },
+            {
+                breakpoint: 991,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                    centerMode: true,
+                }
+            },
+            {
+                breakpoint: 767,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    centerMode: true
+                }
+            }
+        ]
+    };
     return (
         <Container fluid className="mzushi-choice">
-            <Container>
+            <Container className="city-container">
                 <Heading2
                     text=""
                     blue="mzushi's"
@@ -15,58 +87,67 @@ function MzushiChoice(props) {
                 />
                 <div className="margin-global-top-2" />
                 <Row className="justify-content-center">
-                    <Col xs={2}>
-                        <YellowButton
-                            to="/"
-                            text="Karachi"
-                            classes="text-uppercase width-high horizontal-center-relative"
-                        />
-                    </Col>
-                    <Col xs={2}>
-                        <YellowButton
-                            to="/"
-                            text="Lahore"
-                            classes="text-uppercase width-high horizontal-center-relative"
-                        />
-                    </Col>
-                    <Col xs={2}>
-                        <YellowButton
-                            to="/"
-                            text="Islamabad"
-                            classes="text-uppercase width-high horizontal-center-relative"
-                        />
-                    </Col>
-                    <Col xs={2}>
-                        <YellowButton
-                            to="/"
-                            text="Quetta"
-                            classes="text-uppercase width-high horizontal-center-relative"
-                        />
-                    </Col>
-                    <Col xs={2}>
-                        <YellowButton
-                            to="/"
-                            text="Peshawer"
-                            classes="text-uppercase width-high horizontal-center-relative"
-                        />
-                    </Col>
+                    <Slider {...settingsCities}>
+                        <Col xs={2}>
+                            <YellowButton
+                                to="/"
+                                text="Karachi"
+                                classes="text-uppercase active-card width-high horizontal-center-relative"
+                            />
+                        </Col>
+                        <Col xs={2}>
+                            <YellowButton
+                                to="/"
+                                text="Lahore"
+                                classes="text-uppercase width-high horizontal-center-relative"
+                            />
+                        </Col>
+                        <Col xs={2}>
+                            <YellowButton
+                                to="/"
+                                text="Islamabad"
+                                classes="text-uppercase width-high horizontal-center-relative"
+                            />
+                        </Col>
+                        <Col xs={2}>
+                            <YellowButton
+                                to="/"
+                                text="Quetta"
+                                classes="text-uppercase width-high horizontal-center-relative"
+                            />
+                        </Col>
+                        <Col xs={2}>
+                            <YellowButton
+                                to="/"
+                                text="Peshawer"
+                                classes="text-uppercase width-high horizontal-center-relative"
+                            />
+                        </Col>
+                    </Slider>
                 </Row>
             </Container>
             <div className="margin-global-top-4" />
-            <Row className="justify-content-center">
-                <BusinessCard classes="" />
-                <BusinessCard classes="" />
-                <BusinessCard classes="" />
-                <BusinessCard classes="" />
-            </Row>
-            <div className="margin-global-top-4" />
-            <Row>
-                <YellowButton
-                    to="/"
-                    text="Show More"
-                    classes="text-uppercase width-full horizontal-center-relative"
-                />
-            </Row>
+            <Container className="card-container">
+                <Row className="justify-content-center">
+                    <Slider {...settingsCards}>
+                        {
+                            cards.map((value, index) => (
+                                <div key={index} className="business-card-container">
+                                    {value}
+                                </div>
+                            ))
+                        }
+                    </Slider>
+                </Row>
+                <div className="margin-global-top-4" />
+                <Row>
+                    <YellowButton
+                        to="/"
+                        text="Show More"
+                        classes="text-uppercase width-full horizontal-center-relative"
+                    />
+                </Row>
+            </Container>
         </Container>
     );
 }

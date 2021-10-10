@@ -5,7 +5,7 @@ const firebase = firebaseFile.firebase;
 router.post('/', async (req, res) => {
     try {
         var mode = req.body.mode;
-        var actionCode = req.body.oobCode;
+        var actionCode = req.body.actionCode;
         var continueUrl = req.body.continueUrl || null;
         var lang = req.body.mode || 'en';
         let data;

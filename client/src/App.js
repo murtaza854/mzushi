@@ -9,7 +9,7 @@ import Routes from './Routes';
 import { Admin } from './admin';
 import UserContext from "./contexts/userContext";
 // import Auth from './auth/Auth';
-// import api from './api';
+import api from './api';
 
 function App() {
   const [userState, setUserState] = useState(null);
@@ -18,24 +18,29 @@ function App() {
   useEffect(() => {
     (
       async () => {
-        // const response = await fetch(`${api}/admin-user/logged-in`, {
-        //   method: 'GET',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        //   credentials: 'include',
-        //   withCredentials: true,
-        // });
-        // const content = await response.json();
-        // try {
-        //   const user = content.data;
-        //   setUserState(user);
-        // } catch (error) {
-        //   setUserState(null);
-        // }
-        setLoading(false);
+        try {
+          const response = await fetch(`${api}/logged-in`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            withCredentials: true,
+          });
+          const content = await response.json();
+          const user = content.data;
+          const { displayName, email, emailVerified, accountSetup, admin } = user;
+          console.log(user)
+          setUserState({ displayName, email, emailVerified, accountSetup, admin });
+          setLoading(false);
+        } catch (error) {
+          // setUserState(null);
+          setLoading(false);
+        }
       })();
   }, []);
+
+  if (loading) return <div></div>
 
   return (
     <UserContext.Provider value={{ userState: userState, setUserState: setUserState }}>

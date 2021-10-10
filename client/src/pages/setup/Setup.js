@@ -12,23 +12,177 @@ import api from '../../api';
 import { TextField } from '@material-ui/core';
 
 function Setup(props) {
-    const [alignment, setAlignment] = useState('left');
+
+    const [businessName, setBusinessName] = useState({ text: '', error: false, errorText: '' });
+    const [businessDescription, setBusinessDescription] = useState({ text: '', error: false, errorText: '' });
+    const [logo, setLogo] = useState({ picturePreview: '', imgURl: '', error: false });
+    const [alignment, setAlignment] = useState('one');
+
+    const [minPrice, setMinPrice] = useState({ text: '', error: false, errorText: '' });
+    const [maxPrice, setMaxPrice] = useState({ text: '', error: false, errorText: '' });
+
+    const [webUrl, setWebUrl] = useState({ text: '' });
+
+    const [monday, setMonday] = useState({ check: false, startValue: null, endValue: null });
+    const [tuesday, setTuesday] = useState({ check: false, startValue: null, endValue: null });
+    const [wednesday, setWednesday] = useState({ check: false, startValue: null, endValue: null });
+    const [thursday, setThursday] = useState({ check: false, startValue: null, endValue: null });
+    const [friday, setFriday] = useState({ check: false, startValue: null, endValue: null });
+    const [saturday, setSaturday] = useState({ check: false, startValue: null, endValue: null });
+    const [sunday, setSunday] = useState({ check: false, startValue: null, endValue: null });
+
     const [categories, setCategories] = useState([]);
+
     const [features, setFeatures] = useState([]);
-    // const [value, setValue] = useState(new Date('2018-01-01T00:00:00.000Z'));
 
-    const [operationCheckboxes, setOperationCheckboxes] = useState({ mondayCheckbox: false, mondayValue: new Date() })
-
-    const [radios, setRadios] = useState({ delivery: true, service: false });
-
-    const [province, setProvince] = useState({ value: [] });
+    const [province, setProvince] = useState({ value: [], error: false, errortext: '', readOnly: false });
     const [provinceList, setProvinceList] = useState([]);
     const [provinceLoading, setProvinceLoading] = useState(false);
 
-    const changeProvince = async array => {
-        setProvince(prevState => ({ ...prevState, value: array }));
+    const [city, setCity] = useState({ value: [], error: false, errortext: '', readOnly: true });
+    const [cityList, setCityList] = useState([]);
+    const [cityLoading, setCityLoading] = useState(false);
+
+    const [area, setArea] = useState({ value: [], error: false, errortext: '', readOnly: true });
+    const [areaList, setAreaList] = useState([]);
+    const [areaLoading, setAreaLoading] = useState(false);
+
+    const [addressLine1, setAddressLine1] = useState({ text: '', error: false, errorText: '' });
+    const [addressLine2, setAddressLine2] = useState({ text: '' });
+    const [landmark, setLandmark] = useState({ text: '' })
+
+    const [radios, setRadios] = useState({ delivery: true, service: false });
+
+    const [provinceDS, setProvinceDS] = useState({ value: [], error: false, errortext: '', readOnly: false });
+    const [provinceDSList, setProvinceDSList] = useState([]);
+    const [provinceDSLoading, setProvinceDSLoading] = useState(false);
+
+    const [cityDS, setCityDS] = useState({ value: [], readOnly: true });
+    const [cityDSList, setCityDSList] = useState([]);
+    const [cityDSLoading, setCityDSLoading] = useState(false);
+
+    const [areaDS, setAreaDS] = useState({ value: [], readOnly: true });
+    const [areaDSList, setAreaDSList] = useState([]);
+    const [areaDSLoading, setAreaDSLoading] = useState(false);
+
+    const handleAlignment = (event, newAlignment) => {
+        if (newAlignment !== null) {
+            setAlignment(newAlignment);
+        }
+    };
+
+    const handleBusinessName = event => {
+        if (event.target.value === '') setBusinessName({ text: event.target.value, errorText: 'Business name is required!', error: true });
+        else setBusinessName({ text: event.target.value, errorText: '', error: false });
+    }
+    const handleBusinessDescription = event => {
+        if (event.target.value === '') setBusinessDescription({ text: event.target.value, errorText: 'Business description is required!', error: true });
+        else setBusinessDescription({ text: event.target.value, errorText: '', error: false });
+    }
+    const handleFileClick = _ => {
+        document.getElementById('logo-upload').click();
+    }
+    const logoChange = event => {
+        let reader = new FileReader();
+        if (event.target.files && event.target.files[0]) {
+            if (event.target.files[0].size / 1024 < 300) {
+                reader.readAsDataURL(event.target.files[0]);
+                const objectUrl = URL.createObjectURL(event.target.files[0]);
+                reader.onload = ((theFile) => {
+                    var image = new Image();
+                    image.src = theFile.target.result;
+                    setLogo(prevState => ({ ...prevState, picturePreview: event.target.files[0], imgURl: objectUrl, error: false }));
+
+                    // image.onload = function () {
+                    //     // access image size here 
+                    //     console.log(this.width, this.height);
+                    //     if (this.width / this.height !== 1) {
+                    //         alert("Please upload a square logo.");
+                    //     }
+                    //     else {
+                    //         setLogo(prevState => ({ ...prevState, picturePreview: objectUrl, imgURl: event.target.files[0] }));
+                    //     }
+                    // };
+                });
+            } else {
+                setLogo(prevState => ({ ...prevState, error: true }));
+            }
+        }
+    }
+    const handleMinPrice = event => {
+        const minprice = /^\d*\.?\d*$/;
+        if (event.target.value === '') setMinPrice({ text: event.target.value, errorText: 'Minimum price is required!', error: true });
+        else if (!event.target.value.match(minprice)) setMinPrice({ text: event.target.value, errorText: "Only numericals are allowed!", error: true });
+        else setMinPrice({ name: event.target.value, errorText: '', error: false });
+    }
+    const handleMaxPrice = event => {
+        const maxprice = /^\d*\.?\d*$/;
+        if (event.target.value === '') setMaxPrice({ text: event.target.value, errorText: 'Maximum price is required!', error: true });
+        else if (!event.target.value.match(maxprice)) setMaxPrice({ text: event.target.value, errorText: "Only numericals are allowed!", error: true });
+        else setMaxPrice({ name: event.target.value, errorText: '', error: false });
+    }
+    const handleWebUrl = event => {
+        const urlCheck = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)/g;
+        if (!event.target.value.match(urlCheck)) setWebUrl({ text: event.target.value, errorText: "Please enter a valid URL!", error: true });
+        else setWebUrl({ text: event.target.value });
+    }
+    const handleMondayCheck = _ => {
+        setMonday(prevState => ({ ...prevState, check: !monday.check }));
+    }
+    const handleTuesdayCheck = _ => {
+        setTuesday(prevState => ({ ...prevState, check: !tuesday.check }));
+    }
+    const handleWednesdayCheck = _ => {
+        setWednesday(prevState => ({ ...prevState, check: !wednesday.check }));
+    }
+    const handleThursdayCheck = _ => {
+        setThursday(prevState => ({ ...prevState, check: !thursday.check }));
+    }
+    const handleFridayCheck = _ => {
+        setFriday(prevState => ({ ...prevState, check: !friday.check }));
+    }
+    const handleSaturdayCheck = _ => {
+        setSaturday(prevState => ({ ...prevState, check: !saturday.check }));
+    }
+    const handleSundayCheck = _ => {
+        setSunday(prevState => ({ ...prevState, check: !sunday.check }));
     }
 
+    const handleCategory = id => {
+        const newArray = [...categories];
+        for (let i = 0; i < newArray.length; i++) {
+            const element = newArray[i];
+            if (element._id === id) newArray[i].active = 'active';
+            else newArray[i].active = '';
+        }
+        setCategories(newArray);
+    }
+
+    const handleFeatures = id => {
+        const newArray = [...features];
+        for (let i = 0; i < newArray.length; i++) {
+            const element = newArray[i];
+            if (element._id === id) {
+                if (element.active === 'active') newArray[i].active = '';
+                else newArray[i].active = 'active';
+            }
+        }
+        setFeatures(newArray);
+    }
+
+    const changeProvince = async array => {
+        if (array.length === 0) {
+            console.log(1)
+            setProvince({ value: array, error: true, errortext: 'Province is required!', readOnly: false });
+            setCity({ value: [], error: false, errortext: '', readOnly: true });
+            setArea({ value: [], error: false, errortext: '', readOnly: true });
+        }
+        else {
+            setProvince({ value: array, error: false, errortext: '', readOnly: false });
+            setCity({ value: [], error: false, errortext: '', readOnly: false });
+            setArea({ value: [], error: false, errortext: '', readOnly: true });
+        }
+    }
     const handleProvinceSearch = async (query) => {
         setProvinceLoading(true);
         setProvinceList([]);
@@ -49,13 +203,157 @@ function Setup(props) {
     };
     const filterByProvince = () => true;
 
-    const handleAlignment = (event, newAlignment) => {
-        setAlignment(newAlignment);
+    const changeCity = async array => {
+        if (array.length === 0) {
+            setCity({ value: array, error: true, errortext: 'City is required!', readOnly: false });
+            setArea({ value: [], error: false, errortext: '', readOnly: false });
+        }
+        else {
+            setCity({ value: array, error: false, errortext: '', readOnly: false });
+            setArea({ value: [], error: false, errortext: '', readOnly: false });
+        }
+    }
+    const handleCitySearch = async (query) => {
+        setCityLoading(true);
+        setCityList([]);
+        const response = await fetch(`${api}/city/get-cities-search?cityText=${query}&provinces=${JSON.stringify(province.value)}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-store'
+            },
+            credentials: 'include',
+            withCredentials: true,
+        });
+        const content = await response.json();
+        setTimeout(() => {
+            setCityList(content.data);
+            setCityLoading(false);
+        }, 1000)
     };
+    const filterByCity = () => true;
 
-    // useEffect(() => (
-    //     async () => {
-    //     }), []);
+    const changeArea = async array => {
+        if (array.length === 0) setArea({ value: array, error: true, errortext: 'Area is required!', readOnly: false });
+        else setArea({ value: array, error: false, errortext: '', readOnly: false });
+    }
+    const handleAreaSearch = async (query) => {
+        setAreaLoading(true);
+        setAreaList([]);
+        const response = await fetch(`${api}/area/get-areas-search?areaText=${query}&cities=${JSON.stringify(city.value)}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-store'
+            },
+            credentials: 'include',
+            withCredentials: true,
+        });
+        const content = await response.json();
+        setTimeout(() => {
+            setAreaList(content.data);
+            setAreaLoading(false);
+        }, 1000)
+    };
+    const filterByArea = () => true;
+
+    const handleAddressLine1 = event => {
+        if (event.target.value === '') setAddressLine1({ text: event.target.value, errorText: 'Address line 1 is required!', error: true });
+        else setAddressLine1({ text: event.target.value, errorText: '', error: false });
+    }
+    const handleAddressLine2 = event => {
+        setAddressLine2({ text: event.target.value });
+    }
+    const handleLandmark = event => {
+        setLandmark({ text: event.target.value });
+    }
+
+    const changeProvinceDS = async array => {
+        if (array.length === 0) {
+            console.log(1)
+            setProvinceDS({ value: array, error: true, errortext: 'Province(s) is required!', readOnly: false });
+            setCityDS({ value: [], readOnly: true });
+            setAreaDS({ value: [], readOnly: true });
+        }
+        else {
+            setProvinceDS({ value: array, error: false, errortext: '', readOnly: false });
+            setCityDS({ value: [], readOnly: false });
+            setAreaDS({ value: [], readOnly: true });
+        }
+    }
+    const handleProvinceDSSearch = async (query) => {
+        setProvinceDSLoading(true);
+        setProvinceDSList([]);
+        const response = await fetch(`${api}/province/get-provinces-search?provinceText=${query}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-store'
+            },
+            credentials: 'include',
+            withCredentials: true,
+        });
+        const content = await response.json();
+        setTimeout(() => {
+            setProvinceDSList(content.data);
+            setProvinceDSLoading(false);
+        }, 1000)
+    };
+    const filterByProvinceDS = () => true;
+
+    const changeCityDS = async array => {
+        if (array.length === 0) {
+            setCityDS({ value: array, readOnly: false });
+            setAreaDS({ value: [], readOnly: false });
+        }
+        else {
+            setCityDS({ value: array, readOnly: false });
+            setAreaDS({ value: [], readOnly: false });
+        }
+    }
+    const handleCityDSSearch = async (query) => {
+        setCityDSLoading(true);
+        setCityDSList([]);
+        const response = await fetch(`${api}/city/get-cities-search?cityText=${query}&provinces=${JSON.stringify(provinceDS.value)}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-store'
+            },
+            credentials: 'include',
+            withCredentials: true,
+        });
+        const content = await response.json();
+        setTimeout(() => {
+            setCityDSList(content.data);
+            setCityDSLoading(false);
+        }, 1000)
+    };
+    const filterByCityDS = () => true;
+
+    const changeAreaDS = async array => {
+        if (array.length === 0) setAreaDS({ value: array, readOnly: false });
+        else setAreaDS({ value: array, readOnly: false });
+    }
+    const handleAreaDSSearch = async (query) => {
+        setAreaDSLoading(true);
+        setAreaDSList([]);
+        const response = await fetch(`${api}/area/get-areas-search?areaText=${query}&cities=${JSON.stringify(cityDS.value)}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-store'
+            },
+            credentials: 'include',
+            withCredentials: true,
+        });
+        const content = await response.json();
+        setTimeout(() => {
+            setAreaDSList(content.data);
+            setAreaDSLoading(false);
+        }, 1000)
+    };
+    const filterByAreaDS = () => true;
 
     useEffect(() => {
         setCategories([
@@ -89,59 +387,12 @@ function Setup(props) {
         ]);
     }, []);
 
-    const handleCategory = id => {
-        const newArray = [...categories];
-        for (let i = 0; i < newArray.length; i++) {
-            const element = newArray[i];
-            if (element._id === id) newArray[i].active = 'active';
-            else newArray[i].active = '';
-        }
-        setCategories(newArray);
-    }
-
-    const handleFeatures = id => {
-        const newArray = [...features];
-        for (let i = 0; i < newArray.length; i++) {
-            const element = newArray[i];
-            if (element._id === id) {
-                if (element.active === 'active') newArray[i].active = '';
-                else newArray[i].active = 'active';
-            }
-        }
-        setFeatures(newArray);
-    }
-
     const handleDeliveryClick = _ => {
         setRadios({ delivery: true, service: false })
     }
 
     const handleServiceClick = _ => {
         setRadios({ delivery: false, service: true })
-    }
-
-    const handleFileClick = _ => {
-        document.getElementById('logo-upload').click();
-    }
-    const logoChange = event => {
-        let reader = new FileReader();
-        if (event.target.files && event.target.files[0]) {
-            if (event.target.files[0].size / 1024 < 300) {
-                reader.readAsDataURL(event.target.files[0]);
-                // const objectUrl = URL.createObjectURL(event.target.files[0]);
-                reader.onload = ((theFile) => {
-                    var image = new Image();
-                    image.src = theFile.target.result;
-
-                    image.onload = function () {
-                        // access image size here 
-                        console.log(this.width, this.height);
-                        if (this.width / this.height !== 1) alert("Please upload a square logo.")
-                    };
-                });
-            } else {
-                // setImageState(prevState => ({ ...prevState, helperText: 'The maximum size for an image can be 300 KB!', error: true }));
-            }
-        }
     }
 
     return (
@@ -169,14 +420,27 @@ function Setup(props) {
                             <Row>
                                 <Form.Group controlId="firstName">
                                     <Form.Label className="bold-600">Business Name</Form.Label>
-                                    <Form.Control type="text" />
+                                    <Form.Control
+                                        type="text"
+                                        onChange={handleBusinessName}
+                                        onBlur={handleBusinessName}
+                                        value={businessName.text}
+                                    />
+                                    <div className="error-text">{businessName.errorText}</div>
                                 </Form.Group>
                             </Row>
                             <div className="margin-global-top-2" />
                             <Row>
                                 <Form.Group controlId="email">
                                     <Form.Label className="bold-600">Business Description</Form.Label>
-                                    <textarea maxLength={1250} rows={7} />
+                                    <textarea
+                                        maxLength={1250}
+                                        rows={7}
+                                        onChange={handleBusinessDescription}
+                                        onBlur={handleBusinessDescription}
+                                        value={businessDescription.text}
+                                    />
+                                    <div className="error-text">{businessDescription.errorText}</div>
                                 </Form.Group>
                             </Row>
                         </Col>
@@ -190,11 +454,19 @@ function Setup(props) {
                                     classes=""
                                 />
                             </Form.Group>
-                            <div className="margin-global-top-2" />
+                            {
+                                logo.imgURl !== '' ? (
+                                    <div>
+                                        <div className="margin-global-top-2" />
+                                        <img src={logo.imgURl} alt="Preview" />
+                                    </div>
+                                ) : null
+                            }
+                            {/* <div className="margin-global-top-2" />
                             <img
                                 src="https://s3-media0.fl.yelpcdn.com/bphoto/JMaVR5nUiDXz2XDbyZvc8Q/l.jpg"
                                 alt="Test"
-                            />
+                            /> */}
                         </Col>
                     </Row>
                     <Row className="justify-content-between">
@@ -211,16 +483,16 @@ function Setup(props) {
                                         onChange={handleAlignment}
                                         aria-label="text alignment"
                                     >
-                                        <ToggleButton className="first-toggle" disableRipple={true} value="left" aria-label="left aligned">
+                                        <ToggleButton className="first-toggle" disableRipple={true} value="one" aria-label="left aligned">
                                             <strong className="bold-900">$</strong>
                                         </ToggleButton>
-                                        <ToggleButton disableRipple={true} className="square-toggle" value="center" aria-label="centered">
+                                        <ToggleButton disableRipple={true} className="square-toggle" value="two" aria-label="centered">
                                             <strong className="bold-900">$$</strong>
                                         </ToggleButton>
-                                        <ToggleButton disableRipple={true} className="square-toggle" value="right" aria-label="right aligned">
+                                        <ToggleButton disableRipple={true} className="square-toggle" value="three" aria-label="right aligned">
                                             <strong className="bold-900">$$$</strong>
                                         </ToggleButton>
-                                        <ToggleButton className="last-toggle" disableRipple={true} value="justify" aria-label="justified">
+                                        <ToggleButton className="last-toggle" disableRipple={true} value="four" aria-label="justified">
                                             <strong className="bold-900">$$$$</strong>
                                         </ToggleButton>
                                     </ToggleButtonGroup>
@@ -235,11 +507,23 @@ function Setup(props) {
                             <Row>
                                 <Form.Group as={Col} xs={6} controlId="firstName">
                                     <Form.Label>Minimum Price</Form.Label>
-                                    <Form.Control type="text" />
+                                    <Form.Control
+                                        type="text"
+                                        onChange={handleMinPrice}
+                                        onBlur={handleMinPrice}
+                                        value={minPrice.text}
+                                    />
+                                    <div className="error-text">{minPrice.errorText}</div>
                                 </Form.Group>
                                 <Form.Group as={Col} xs={6} controlId="firstName">
                                     <Form.Label>Maximum Price</Form.Label>
-                                    <Form.Control type="text" />
+                                    <Form.Control
+                                        type="text"
+                                        onChange={handleMaxPrice}
+                                        onBlur={handleMaxPrice}
+                                        value={maxPrice.text}
+                                    />
+                                    <div className="error-text">{maxPrice.errorText}</div>
                                 </Form.Group>
                             </Row>
                             <div className="margin-global-top-2" />
@@ -251,7 +535,12 @@ function Setup(props) {
                             <Row>
                                 <Form.Group as={Col} lg={12} controlId="firstName">
                                     <Form.Label>Enter your URL</Form.Label>
-                                    <Form.Control type="text" />
+                                    <Form.Control
+                                        type="text"
+                                        onChange={handleWebUrl}
+                                        onBlur={handleWebUrl}
+                                        value={webUrl.text}
+                                    />
                                 </Form.Group>
                             </Row>
                         </Col>
@@ -275,18 +564,17 @@ function Setup(props) {
                                         type='checkbox'
                                         id="service"
                                         label="Monday"
-                                    // checked={radios.service}
-                                    // onClick={handleServiceClick}
-                                    // onChange={_ => { }}
+                                        checked={monday.check}
+                                        onChange={handleMondayCheck}
                                     />
                                 </Form.Group>
                                 <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
-                                            value={operationCheckboxes.mondayValue}
+                                            value={monday.startValue}
                                             onChange={(newValue) => {
-                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                                setMonday(prevState => ({ ...prevState, startValue: newValue }));
                                             }}
                                             renderInput={(params) => <TextField {...params} />}
                                         />
@@ -296,9 +584,9 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
-                                            value={operationCheckboxes.mondayValue}
+                                            value={monday.endValue}
                                             onChange={(newValue) => {
-                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                                setMonday(prevState => ({ ...prevState, endValue: newValue }));
                                             }}
                                             renderInput={(params) => <TextField {...params} />}
                                         />
@@ -313,18 +601,17 @@ function Setup(props) {
                                         type='checkbox'
                                         id="service"
                                         label="Tuesday"
-                                    // checked={radios.service}
-                                    // onClick={handleServiceClick}
-                                    // onChange={_ => { }}
+                                        checked={tuesday.check}
+                                        onChange={handleTuesdayCheck}
                                     />
                                 </Form.Group>
                                 <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
-                                            value={operationCheckboxes.mondayValue}
+                                            value={tuesday.startValue}
                                             onChange={(newValue) => {
-                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                                setTuesday(prevState => ({ ...prevState, startValue: newValue }));
                                             }}
                                             renderInput={(params) => <TextField {...params} />}
                                         />
@@ -334,9 +621,9 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
-                                            value={operationCheckboxes.mondayValue}
+                                            value={tuesday.endValue}
                                             onChange={(newValue) => {
-                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                                setTuesday(prevState => ({ ...prevState, endValue: newValue }));
                                             }}
                                             renderInput={(params) => <TextField {...params} />}
                                         />
@@ -351,18 +638,17 @@ function Setup(props) {
                                         type='checkbox'
                                         id="service"
                                         label="Wednesday"
-                                    // checked={radios.service}
-                                    // onClick={handleServiceClick}
-                                    // onChange={_ => { }}
+                                        checked={wednesday.check}
+                                        onChange={handleWednesdayCheck}
                                     />
                                 </Form.Group>
                                 <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
-                                            value={operationCheckboxes.mondayValue}
+                                            value={wednesday.startValue}
                                             onChange={(newValue) => {
-                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                                setWednesday(prevState => ({ ...prevState, startValue: newValue }));
                                             }}
                                             renderInput={(params) => <TextField {...params} />}
                                         />
@@ -372,9 +658,9 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
-                                            value={operationCheckboxes.mondayValue}
+                                            value={wednesday.endValue}
                                             onChange={(newValue) => {
-                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                                setWednesday(prevState => ({ ...prevState, endValue: newValue }));
                                             }}
                                             renderInput={(params) => <TextField {...params} />}
                                         />
@@ -389,18 +675,17 @@ function Setup(props) {
                                         type='checkbox'
                                         id="service"
                                         label="Thursday"
-                                    // checked={radios.service}
-                                    // onClick={handleServiceClick}
-                                    // onChange={_ => { }}
+                                        checked={thursday.check}
+                                        onChange={handleThursdayCheck}
                                     />
                                 </Form.Group>
                                 <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
-                                            value={operationCheckboxes.mondayValue}
+                                            value={thursday.startValue}
                                             onChange={(newValue) => {
-                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                                setThursday(prevState => ({ ...prevState, startValue: newValue }));
                                             }}
                                             renderInput={(params) => <TextField {...params} />}
                                         />
@@ -410,9 +695,9 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
-                                            value={operationCheckboxes.mondayValue}
+                                            value={thursday.endValue}
                                             onChange={(newValue) => {
-                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                                setThursday(prevState => ({ ...prevState, endValue: newValue }));
                                             }}
                                             renderInput={(params) => <TextField {...params} />}
                                         />
@@ -427,18 +712,17 @@ function Setup(props) {
                                         type='checkbox'
                                         id="service"
                                         label="Friday"
-                                    // checked={radios.service}
-                                    // onClick={handleServiceClick}
-                                    // onChange={_ => { }}
+                                        checked={friday.check}
+                                        onChange={handleFridayCheck}
                                     />
                                 </Form.Group>
                                 <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
-                                            value={operationCheckboxes.mondayValue}
+                                            value={friday.startValue}
                                             onChange={(newValue) => {
-                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                                setFriday(prevState => ({ ...prevState, startValue: newValue }));
                                             }}
                                             renderInput={(params) => <TextField {...params} />}
                                         />
@@ -448,9 +732,9 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
-                                            value={operationCheckboxes.mondayValue}
+                                            value={friday.endValue}
                                             onChange={(newValue) => {
-                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                                setFriday(prevState => ({ ...prevState, endValue: newValue }));
                                             }}
                                             renderInput={(params) => <TextField {...params} />}
                                         />
@@ -465,18 +749,17 @@ function Setup(props) {
                                         type='checkbox'
                                         id="service"
                                         label="Saturday"
-                                    // checked={radios.service}
-                                    // onClick={handleServiceClick}
-                                    // onChange={_ => { }}
+                                        checked={saturday.check}
+                                        onChange={handleSaturdayCheck}
                                     />
                                 </Form.Group>
                                 <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
-                                            value={operationCheckboxes.mondayValue}
+                                            value={saturday.startValue}
                                             onChange={(newValue) => {
-                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                                setSaturday(prevState => ({ ...prevState, startValue: newValue }));
                                             }}
                                             renderInput={(params) => <TextField {...params} />}
                                         />
@@ -486,9 +769,9 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
-                                            value={operationCheckboxes.mondayValue}
+                                            value={saturday.endValue}
                                             onChange={(newValue) => {
-                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                                setSaturday(prevState => ({ ...prevState, endValue: newValue }));
                                             }}
                                             renderInput={(params) => <TextField {...params} />}
                                         />
@@ -503,18 +786,17 @@ function Setup(props) {
                                         type='checkbox'
                                         id="service"
                                         label="Sunday"
-                                    // checked={radios.service}
-                                    // onClick={handleServiceClick}
-                                    // onChange={_ => { }}
+                                        checked={sunday.check}
+                                        onChange={handleSundayCheck}
                                     />
                                 </Form.Group>
                                 <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
-                                            value={operationCheckboxes.mondayValue}
+                                            value={sunday.startValue}
                                             onChange={(newValue) => {
-                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                                setSunday(prevState => ({ ...prevState, startValue: newValue }));
                                             }}
                                             renderInput={(params) => <TextField {...params} />}
                                         />
@@ -524,9 +806,9 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
-                                            value={operationCheckboxes.mondayValue}
+                                            value={sunday.endValue}
                                             onChange={(newValue) => {
-                                                setOperationCheckboxes(prevState => ({ ...prevState, mondayCheckbox: operationCheckboxes.mondayCheckbox, mondayValue: newValue }));
+                                                setSunday(prevState => ({ ...prevState, endValue: newValue }));
                                             }}
                                             renderInput={(params) => <TextField {...params} />}
                                         />
@@ -595,6 +877,9 @@ function Setup(props) {
                                 labelKey="name"
                                 minLength={2}
                                 onSearch={handleProvinceSearch}
+                                inputProps={{
+                                    readOnly: province.readOnly,
+                                }}
                                 onChange={changeProvince}
                                 options={provinceList}
                                 selected={province.value}
@@ -604,60 +889,85 @@ function Setup(props) {
                                     </Fragment>
                                 )}
                             />
+                            <div className="error-text">{province.errortext}</div>
                         </Form.Group>
                         <Form.Group className="form-group-left" as={Col} md={6} controlId="firstName">
                             <Form.Label>Address Line 1</Form.Label>
-                            <Form.Control type="text" />
+                            <Form.Control
+                                type="text"
+                                onChange={handleAddressLine1}
+                                onBlur={handleAddressLine1}
+                                value={addressLine1.text}
+                            />
+                            <div className="error-text">{addressLine1.errorText}</div>
                         </Form.Group>
                     </Row>
                     <Row>
                         <Form.Group className="form-group-right" as={Col} md={6} controlId="firstName">
                             <Form.Label>City</Form.Label>
                             <AsyncTypeahead
-                                filterBy={filterByProvince}
-                                isLoading={provinceLoading}
-                                id="province"
+                                filterBy={filterByCity}
+                                isLoading={cityLoading}
+                                id="city"
                                 labelKey="name"
                                 minLength={2}
-                                onSearch={handleProvinceSearch}
-                                onChange={changeProvince}
-                                options={provinceList}
-                                selected={province.value}
+                                onSearch={handleCitySearch}
+                                inputProps={{
+                                    readOnly: city.readOnly,
+                                }}
+                                onChange={changeCity}
+                                options={cityList}
+                                selected={city.value}
                                 renderMenuItemChildren={(option, props) => (
                                     <Fragment>
                                         <span>{option.name}</span>
                                     </Fragment>
                                 )}
                             />
+                            <div className="error-text">{city.errortext}</div>
                         </Form.Group>
                         <Form.Group className="form-group-left" as={Col} md={6} controlId="firstName">
-                            <Form.Label>Address Line 2</Form.Label>
-                            <Form.Control type="text" />
+                            <Form.Label>Address Line 2 [Optional]</Form.Label>
+                            <Form.Control
+                                type="text"
+                                onChange={handleAddressLine2}
+                                onBlur={handleAddressLine2}
+                                value={addressLine2.text}
+                            />
                         </Form.Group>
                     </Row>
                     <Row>
                         <Form.Group className="form-group-right" as={Col} md={6} controlId="firstName">
                             <Form.Label>Area</Form.Label>
                             <AsyncTypeahead
-                                filterBy={filterByProvince}
-                                isLoading={provinceLoading}
-                                id="province"
+                                filterBy={filterByArea}
+                                isLoading={areaLoading}
+                                id="area"
                                 labelKey="name"
                                 minLength={2}
-                                onSearch={handleProvinceSearch}
-                                onChange={changeProvince}
-                                options={provinceList}
-                                selected={province.value}
+                                onSearch={handleAreaSearch}
+                                inputProps={{
+                                    readOnly: area.readOnly,
+                                }}
+                                onChange={changeArea}
+                                options={areaList}
+                                selected={area.value}
                                 renderMenuItemChildren={(option, props) => (
                                     <Fragment>
                                         <span>{option.name}</span>
                                     </Fragment>
                                 )}
                             />
+                            <div className="error-text">{area.errortext}</div>
                         </Form.Group>
                         <Form.Group className="form-group-left" as={Col} md={6} controlId="firstName">
-                            <Form.Label>Nearest Landmark</Form.Label>
-                            <Form.Control type="text" />
+                            <Form.Label>Nearest Landmark [Optional]</Form.Label>
+                            <Form.Control
+                                type="text"
+                                onChange={handleLandmark}
+                                onBlur={handleLandmark}
+                                value={landmark.text}
+                            />
                         </Form.Group>
                     </Row>
                     <div className="margin-global-top-4" />
@@ -693,15 +1003,45 @@ function Setup(props) {
                         <Form.Group className="form-group-right" as={Col} lg={6} controlId="firstName">
                             <Form.Label>Province</Form.Label>
                             <AsyncTypeahead
-                                filterBy={filterByProvince}
-                                isLoading={provinceLoading}
-                                id="province"
+                                filterBy={filterByProvinceDS}
+                                isLoading={provinceDSLoading}
+                                id="provinceDS"
                                 labelKey="name"
                                 minLength={2}
-                                onSearch={handleProvinceSearch}
-                                onChange={changeProvince}
-                                options={provinceList}
-                                selected={province.value}
+                                inputProps={{
+                                    readOnly: provinceDS.readOnly,
+                                }}
+                                multiple
+                                onSearch={handleProvinceDSSearch}
+                                onChange={changeProvinceDS}
+                                options={provinceDSList}
+                                selected={provinceDS.value}
+                                renderMenuItemChildren={(option, props) => (
+                                    <Fragment>
+                                        <span>{option.name}</span>
+                                    </Fragment>
+                                )}
+                            />
+                            <div className="error-text">{provinceDS.errortext}</div>
+                        </Form.Group>
+                    </Row>
+                    <Row>
+                        <Form.Group className="form-group-right" as={Col} lg={6} controlId="firstName">
+                            <Form.Label>City [Optional]</Form.Label>
+                            <AsyncTypeahead
+                                filterBy={filterByCityDS}
+                                isLoading={cityDSLoading}
+                                id="cityDS"
+                                labelKey="name"
+                                minLength={2}
+                                inputProps={{
+                                    readOnly: cityDS.readOnly,
+                                }}
+                                multiple
+                                onSearch={handleCityDSSearch}
+                                onChange={changeCityDS}
+                                options={cityDSList}
+                                selected={cityDS.value}
                                 renderMenuItemChildren={(option, props) => (
                                     <Fragment>
                                         <span>{option.name}</span>
@@ -712,38 +1052,21 @@ function Setup(props) {
                     </Row>
                     <Row>
                         <Form.Group className="form-group-right" as={Col} lg={6} controlId="firstName">
-                            <Form.Label>City</Form.Label>
+                            <Form.Label>Area [Optional]</Form.Label>
                             <AsyncTypeahead
-                                filterBy={filterByProvince}
-                                isLoading={provinceLoading}
-                                id="province"
+                                filterBy={filterByAreaDS}
+                                isLoading={areaDSLoading}
+                                id="areaDS"
                                 labelKey="name"
                                 minLength={2}
-                                onSearch={handleProvinceSearch}
-                                onChange={changeProvince}
-                                options={provinceList}
-                                selected={province.value}
-                                renderMenuItemChildren={(option, props) => (
-                                    <Fragment>
-                                        <span>{option.name}</span>
-                                    </Fragment>
-                                )}
-                            />
-                        </Form.Group>
-                    </Row>
-                    <Row>
-                        <Form.Group className="form-group-right" as={Col} lg={6} controlId="firstName">
-                            <Form.Label>Area</Form.Label>
-                            <AsyncTypeahead
-                                filterBy={filterByProvince}
-                                isLoading={provinceLoading}
-                                id="province"
-                                labelKey="name"
-                                minLength={2}
-                                onSearch={handleProvinceSearch}
-                                onChange={changeProvince}
-                                options={provinceList}
-                                selected={province.value}
+                                inputProps={{
+                                    readOnly: areaDS.readOnly,
+                                }}
+                                multiple
+                                onSearch={handleAreaDSSearch}
+                                onChange={changeAreaDS}
+                                options={areaDSList}
+                                selected={areaDS.value}
                                 renderMenuItemChildren={(option, props) => (
                                     <Fragment>
                                         <span>{option.name}</span>

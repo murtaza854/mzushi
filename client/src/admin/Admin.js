@@ -53,7 +53,6 @@ function Admin(props) {
         },
     });
     const currentTheme = darkState ? darkTheme : lightTheme;
-    if (props.loading) return <div></div>
     return (
         <ThemeProvider theme={currentTheme}>
             {/* <Login setToken={setToken} title="Mzushi: Admin Login" /> */}

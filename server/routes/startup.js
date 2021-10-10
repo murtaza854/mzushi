@@ -12,7 +12,7 @@ router.post('/signup', async (req, res) => {
         console.log(firstName, lastName, email, contactNumber, password);
         const response = await firebase.auth().createUserWithEmailAndPassword(email.name, password.name);
         const user = response.user;
-        // await firebaseAdmin.auth().setCustomUserClaims(user.uid, { admin: false });
+        await firebaseAdmin.auth().setCustomUserClaims(user.uid, { admin: false });
         user.sendEmailVerification();
         await user.updateProfile({
             displayName: firstName.name,
@@ -36,6 +36,39 @@ router.post('/signup', async (req, res) => {
     } catch (error) {
         // res.json({ success: false, error: error });
         res.json({ data: false });
+    }
+});
+
+router.post('/login', async (req, res) => {
+    try {
+        const response = await firebase.auth().signInWithEmailAndPassword(req.body.email.name, req.body.password.name);
+        const user = response.user;
+        const idTokenResult = await user.getIdTokenResult();
+        const admin = idTokenResult.claims.admin;
+        const displayName = user.displayName;
+        const email = user.email;
+        const emailVerified = user.emailVerified;
+        const startup = await Startup.findOne({ uid: user.uid });
+        const accountSetup = startup.accountSetup;
+        if (!emailVerified) {
+            user.sendEmailVerification();
+            await firebase.auth().signOut();
+            throw "Email not verified";
+        } else res.json({ data: { displayName, email, emailVerified, accountSetup, admin } });
+    } catch (error) {
+        res.json({ data: null, error: error });
+    }
+});
+
+router.post('/mark-premium', async (req, res) => {
+    try {
+        console.log(req.body)
+        const startup = await Startup.findOne({ email: req.body.user.email });
+        startup.premium = true;
+        startup.save();
+        res.json({ data: true });
+    } catch (error) {
+        res.json({ data: null, error: error });
     }
 });
 

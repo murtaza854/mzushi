@@ -1,10 +1,22 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { FiCheck } from 'react-icons/fi'
+import { useHistory } from 'react-router';
+import api from '../../api';
 import { Heading1 } from '../../components';
+import UserContext from '../../contexts/userContext';
 import './Premium.scss';
 
 function Premium(props) {
+    const user = useContext(UserContext);
+    const history = useHistory();
+    const [check, setCheck] = useState(false);
+
+    useEffect(() => {
+        if (user.userState) {
+            if (user.userState.accountSetup) history.push('/');
+        } else history.push('/login');
+    }, [history, user.userState]);
     const features = [
         { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
         { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
@@ -17,14 +29,34 @@ function Premium(props) {
         { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
         { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
     ];
-    const [check, setCheck] = useState(false);
 
     const changeCheck = _ => {
         setCheck(!check);
     }
 
-    const onSubmit = event => {
-        event.preventDefault();
+    const onSubmit = async e => {
+        e.preventDefault();
+        setCheck(true);
+        try {
+            const response = await fetch(`${api}/startup/mark-premium`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                withCredentials: true,
+                body: JSON.stringify({ user: user.userState })
+            });
+            const content = await response.json();
+            if (content.data) history.push('/setup');
+            else {
+                alert("Error confirming premium. Please contact support if issue persists.");
+                setCheck(false);
+            }
+        } catch (error) {
+            alert("Error confirming premium. Please contact support if issue persists.");
+            setCheck(false);
+        }
     }
 
     return (
@@ -38,7 +70,7 @@ function Premium(props) {
                     />
                 </Col>
             </Row>
-            <div className="feature-list">
+            <div className="feature-list margin-global-top-1">
                 {
                     features.map((value, index) => {
                         return (
@@ -52,16 +84,18 @@ function Premium(props) {
             </div>
             <Row>
                 <Col>
-                    <Form onSubmit={onSubmit} className="form-style margin-global-top-1">
+                    <Form style={{ padding: 0 }} onSubmit={onSubmit} className="form-style margin-global-top-1">
                         <Row>
-                            <Form.Check
-                                className="center-relative-vertical"
-                                type='checkbox'
-                                id="service"
-                                label="Click here to acknowledge that the images you upload may be edited and used for marketing purposes."
-                                checked={check}
-                                onClick={changeCheck}
-                            />
+                            <Col>
+                                <Form.Check
+                                    type='checkbox'
+                                    id="service"
+                                    label="Click here to acknowledge that the images you upload may be edited and used for marketing purposes."
+                                    checked={check}
+                                    // onClick={changeCheck}
+                                    onChange={changeCheck}
+                                />
+                            </Col>
                         </Row>
                         <Row className="justify-content-center margin-global-top-2">
                             <Button

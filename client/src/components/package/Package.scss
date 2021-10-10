@@ -10,7 +10,7 @@
         font-weight: 600;
     }
     .plan-price {
-        color: #8FBEDF;
+        color: #8fbedf;
     }
 
     .row {
@@ -25,7 +25,7 @@
         }
     }
     p {
-        font-size: 1rem;
+        // font-size: 1rem;
         text-align: left;
         color: black;
         margin-bottom: 0;
@@ -40,18 +40,68 @@
         text-decoration: none;
         font-weight: 600;
         color: black;
-        background-color: #F6D33E;
+        background-color: #f6d33e;
         text-align: center;
         font-size: 1.5rem;
         border-radius: 10px;
-        border: 1px solid #F6D33E;
-        transition: .3s ease-in-out;
+        border: 1px solid #f6d33e;
+        transition: 0.3s ease-in-out;
         padding: 0.1rem 2rem;
         transform: translate(-50%, 50%);
         left: 50%;
         &:hover {
-            color: #F6D33E;
+            color: #f6d33e;
             background-color: white;
         }
     }
 }
+
+// Devices (less than 1700px)
+@media (max-width: 106.1875em) {
+}
+
+// Devices (less than 1600px)
+@media (max-width: 99.9375em) {
+}
+
+// Devices (less than 1500px)
+@media (max-width: 93.6875em) {
+}
+
+// X-Large devices (large desktops, less than 1400px)
+@media (max-width: 87.49875em) {
+    .package {
+        .get-it-link {
+            font-size: 1.3rem;
+        }
+    }
+}
+
+// Devices (less than 1300px)
+@media (max-width: 81.1875em) {
+}
+
+// Large devices (desktops, less than 1200px)
+@media (max-width: 74.99875em) {
+}
+
+// Medium devices (tablets, less than 992px)
+@media (max-width: 61.99875em) {
+    .package {
+        margin: 0 1rem;
+    }
+}
+
+// Small devices (landscape phones, less than 768px)
+@media (max-width: 47.99875em) {
+    .package {
+        margin: 2rem 0rem;
+    }
+}
+
+// X-Small devices (portrait phones, less than 576px)
+@media (max-width: 35.99875em) {
+}
+
+// XX-Large devices (larger desktops)
+// No media query since the xxl breakpoint has no upper bound on its width

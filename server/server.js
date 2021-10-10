@@ -7,6 +7,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 const app = express();
 
+
+const Startup = require('./schema').startup;
+
 const firebaseFile = require('./firebase');
 const firebase = firebaseFile.firebase;
 // const firebaseAdmin = firebaseFile.admin;
@@ -58,6 +61,30 @@ const createServer = async (callback) => {
     app.use('/api/auth', authRoutes);
     app.use('/api/ad-package', adPackageRoutes);
     app.use('/api/startup', startupRoutes);
+
+    app.get('/api/logged-in', async (req, res) => {
+        try {
+            const user = firebase.auth().currentUser;
+            if (user) {
+                const idTokenResult = await user.getIdTokenResult();
+                const displayName = user.displayName;
+                const email = user.email;
+                const emailVerified = user.emailVerified;
+                const admin = idTokenResult.claims.admin;
+                let accountSetup = true;
+                if (!admin) {
+                    const startup = await Startup.findOne({ uid: user.uid });
+                    accountSetup = startup.accountSetup;
+                }
+                else {
+                    accountSetup = true;
+                }
+                res.json({ data: { displayName, email, emailVerified, accountSetup, admin } });
+            } else res.json({ data: null })
+        } catch (error) {
+            res.json({ data: null, error: error });
+        }
+    });
     // app.get('*', function (req, res) {
     //     res.sendFile('./build/index.html');
     // });

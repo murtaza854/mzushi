@@ -1,6 +1,13 @@
 const router = require('express').Router();
 const Area = require('../schema').area;
 
+router.get('/get-areas-search', async (req, res) => {
+    const { areaText, cities } = req.query;
+    const citiesList = JSON.parse(cities);
+    const areas = await Area.find({ name: { "$regex": areaText, "$options": "i" }, city: { $in: citiesList } });
+    res.json({ data: areas });
+});
+
 router.get('/table-data', async (req, res) => {
     const areas = await Area.find({}).populate({
         path: 'city',

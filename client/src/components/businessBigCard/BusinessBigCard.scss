@@ -114,13 +114,29 @@
 
 // Medium devices (tablets, less than 992px)
 @media (max-width: 61.99875em) {
+    .business-big-card {
+        width: 35rem;
+        padding: 1.5rem 2rem;
+        img {
+            position: relative;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+    }
 }
 
 // Small devices (landscape phones, less than 768px)
 @media (max-width: 47.99875em) {
+    .business-big-card {
+        width: 75%;
+        padding: 1.5rem 1.5rem;
+    }
 }
 
 // X-Small devices (portrait phones, less than 576px)
 @media (max-width: 35.99875em) {
+    .business-big-card {
+        padding: 1.5rem 1rem;
+        width: 90%;
+    }
 }
-

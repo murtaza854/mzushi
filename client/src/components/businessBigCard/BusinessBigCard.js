@@ -28,11 +28,12 @@ function BusinessBigCard(props) {
                             classes="margin-bottom-0 fit-content"
                             text2=""
                         />
+                        <div className="margin-global-top-1" />
                         <ToggleButtonGroup
                             value={alignment}
                             size="small"
                             exclusive
-                            onChange={_ => {}}
+                            onChange={_ => { }}
                             aria-label="text alignment"
                             className="fit-content"
                         >
@@ -50,11 +51,13 @@ function BusinessBigCard(props) {
                             </ToggleButton>
                         </ToggleButtonGroup>
                     </Row>
+                    <div className="margin-global-top-1" />
                     <div className="business-card-chip">
                         Category
                     </div>
-                    <div className="margin-global-top-02" />
+                    <div className="margin-global-top-06" />
                     <Rating size="medium" name="read-only" value={3} readOnly />
+                    <div className="margin-global-top-02" />
                     <div className="icon-text">
                         <IoLocationOutline className="icon" />
                         <p>Lorem Ipsum</p>
@@ -63,40 +66,41 @@ function BusinessBigCard(props) {
                         <AiOutlineClockCircle className="icon" />
                         <p>Today - 00:00 to 00:00</p>
                     </div>
+                    <div className="margin-global-top-06" />
                     <Row>
-                        <Col md={4} className="icon-text yellow">
+                        <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
-                        <Col md={4} className="icon-text yellow">
+                        <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
-                        <Col md={4} className="icon-text yellow">
+                        <Col xs={4} className="icon-text yellow">
                             <AiOutlineClose className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
                     </Row>
                     <Row>
-                        <Col md={4} className="icon-text yellow">
+                        <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
-                        <Col md={4} className="icon-text yellow">
+                        <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
-                        <Col md={4} className="icon-text yellow">
+                        <Col xs={4} className="icon-text yellow">
                             <AiOutlineClose className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
                     </Row>
                     <Row>
-                        <Col md={4} className="icon-text yellow">
+                        <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
-                        <Col md={4} className="icon-text yellow">
+                        <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>

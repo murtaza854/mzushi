@@ -12,9 +12,13 @@ function FilterPanel(props) {
     const handleAlignment = (event, newAlignment) => {
         setAlignment(newAlignment);
     };
+    const closeFilterPanel = _ => {
+        document.getElementById('filter-panel').classList.remove('active-filter-panel');
+        document.getElementById('filter-panel').classList.add('remove-filter-panel');
+    }
 
     return (
-        <div className="filter-panel">
+        <div id="filter-panel" className="filter-panel">
             <Row className="justify-content-center">
                 <ToggleButtonGroup
                     value={alignment}
@@ -262,6 +266,9 @@ function FilterPanel(props) {
                         />
                     </div>
                 </div>
+            </Row>
+            <Row className="unhide-1200">
+                <button onClick={closeFilterPanel} type="button">Filter panel</button>
             </Row>
         </div>
     );

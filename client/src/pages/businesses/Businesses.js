@@ -48,6 +48,10 @@ function Businesses(props) {
             }
         ]
     };
+    const openFilterPanel = _ => {
+        document.getElementById('filter-panel').classList.remove('remove-filter-panel');
+        document.getElementById('filter-panel').classList.add('active-filter-panel');
+    }
     return (
         <Container className="businesses" fluid>
             <div className="margin-global-top-5" />
@@ -68,10 +72,11 @@ function Businesses(props) {
             </Container>
             <div className="margin-global-top-5" />
             <Row>
-                <Col md={2}>
+                <Col xl={2}>
                     <FilterPanel />
+                    <button className="unhide-1200" onClick={openFilterPanel} type="button">Filter panel</button>
                 </Col>
-                <Col md={10}>
+                <Col xl={10}>
                     <BusinessList />
                 </Col>
             </Row>

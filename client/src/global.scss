@@ -51,6 +51,10 @@
     position: relative;
 }
 
+.unhide-1200 {
+    display: none;
+}
+
 .hide-992 {
     display: block;
 }
@@ -65,6 +69,12 @@
 
 .text-uppercase {
     text-transform: uppercase;
+}
+.center-relative-horizontal-fit-content {
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+    width: fit-content;
 }
 
 .center-relative-horizontal {
@@ -244,6 +254,9 @@
 
 // X-Large devices (large desktops, less than 1400px)
 @media (max-width: 87.49875em) {
+    .hide-1400 {
+        display: none;
+    }
 }
 
 // Devices (less than 1300px)
@@ -254,6 +267,9 @@
 @media (max-width: 74.99875em) {
     .hide-1200 {
         display: none;
+    }
+    .unhide-1200 {
+        display: block;
     }
 }
 

@@ -7,7 +7,7 @@ import './MzushiChoice.scss';
 function MzushiChoice(props) {
     const settingsCities = {
         dots: false,
-        infinite: true,
+        infinite: false,
         speed: 500,
         slidesToShow: 5,
         slidesToScroll: 1,
@@ -45,8 +45,8 @@ function MzushiChoice(props) {
     let sliderLength1250 = 3;
     let sliderLength991 = 2;
     if (cards.length < sliderLength) sliderLength = cards.length;
-    if (cards.length < sliderLength1250) sliderLength = cards.length;
-    if (cards.length < sliderLength991) sliderLength = cards.length;
+    if (cards.length < sliderLength1250) sliderLength1250 = cards.length;
+    if (cards.length < sliderLength991) sliderLength991 = cards.length;
     const settingsCards = {
         dots: false,
         infinite: true,

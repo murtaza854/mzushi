@@ -15,9 +15,11 @@ function Details(props) {
             <Row className="justify-content-center">
                 <Col md={11}>
                     <Row className="justify-content-between">
-                        <div className="business-card-chip">
-                            Category
-                        </div>
+                        <Col md={5} className="business-card-chip-cont">
+                            <div className="business-card-chip">
+                                Category
+                            </div>
+                        </Col>
                         <ToggleButtonGroup
                             value={alignment}
                             size="small"
@@ -53,39 +55,39 @@ function Details(props) {
                     </div>
                     <div className="margin-global-top-06" />
                     <Row>
-                        <Col md={4} className="icon-text yellow">
+                        <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
-                        <Col md={4} className="icon-text yellow">
+                        <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
-                        <Col md={4} className="icon-text yellow">
+                        <Col xs={4} className="icon-text yellow">
                             <AiOutlineClose className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
-                    </Row>
-                    <Row>
-                        <Col md={4} className="icon-text yellow">
+                    {/* </Row>
+                    <Row> */}
+                        <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
-                        <Col md={4} className="icon-text yellow">
+                        <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
-                        <Col md={4} className="icon-text yellow">
+                        <Col xs={4} className="icon-text yellow">
                             <AiOutlineClose className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
-                    </Row>
-                    <Row>
-                        <Col md={4} className="icon-text yellow">
+                    {/* </Row>
+                    <Row> */}
+                        <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
-                        <Col md={4} className="icon-text yellow">
+                        <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>

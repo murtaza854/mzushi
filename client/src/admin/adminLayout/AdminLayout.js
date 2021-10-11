@@ -254,6 +254,12 @@ function AdminLayout(props) {
               <ListItemText primary='Admin Users' />
             </ListItem>
           </Link>
+          <Link style={{ color: color, textDecoration: 'none' }} to={'/admin/features'}>
+            <ListItem button key='features'>
+              <ListItemIcon className={classes.listItemIcon}><SupervisorAccountIcon /></ListItemIcon>
+              <ListItemText primary='Features' />
+            </ListItem>
+          </Link>
           <Divider />
           <Link style={{ color: color, textDecoration: 'none' }} to={'/admin/category'}>
             <ListItem button key='category'>

@@ -9,7 +9,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import { productBrandObj, categoryObj, productCategoryObj, productSubCategoryObj, countryObj, provinceObj, cityObj, areaObj, adminUserObj, adPackageObj } from '../../db'
+import { productBrandObj, categoryObj, productCategoryObj, productSubCategoryObj, countryObj, provinceObj, cityObj, areaObj, adminUserObj, adPackageObj, featuresObj } from '../../db'
 import IconButton from '@material-ui/core/IconButton';
 import Collapse from '@material-ui/core/Collapse';
 // import Button from '@material-ui/core/Button';
@@ -118,6 +118,7 @@ export default function EnhancedTable(props) {
   else if (model === 'area') tableFetch = areaObj;
   else if (model === 'admin-user') tableFetch = adminUserObj;
   else if (model === 'ad-package') tableFetch = adPackageObj;
+  else if (model === 'features') tableFetch = featuresObj;
 
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');

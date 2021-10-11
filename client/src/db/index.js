@@ -8,3 +8,4 @@ export { default as cityObj } from './city';
 export { default as areaObj } from './area';
 export { default as adminUserObj } from './adminUser';
 export { default as adPackageObj } from './adPackage';
+export { default as featuresObj } from './features';

@@ -48,6 +48,7 @@ const createServer = async (callback) => {
     const authRoutes = require('./routes/auth');
     const adPackageRoutes = require('./routes/adPackage');
     const startupRoutes = require('./routes/startup');
+    const featuresRoutes = require('./routes/features');
 
     app.use('/api/admin-user', adminUserRoutes);
     app.use('/api/product-brand', productBrandRoutes);
@@ -61,6 +62,7 @@ const createServer = async (callback) => {
     app.use('/api/auth', authRoutes);
     app.use('/api/ad-package', adPackageRoutes);
     app.use('/api/startup', startupRoutes);
+    app.use('/api/feature', featuresRoutes);
 
     app.get('/api/logged-in', async (req, res) => {
         try {

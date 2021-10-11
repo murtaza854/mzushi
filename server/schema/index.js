@@ -12,6 +12,7 @@ const province = require('./province');
 const startup = require('./startup');
 const adPackage = require('./adPackage');
 const customCategory = require('./customCategory');
+const feature = require('./features');
 
 module.exports = {
     adminUser,
@@ -27,5 +28,6 @@ module.exports = {
     province,
     startup,
     adPackage,
-    customCategory
+    customCategory,
+    feature
 };

@@ -40,12 +40,18 @@ function MzushiChoice(props) {
             }
         ]
     };
-    const cards = [<BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />]
+    const cards = [<BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />];
+    let sliderLength = 4;
+    let sliderLength1250 = 3;
+    let sliderLength991 = 2;
+    if (cards.length < sliderLength) sliderLength = cards.length;
+    if (cards.length < sliderLength1250) sliderLength = cards.length;
+    if (cards.length < sliderLength991) sliderLength = cards.length;
     const settingsCards = {
         dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: cards.length,
+        slidesToShow: sliderLength,
         slidesToScroll: 1,
         // initialSlide: 0,
         arrows: false,
@@ -53,7 +59,7 @@ function MzushiChoice(props) {
             {
                 breakpoint: 1250,
                 settings: {
-                    slidesToShow: 3,
+                    slidesToShow: sliderLength1250,
                     slidesToScroll: 1,
                     centerMode: true,
                 }
@@ -61,7 +67,7 @@ function MzushiChoice(props) {
             {
                 breakpoint: 991,
                 settings: {
-                    slidesToShow: 2,
+                    slidesToShow: sliderLength991,
                     slidesToScroll: 1,
                     centerMode: true,
                 }

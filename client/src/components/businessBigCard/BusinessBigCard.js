@@ -12,15 +12,15 @@ import './BusinessBigCard.scss';
 function BusinessBigCard(props) {
     const [alignment] = useState('left');
     return (
-        <div className={`business-big-card center-relative-horizontal ${props.classes}`}>
+        <div className={`business-big-card ${props.classes}`}>
             <Row>
-                <Col md={3}>
+                <Col lg={3}>
                     <img
                         src="https://s3-media0.fl.yelpcdn.com/bphoto/JMaVR5nUiDXz2XDbyZvc8Q/l.jpg"
                         alt="Test"
                     />
                 </Col>
-                <Col md={9}>
+                <Col lg={9}>
                     <Row className="justify-content-between">
                         <BusinessTitle
                             text="Business Name"

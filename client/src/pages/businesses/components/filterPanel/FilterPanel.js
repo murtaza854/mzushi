@@ -108,7 +108,7 @@ function FilterPanel(props) {
                     </div>
                 </div>
             {/* </Row> */}
-            <div className="margin-global-top-2" />
+            <div className="margin-global-top-2 hide-1200" />
             {/* <Row className="justify-content-center"> */}
                 <div className="filter-panel-section-width">
                     <Heading3
@@ -161,7 +161,7 @@ function FilterPanel(props) {
                     </div>
                 </div>
             {/* </Row> */}
-            <div className="margin-global-top-2" />
+            <div className="margin-global-top-2 hide-1200" />
             {/* <Row className="justify-content-center"> */}
                 <div className="filter-panel-section-width">
                     <Heading3
@@ -214,7 +214,7 @@ function FilterPanel(props) {
                     </div>
                 </div>
             {/* </Row> */}
-            <div className="margin-global-top-2" />
+            <div className="margin-global-top-2 hide-1200" />
             {/* <Row className="justify-content-center"> */}
                 <div className="filter-panel-section-width">
                     <Heading3

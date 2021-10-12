@@ -76,10 +76,10 @@
 // Large devices (desktops, less than 1200px)
 @media (max-width: 74.99875em) {
     .filter-panel {
-        transform: translateX(-100%);
+        transform: translateY(100%);
         position: fixed;
         z-index: 1;
-        padding: 1rem 1.5rem;
+        padding: 3rem 1.5rem;
         left: 0;
         bottom: 0;
         width: 100%;
@@ -87,7 +87,7 @@
         border-bottom-right-radius: 15px;
     }
     .active-filter-panel {
-        transform: translateX(-100%);
+        transform: translateY(100%);
         box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 6px 0px;
         animation-name: filterPanelOpen;
         animation-duration: 1s;
@@ -96,8 +96,8 @@
         animation-fill-mode: forwards;
     }
     .remove-filter-panel {
-        transform: translateX(0%);
-        box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 6px 0px;
+        transform: translateY(0%);
+        box-shadow: none;
         animation-name: filterPanelClose;
         animation-duration: 1s;
         animation-iteration-count: 1;
@@ -107,19 +107,19 @@
 
     @keyframes filterPanelOpen {
         from {
-            transform: translateX(-100%);
+            transform: translateY(100%);
         }
         to {
-            transform: translateX(0%);
+            transform: translateY(0%);
         }
     }
 
     @keyframes filterPanelClose {
         from {
-            transform: translateX(0%);
+            transform: translateY(0%);
         }
         to {
-            transform: translateX(-100%);
+            transform: translateY(100%);
         }
     }
 }

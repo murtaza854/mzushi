@@ -15,7 +15,7 @@ function Businesses(props) {
     if (cards.length < sliderLength991) sliderLength = cards.length;
     const settingsCards = {
         dots: false,
-        infinite: true,
+        infinite: false,
         speed: 500,
         slidesToShow: sliderLength,
         slidesToScroll: 1,

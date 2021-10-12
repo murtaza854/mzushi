@@ -5,6 +5,19 @@ import { BusinessCard, Heading2, YellowButton } from '../../../../components';
 import './MzushiChoice.scss';
 
 function MzushiChoice(props) {
+    // const [cards, setCards] = useState({karachi: [], lahore: [], islamabad: [], quetta: [], peshawer: []});
+    const cards = [<BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />];
+
+    // useEffect(() => {
+    //     setCards({
+    //         karachi: [<BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />],
+    //         lahore: [<BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />],
+    //         islamabad: [<BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />],
+    //         quetta: [<BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />],
+    //         peshawer: [<BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />],
+    //     })
+    // }, [])
+
     const settingsCities = {
         dots: false,
         infinite: false,
@@ -40,18 +53,11 @@ function MzushiChoice(props) {
             }
         ]
     };
-    const cards = [<BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />];
-    let sliderLength = 4;
-    let sliderLength1250 = 3;
-    let sliderLength991 = 2;
-    if (cards.length < sliderLength) sliderLength = cards.length;
-    if (cards.length < sliderLength1250) sliderLength1250 = cards.length;
-    if (cards.length < sliderLength991) sliderLength991 = cards.length;
     const settingsCards = {
         dots: false,
-        infinite: true,
+        infinite: false,
         speed: 500,
-        slidesToShow: sliderLength,
+        slidesToShow: 4,
         slidesToScroll: 1,
         // initialSlide: 0,
         arrows: false,
@@ -59,7 +65,7 @@ function MzushiChoice(props) {
             {
                 breakpoint: 1250,
                 settings: {
-                    slidesToShow: sliderLength1250,
+                    slidesToShow: 3,
                     slidesToScroll: 1,
                     centerMode: true,
                 }
@@ -67,7 +73,7 @@ function MzushiChoice(props) {
             {
                 breakpoint: 991,
                 settings: {
-                    slidesToShow: sliderLength991,
+                    slidesToShow: 2,
                     slidesToScroll: 1,
                     centerMode: true,
                 }

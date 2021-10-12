@@ -77,10 +77,12 @@
 @media (max-width: 74.99875em) {
     .filter-panel {
         transform: translateX(-100%);
-        position: absolute;
+        position: fixed;
         z-index: 1;
         padding: 1rem 1.5rem;
         left: 0;
+        bottom: 0;
+        width: 100%;
         border-top-right-radius: 15px;
         border-bottom-right-radius: 15px;
     }

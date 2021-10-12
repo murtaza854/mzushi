@@ -54,9 +54,9 @@ function FilterPanel(props) {
                     // onChange={_ => { }}
                     />
                 </div>
-            </Row>
+            {/* </Row> */}
             <div className="margin-global-top-2" />
-            <Row className="justify-content-center">
+            {/* <Row className="justify-content-center"> */}
                 <div className="filter-panel-section-width">
                     <Heading3
                         text="Features"
@@ -107,9 +107,9 @@ function FilterPanel(props) {
                         />
                     </div>
                 </div>
-            </Row>
+            {/* </Row> */}
             <div className="margin-global-top-2" />
-            <Row className="justify-content-center">
+            {/* <Row className="justify-content-center"> */}
                 <div className="filter-panel-section-width">
                     <Heading3
                         text="Province"
@@ -160,9 +160,9 @@ function FilterPanel(props) {
                         />
                     </div>
                 </div>
-            </Row>
+            {/* </Row> */}
             <div className="margin-global-top-2" />
-            <Row className="justify-content-center">
+            {/* <Row className="justify-content-center"> */}
                 <div className="filter-panel-section-width">
                     <Heading3
                         text="City"
@@ -213,9 +213,9 @@ function FilterPanel(props) {
                         />
                     </div>
                 </div>
-            </Row>
+            {/* </Row> */}
             <div className="margin-global-top-2" />
-            <Row className="justify-content-center">
+            {/* <Row className="justify-content-center"> */}
                 <div className="filter-panel-section-width">
                     <Heading3
                         text="Area"

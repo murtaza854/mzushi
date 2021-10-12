@@ -80,8 +80,8 @@ function BusinessBigCard(props) {
                             <AiOutlineClose className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
-                    </Row>
-                    <Row>
+                    {/* </Row>
+                    <Row> */}
                         <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
@@ -94,8 +94,8 @@ function BusinessBigCard(props) {
                             <AiOutlineClose className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
-                    </Row>
-                    <Row>
+                    {/* </Row>
+                    <Row> */}
                         <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>

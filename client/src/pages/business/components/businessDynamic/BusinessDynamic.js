@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Container } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import { ButtonTab } from '../../../../components';
 import Slider from "react-slick";
 import './BusinessDynamic.scss';

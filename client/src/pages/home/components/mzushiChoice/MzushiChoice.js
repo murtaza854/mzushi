@@ -75,6 +75,7 @@ function MzushiChoice(props) {
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll: 1,
+                    variableWidth: true,
                     centerMode: true,
                 }
             },
@@ -83,6 +84,7 @@ function MzushiChoice(props) {
                 settings: {
                     slidesToShow: 1,
                     slidesToScroll: 1,
+                    variableWidth: true,
                     centerMode: true
                 }
             }
@@ -90,7 +92,7 @@ function MzushiChoice(props) {
     };
     return (
         <Container fluid className="mzushi-choice">
-            <Container className="city-container">
+            <Container className="city-container" fluid>
                 <Heading2
                     text=""
                     blue="mzushi's"

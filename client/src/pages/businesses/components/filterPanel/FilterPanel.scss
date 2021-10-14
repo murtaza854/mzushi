@@ -78,7 +78,7 @@
     .filter-panel {
         transform: translateY(100%);
         position: fixed;
-        z-index: 1;
+        z-index: 9;
         padding: 3rem 1.5rem;
         left: 0;
         bottom: 0;
@@ -130,8 +130,20 @@
 
 // Small devices (landscape phones, less than 768px)
 @media (max-width: 47.99875em) {
+    .filter-panel {
+        padding: 1rem 1.5rem;
+    }
 }
 
 // X-Small devices (portrait phones, less than 576px)
 @media (max-width: 35.99875em) {
+    .filter-panel {
+        // height: 100vh;
+        overflow-y: scroll;
+        // .filter-panel-container {
+        //     position: relative;
+        //     transform: translateY(-50%);
+        //     top: 50%;
+        // }
+    }
 }

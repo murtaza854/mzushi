@@ -50,6 +50,7 @@ function App() {
             <Admin loading={loading} />
           </Route>
           <Route path="*">
+            <div id="overlay" className="overlay"></div>
             <Routes />
           </Route>
         </Switch>

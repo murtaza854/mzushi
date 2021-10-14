@@ -15,6 +15,14 @@
 
 // Large devices (desktops, less than 1200px)
 @media (max-width: 74.99875em) {
+    .businesses {
+        .first-section {
+            padding: 0;
+            .slick-slider {
+                padding: 0 !important;
+            }
+        }
+    }
 }
 
 // Medium devices (tablets, less than 992px)
@@ -22,6 +30,10 @@
     .businesses {
         .city-container {
             max-width: 40rem !important;
+        }
+        .business-card-container {
+            margin: 0 0.5rem;
+            width: fit-content !important;
         }
     }
 }

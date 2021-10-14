@@ -8,11 +8,8 @@ import './Businesses.scss';
 function Businesses(props) {
     const cards = [<BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />];
     let sliderLength = 4;
-    let sliderLength1250 = 3;
+    // let sliderLength1250 = 3;
     let sliderLength991 = 2;
-    if (cards.length < sliderLength) sliderLength = cards.length;
-    if (cards.length < sliderLength1250) sliderLength = cards.length;
-    if (cards.length < sliderLength991) sliderLength = cards.length;
     const settingsCards = {
         dots: false,
         infinite: false,
@@ -21,11 +18,12 @@ function Businesses(props) {
         slidesToScroll: 1,
         // initialSlide: 0,
         arrows: false,
+        // variableWidth: true,
         responsive: [
             {
                 breakpoint: 1250,
                 settings: {
-                    slidesToShow: sliderLength1250,
+                    slidesToShow: 3,
                     slidesToScroll: 1,
                     centerMode: true,
                 }
@@ -35,6 +33,7 @@ function Businesses(props) {
                 settings: {
                     slidesToShow: sliderLength991,
                     slidesToScroll: 1,
+                    variableWidth: true,
                     centerMode: true,
                 }
             },
@@ -43,44 +42,52 @@ function Businesses(props) {
                 settings: {
                     slidesToShow: 1,
                     slidesToScroll: 1,
-                    centerMode: true
+                    variableWidth: true,
+                    centerMode: true,
                 }
             }
         ]
     };
     const openFilterPanel = _ => {
         document.getElementById('filter-panel').classList.remove('remove-filter-panel');
+        document.getElementById('overlay').classList.remove('remove-overlay');
         document.getElementById('filter-panel').classList.add('active-filter-panel');
+        document.getElementById('overlay').classList.add('active-overlay');
+        document.body.classList.add('disable-scroll');
     }
     return (
-        <Container className="businesses" fluid>
-            <div className="margin-global-top-5" />
-            <SearchBar classes="" centerclass="" />
-            <div className="margin-global-top-3" />
-            <Container className="card-container">
-                <Row className="justify-content-center">
-                    <Slider {...settingsCards}>
-                        {
-                            cards.map((value, index) => (
-                                <div key={index} className="business-card-container">
-                                    {value}
-                                </div>
-                            ))
-                        }
-                    </Slider>
-                </Row>
+        <div className="businesses">
+            <Container fluid className="first-section">
+                <div className="margin-global-top-5" />
+                <SearchBar classes="" centerclass="" />
+                <div className="margin-global-top-3" />
+                <Container className="card-container">
+                    <Row className="justify-content-center">
+                        <Slider {...settingsCards}>
+                            {
+                                cards.map((value, index) => (
+                                    <div key={index} className="business-card-container">
+                                        {value}
+                                    </div>
+                                ))
+                            }
+                        </Slider>
+                    </Row>
+                </Container>
             </Container>
             <div className="margin-global-top-5" />
-            <Row>
-                <Col xl={2}>
-                    <FilterPanel />
-                    <button className="unhide-1200" onClick={openFilterPanel} type="button">Filter panel</button>
-                </Col>
-                <Col xl={10}>
-                    <BusinessList />
-                </Col>
-            </Row>
-        </Container>
+            <Container className="card-container">
+                <Row>
+                    <Col xl={2}>
+                        <FilterPanel />
+                        <button className="unhide-1200" onClick={openFilterPanel} type="button">Filter panel</button>
+                    </Col>
+                    <Col xl={10}>
+                        <BusinessList />
+                    </Col>
+                </Row>
+            </Container>
+        </div >
     );
 }
 

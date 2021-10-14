@@ -15,8 +15,6 @@ function FilterPanel(props) {
     const closeFilterPanel = _ => {
         document.getElementById('filter-panel').classList.remove('active-filter-panel');
         document.getElementById('filter-panel').classList.add('remove-filter-panel');
-        document.getElementById('overlay').classList.remove('active-overlay');
-        document.getElementById('overlay').classList.add('remove-overlay');
         document.body.classList.remove('disable-scroll');
     }
 

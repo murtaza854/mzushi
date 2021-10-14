@@ -20,7 +20,7 @@ function Featured(props) {
                     size={4}
                     classes="text-center yellow-big-box big-box-fixed-size"
                     classes_p="center-absolute"
-                    to="/"
+                    to="/directory"
                     img=""
                 />
                 <BigBox
@@ -29,7 +29,7 @@ function Featured(props) {
                     size={4}
                     classes="text-center blue-big-box big-box-fixed-size"
                     classes_p="center-absolute"
-                    to="/"
+                    to="/directory"
                     img=""
                 />
             </Row>
@@ -41,7 +41,7 @@ function Featured(props) {
                     size={2}
                     classes="text-center big-box-fixed-size-small"
                     classes_p="center-absolute"
-                    to="/"
+                    to="/directory"
                     img={
                         <img
                             src="https://s3-media0.fl.yelpcdn.com/bphoto/JMaVR5nUiDXz2XDbyZvc8Q/l.jpg"
@@ -55,7 +55,7 @@ function Featured(props) {
                     size={2}
                     classes="text-center big-box-fixed-size-small"
                     classes_p="center-absolute"
-                    to="/"
+                    to="/directory"
                     img={
                         <img
                             src="https://s3-media0.fl.yelpcdn.com/bphoto/JMaVR5nUiDXz2XDbyZvc8Q/l.jpg"
@@ -69,7 +69,7 @@ function Featured(props) {
                     size={2}
                     classes="text-center big-box-fixed-size-small margin-global-top-1-xs"
                     classes_p="center-absolute"
-                    to="/"
+                    to="/directory"
                     img={
                         <img
                             src="https://s3-media0.fl.yelpcdn.com/bphoto/JMaVR5nUiDXz2XDbyZvc8Q/l.jpg"
@@ -83,7 +83,7 @@ function Featured(props) {
                     size={2}
                     classes="text-center big-box-fixed-size-small margin-global-top-1-xs"
                     classes_p="center-absolute"
-                    to="/"
+                    to="/directory"
                     img={
                         <img
                             src="https://s3-media0.fl.yelpcdn.com/bphoto/JMaVR5nUiDXz2XDbyZvc8Q/l.jpg"

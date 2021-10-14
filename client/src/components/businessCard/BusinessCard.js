@@ -27,7 +27,7 @@ function BusinessCard(props) {
                 <Rating size="medium" name="read-only" value={3} readOnly />
             <div className="margin-global-top-1" />
                 <YellowButton
-                    to="/"
+                    to="/directory/business"
                     text="View"
                     classes="text-uppercase small-yellow-button horizontal-center-relative"
                 />

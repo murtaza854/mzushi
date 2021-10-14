@@ -1,7 +1,8 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { BusinessCard, SearchBar } from '../../components';
-import { BusinessList, FilterPanel } from './components'
+import { BusinessList, FilterPanel } from './components';
+import { GoSettings } from 'react-icons/go';
 import Slider from "react-slick";
 import './Businesses.scss';
 
@@ -50,9 +51,7 @@ function Businesses(props) {
     };
     const openFilterPanel = _ => {
         document.getElementById('filter-panel').classList.remove('remove-filter-panel');
-        document.getElementById('overlay').classList.remove('remove-overlay');
         document.getElementById('filter-panel').classList.add('active-filter-panel');
-        document.getElementById('overlay').classList.add('active-overlay');
         document.body.classList.add('disable-scroll');
     }
     return (
@@ -80,7 +79,8 @@ function Businesses(props) {
                 <Row>
                     <Col xl={2}>
                         <FilterPanel />
-                        <button className="unhide-1200" onClick={openFilterPanel} type="button">Filter panel</button>
+                        <GoSettings className="unhide-1200 filter-open-icon" onClick={openFilterPanel} />
+                        {/* <button className="unhide-1200" onClick={openFilterPanel} type="button">Filter panel</button> */}
                     </Col>
                     <Col xl={10}>
                         <BusinessList />

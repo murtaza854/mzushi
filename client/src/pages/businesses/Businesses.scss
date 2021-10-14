@@ -1,6 +1,13 @@
 .businesses {
     .card-container {
         max-width: 100rem !important;
+        .filter-open-icon {
+            font-size: 2.5rem;
+            &:hover {
+                color: #F6D33E;
+                
+            }
+        }
     }
 }
 

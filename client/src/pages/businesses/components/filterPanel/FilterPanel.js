@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Row, Form } from 'react-bootstrap';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import './FilterPanel.scss';
+import { ImCancelCircle } from 'react-icons/im';
 import { Heading3 } from '../../../../components';
+import './FilterPanel.scss';
 
 function FilterPanel(props) {
     const [alignment, setAlignment] = useState('');
@@ -21,6 +22,9 @@ function FilterPanel(props) {
     return (
         <div id="filter-panel" className="filter-panel">
             <div className="filter-panel-container">
+                {/* <Row> */}
+                    <ImCancelCircle onClick={closeFilterPanel} className="unhide-1200 close-icon" />
+                {/* </Row> */}
                 <Row className="justify-content-center">
                     <ToggleButtonGroup
                         value={alignment}
@@ -269,9 +273,9 @@ function FilterPanel(props) {
                         </div>
                     </div>
                 </Row>
-                <Row className="unhide-1200">
+                {/* <Row className="unhide-1200">
                     <button onClick={closeFilterPanel} type="button">Filter panel</button>
-                </Row>
+                </Row> */}
             </div>
         </div>
     );

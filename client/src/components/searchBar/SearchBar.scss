@@ -12,6 +12,31 @@
         // top: 50%;
         // transform: translate(-50%, -50%);
     }
+    .searchbar-btn {
+        background-color: #f6d33e;
+        position: relative;
+        border-bottom-right-radius: 15px;
+        border-top-right-radius: 15px;
+        border: 2px solid #f6d33e;
+        cursor: pointer;
+        // width: 5rem;
+        transition: .3s ease-in-out;
+        .icon {
+            font-size: 2rem;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+        }
+        &:hover {
+            background-color: white;
+            border-left: 1px solid white;
+            .icon {
+                color: black;
+            }
+        }
+    }
     .form-group {
         padding: 0 !important;
     }
@@ -45,6 +70,15 @@
     height: 40rem;
 }
 
+// X-Large devices (large desktops, 1200px and up)
+@media (min-width: 36rem) {
+    .search-bar {
+        .searchbar-btn {
+            width: 5rem;
+        }
+    }
+}
+
 // Devices (less than 1700px)
 @media (max-width: 106.1875em) {
 }
@@ -68,8 +102,8 @@
 // Large devices (desktops, less than 1200px)
 @media (max-width: 74.99875em) {
     .search-bar {
-        .btn {
-            width: 7rem !important;
+        .searchbar-btn {
+            // width: none;
         }
     }
 }
@@ -85,8 +119,8 @@
 // X-Small devices (portrait phones, less than 576px)
 @media (max-width: 35.99875em) {
     .search-bar {
-        .btn {
-            width: 6rem !important;
-        }
+        // .btn {
+        //     width: 6rem !important;
+        // }
     }
 }

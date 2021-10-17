@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Fragment } from 'react';
-import { Form, Col, Container, Row, Button } from 'react-bootstrap';
+import { Form, Col, Container, Row } from 'react-bootstrap';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
+import { AiOutlineSearch } from 'react-icons/ai';
 import api from '../../api';
 import './SearchBar.scss';
 
@@ -42,7 +43,7 @@ function SearchBar(props) {
                         <AsyncTypeahead
                             filterBy={filterByCountry}
                             isLoading={countryLoading}
-                            placeholder="Search our Directory"
+                            placeholder="Search"
                             id="country"
                             labelKey="name"
                             minLength={2}
@@ -60,13 +61,15 @@ function SearchBar(props) {
                     <Form.Group as={Col} xs={4} className="input-form-group fit-content" controlId="country">
                         <select className="browser-default ustom-select">
                             <option value="Karachi">Karachi</option>
-                            <option value="Islamabad">Islamabad</option>
+                            <option value="Islamabad">Dera Ghazi Khan</option>
                             <option value="3">Option 3</option>
                         </select>
                     </Form.Group>
-                    <Button className="searchbar-width border-radius-btn" type="submit">
-                        Search
-                    </Button>
+                    <Col xs={2} className="searchbar-btn">
+                        {/* <Button className="searchbar-width border-radius-btn" type="submit"> */}
+                            <AiOutlineSearch className="icon" />
+                        {/* </Button> */}
+                    </Col>
                 </Row>
             </Form>
         </Container>

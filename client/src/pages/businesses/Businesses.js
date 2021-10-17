@@ -79,7 +79,11 @@ function Businesses(props) {
                 <Row>
                     <Col xl={2}>
                         <FilterPanel />
-                        <GoSettings className="unhide-1200 filter-open-icon" onClick={openFilterPanel} />
+                        <div className="unhide-1200 filter-icon-btn-container">
+                            <div className="filter-icon-btn">
+                                <GoSettings className="filter-open-icon" onClick={openFilterPanel} />
+                            </div>
+                        </div>
                         {/* <button className="unhide-1200" onClick={openFilterPanel} type="button">Filter panel</button> */}
                     </Col>
                     <Col xl={10}>

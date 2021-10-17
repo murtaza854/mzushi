@@ -1,11 +1,31 @@
 .businesses {
     .card-container {
         max-width: 100rem !important;
-        .filter-open-icon {
-            font-size: 2.5rem;
-            &:hover {
-                color: #F6D33E;
-                
+        .filter-icon-btn-container {
+            width: 90%;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 1rem;
+            .filter-icon-btn {
+                background-color: #f6d33e;
+                width: fit-content;
+                margin-left: auto;
+                padding: 0.5rem;
+                border: 1px solid #f6d33e;
+                border-radius: 15px;
+                transition: .3s ease-in-out;
+                .filter-open-icon {
+                    font-size: 2.5rem;
+                    color: white;
+                }
+                &:hover {
+                    background-color: white;
+                    cursor: pointer;
+                    .filter-open-icon {
+                        color: #f6d33e;
+                    }
+                }
             }
         }
     }

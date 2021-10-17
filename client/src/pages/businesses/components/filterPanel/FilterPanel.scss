@@ -60,6 +60,18 @@
         height: 6.5rem;
         overflow-y: scroll;
     }
+    .close-icon {
+        color: #f6d33e;
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        font-size: 2rem;
+        transition: .3s ease-in-out;
+        &:hover {
+            color: black;
+            cursor: pointer;
+        }
+    }
 }
 
 
@@ -83,8 +95,8 @@
         left: 0;
         bottom: 0;
         width: 100%;
+        border-top-left-radius: 15px;
         border-top-right-radius: 15px;
-        border-bottom-right-radius: 15px;
     }
     .active-filter-panel {
         transform: translateY(100%);

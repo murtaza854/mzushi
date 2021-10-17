@@ -52,13 +52,13 @@
 
 // Medium devices (tablets, less than 992px)
 @media (max-width: 61.99875em) {
+    .business-card {
+        width: 14.5rem;
+    }
 }
 
 // Small devices (landscape phones, less than 768px)
 @media (max-width: 47.99875em) {
-    .business-card {
-        width: 14.5rem;
-    }
 }
 
 // X-Small devices (portrait phones, less than 576px)

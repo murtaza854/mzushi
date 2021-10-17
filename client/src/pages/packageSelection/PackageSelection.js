@@ -67,6 +67,7 @@ function PackageSelection(props) {
                     price="0"
                     classes=""
                     to="/setup"
+                    onClick={true}
                 />
                 <Package
                     heading="PREMIUM"
@@ -74,6 +75,7 @@ function PackageSelection(props) {
                     price="250"
                     classes=""
                     to="/premium"
+                    onClick={false}
                 />
             </Row>
         </Container>

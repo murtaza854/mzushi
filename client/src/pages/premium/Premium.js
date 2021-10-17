@@ -45,7 +45,7 @@ function Premium(props) {
                 },
                 credentials: 'include',
                 withCredentials: true,
-                body: JSON.stringify({ user: user.userState })
+                body: JSON.stringify({ user: user.userState, mark: true })
             });
             const content = await response.json();
             if (content.data) history.push('/setup');

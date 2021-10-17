@@ -64,7 +64,7 @@ router.post('/mark-premium', async (req, res) => {
     try {
         console.log(req.body)
         const startup = await Startup.findOne({ email: req.body.user.email });
-        startup.premium = true;
+        startup.premium = req.body.mark;
         startup.save();
         res.json({ data: true });
     } catch (error) {

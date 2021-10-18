@@ -34,12 +34,14 @@ router.post('/signup', async (req, res) => {
         await firebase.auth().signOut();
         res.json({ data: true });
     } catch (error) {
-        // res.json({ success: false, error: error });
-        res.json({ data: false });
+        console.log(error);
+        res.json({ v: false, error: error });
+        // res.json({ data: false });
     }
 });
 
 router.post('/login', async (req, res) => {
+    console.log(req.body);
     try {
         const response = await firebase.auth().signInWithEmailAndPassword(req.body.email.name, req.body.password.name);
         const user = response.user;

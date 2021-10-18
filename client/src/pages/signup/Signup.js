@@ -76,9 +76,10 @@ function Signup(props) {
                 body: JSON.stringify({ firstName, lastName, email, contactNumber, password }),
             });
             const content = await response.json();
-            if (content.data) {
-                history.push("/__/auth/action?mode=accountCreation");
-            } else alert("Error creating account, please contact support if this issue persists.");
+            console.log(content);
+            if (content.data) history.push("/__/auth/action?mode=accountCreation");
+            else if (content.error.code === 'auth/email-already-in-use') alert(content.error.message);
+            else alert("Error creating account, please contact support if this issue persists.");
         } catch (error) {
             alert("Error creating account, please contact support if this issue persists.");
         }

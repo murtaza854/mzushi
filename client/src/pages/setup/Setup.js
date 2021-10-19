@@ -395,6 +395,26 @@ function Setup(props) {
         setRadios({ delivery: false, service: true })
     }
 
+    const onSubmit = async e => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append(
+            "image",
+            // imageState.picturePreview
+            logo.picturePreview
+        );
+        console.log(logo.picturePreview);
+        // const response = await fetch(`${api}/startup/startup-setup`, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Accept': 'multipart/form-data',
+        //     },
+        //     credentials: 'include',
+        //     // withCredentials: true,
+        //     body: formData
+        // });
+    }
+
     return (
         <Container className="setup">
             <div className="margin-global-top-5" />
@@ -407,7 +427,7 @@ function Setup(props) {
                 </Col>
             </Row>
             <Row>
-                <Form className="form-style margin-global-top-1">
+                <Form onSubmit={onSubmit} className="form-style margin-global-top-1">
                     <input
                         type="password"
                         autoComplete="on"

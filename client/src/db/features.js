@@ -82,7 +82,7 @@ const featuresObj = {
 
         const onSubmit = async e => {
             e.preventDefault();
-            await fetch(`${api}/users/add`, {
+            await fetch(`${api}/features/add`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

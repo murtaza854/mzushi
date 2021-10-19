@@ -5,7 +5,21 @@ const ProductCategory = require('../schema').productCategory;
 const ProductSubCategory = require('../schema').productSubCategory;
 const Product = require('../schema').product;
 const AdPackage = require('../schema').adPackage;
+const fs = require('fs');
+const multer = require('multer');
+const path = require('path');
 const slugify = require('slugify');
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '-' + Date.now())
+    }
+});
+
+const upload = multer({ storage: storage });
 
 router.get('/table-data', async (req, res) => {
     const categories = await Category.find({});
@@ -19,15 +33,16 @@ router.get('/get-categories', async (req, res) => {
     else res.json({ data: categories });
 });
 
-router.post('/add', async (req, res) => {
-    const data = req.body;
-    const newCategory = new Category({
-        name: data.name,
-        slug: slugify(data.name, { lower: true }),
-        keywords: data.keywords,
-        description: data.description,
-    });
-    newCategory.save();
+router.post('/add', upload.single('image'), async (req, res) => {
+    const data = JSON.parse(req.body.data);
+    console.log(data);
+    // const newCategory = new Category({
+    //     name: data.name,
+    //     slug: slugify(data.name, { lower: true }),
+    //     keywords: data.keywords,
+    //     description: data.description,
+    // });
+    // newCategory.save();
     res.json({ data: 'success' });
 });
 

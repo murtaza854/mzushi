@@ -1,7 +1,9 @@
-import { FormControl, Input, InputLabel, FormHelperText, Button, TextField } from '@material-ui/core';
+import { FormControl, Input, InputLabel, FormHelperText, Button, TextField, Checkbox, FormControlLabel } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
+import IconButton from '@mui/material/IconButton';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import api from '../api';
 import TreeItem from '@material-ui/lab/TreeItem';
 
@@ -71,8 +73,10 @@ const categoryObj = {
         const [editObj, setEditObj] = useState(null);
 
         const [nameState, setNameState] = useState({ name: '', helperText: 'Enter name Ex. Electronic', error: false });
+        const [image, setImage] = useState({ picturePreview: '', imgURl: '', error: false });
         const [keywordsState, setKeywordsState] = useState({ name: '', helperText: 'Comma seperated keywords for SEO (2 - 3 words)' });
         const [descriptionState, setDescriptionState] = useState({ name: '', helperText: 'SEO description Ex. This category is...' });
+        const [checkboxes, setCheckboxes] = useState({ featured: false });
 
         const [categoriesArray, setCategoriesArray] = useState([]);
         const [isDisabled, setCanSubmit] = useState(true);
@@ -109,10 +113,12 @@ const categoryObj = {
                 setNameState(prevState => ({ ...prevState, name: editObj.name }));
                 setKeywordsState(prevState => ({ ...prevState, name: editObj.keywords }));
                 setDescriptionState(prevState => ({ ...prevState, name: editObj.description }));
+                setCheckboxes({ featured: editObj.featured });
             } else {
                 setNameState(prevState => ({ ...prevState, name: '' }));
                 setKeywordsState(prevState => ({ ...prevState, name: '' }));
                 setDescriptionState(prevState => ({ ...prevState, name: '' }));
+                setCheckboxes({ featured: false });
             }
         }, [editObj]);
 
@@ -132,26 +138,78 @@ const categoryObj = {
             const { value } = event.target;
             setDescriptionState(prevState => ({ ...prevState, name: value }));
         };
+        function changeFeatured(event) {
+            setCheckboxes(prevState => ({ ...prevState, featured: !checkboxes.featured }));
+        };
+
+        const imageChange = event => {
+            let reader = new FileReader();
+            if (event.target.files && event.target.files[0]) {
+                if (event.target.files[0].size / 1024 < 300) {
+                    reader.readAsDataURL(event.target.files[0]);
+                    const objectUrl = URL.createObjectURL(event.target.files[0]);
+                    reader.onload = ((theFile) => {
+                        var image = new Image();
+                        image.src = theFile.target.result;
+                        setImage(prevState => ({ ...prevState, picturePreview: event.target.files[0], imgURl: objectUrl, error: false }));
+
+                        // image.onload = function () {
+                        //     // access image size here 
+                        //     console.log(this.width, this.height);
+                        //     if (this.width / this.height !== 1) {
+                        //         alert("Please upload a square logo.");
+                        //     }
+                        //     else {
+                        //         setLogo(prevState => ({ ...prevState, picturePreview: objectUrl, imgURl: event.target.files[0] }));
+                        //     }
+                        // };
+                    });
+                } else {
+                    setImage(prevState => ({ ...prevState, error: true }));
+                }
+            }
+        }
 
         const onSubmit = async e => {
             e.preventDefault();
+            const formData = new FormData();
             if (queryID === '') {
+                formData.append(
+                    "image",
+                    // imageState.picturePreview
+                    image.picturePreview
+                );
+                formData.append(
+                    "data",
+                    // imageState.picturePreview
+                    JSON.stringify({ name: nameState.name, keywords: keywordsState.name, description: descriptionState.name, featured: checkboxes.featured })
+                );
                 await fetch(`${api}/category/add`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Accept': 'multipart/form-data',
                         'Cache-Control': 'no-store'
                     },
-                    body: JSON.stringify({ name: nameState.name, keywords: keywordsState.name, description: descriptionState.name }),
+                    body: formData,
                 });
             } else {
+                formData.append(
+                    "image",
+                    // imageState.picturePreview
+                    image.picturePreview
+                );
+                formData.append(
+                    "data",
+                    // imageState.picturePreview
+                    JSON.stringify({ _id: queryID, name: nameState.name, keywords: keywordsState.name, description: descriptionState.name, featured: checkboxes.featured })
+                );
                 await fetch(`${api}/category/update`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Accept': 'multipart/form-data',
                         'Cache-Control': 'no-store'
                     },
-                    body: JSON.stringify({ _id: queryID, name: nameState.name, keywords: keywordsState.name, description: descriptionState.name }),
+                    body: formData,
                 });
             }
             if (pressedBtn === 1) {
@@ -227,6 +285,38 @@ const categoryObj = {
                             <FormHelperText id="description-helper">{descriptionState.helperText}</FormHelperText>
                         </FormControl>
                     </Form.Group>
+                </Row>
+                <Row className={classes.rowGap}>
+                    <Form.Group as={Col} md={6} controlId="name">
+                        <FormControlLabel
+                            control={<Checkbox checked={checkboxes.featured} onChange={changeFeatured} name="featured" />}
+                            label="Featured"
+                        />
+                    </Form.Group>
+                </Row>
+            </fieldset>
+            <fieldset>
+                <legend>Image</legend>
+                <Row>
+                    <Form.Group as={Col} md={1} controlId="image">
+                        <FormControl className={classes.formControl}>
+                            <label htmlFor="icon-button-file">
+                                <Input onChange={imageChange} style={{ display: 'none' }} accept="image/*" id="icon-button-file" type="file" />
+                                <IconButton color="primary" aria-label="upload picture" component="span">
+                                    <PhotoCamera />
+                                </IconButton>
+                            </label>
+                        </FormControl>
+                    </Form.Group>
+                    {
+                        image.imgURl !== '' ? (
+                            <div>
+                                <div className="margin-global-top-2" />
+                                <img src={image.imgURl} alt="Preview" />
+                                <div className="margin-global-top-1" />
+                            </div>
+                        ) : null
+                    }
                 </Row>
             </fieldset>
             <Button className={classes.button} onClick={_ => setPressedBtn(1)} disabled={isDisabled} type="submit" variant="contained" color="primary">

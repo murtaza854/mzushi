@@ -62,7 +62,7 @@ const createServer = async (callback) => {
     app.use('/api/auth', authRoutes);
     app.use('/api/ad-package', adPackageRoutes);
     app.use('/api/startup', startupRoutes);
-    app.use('/api/feature', featuresRoutes);
+    app.use('/api/features', featuresRoutes);
 
     app.get('/api/logged-in', async (req, res) => {
         try {
@@ -87,9 +87,9 @@ const createServer = async (callback) => {
             res.json({ data: null, error: error });
         }
     });
-    app.get('*', function (req, res) {
-        res.sendFile('./build/index.html');
-    });
+    // app.get('*', function (req, res) {
+    //     res.sendFile('./build/index.html');
+    // });
     // app.use('/api/orders', orderRoutes);
     // app.get('/login', (req, res) => {
     //   firebase.auth().signInWithEmailAndPassword('murtazashafi11@gmail.com', 'test123')

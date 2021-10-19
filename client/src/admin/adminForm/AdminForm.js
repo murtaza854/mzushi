@@ -1,7 +1,7 @@
 import React from 'react';
 import { Divider, Typography, makeStyles } from '@material-ui/core';
 import { Container, Col, Row } from 'react-bootstrap';
-import { productBrandObj, adPackageObj, categoryObj, productCategoryObj, productSubCategoryObj, countryObj, provinceObj, cityObj, areaObj, adminUserObj } from '../../db';
+import { productBrandObj, adPackageObj, categoryObj, productCategoryObj, productSubCategoryObj, countryObj, provinceObj, cityObj, areaObj, adminUserObj, featuresObj } from '../../db';
 import { useParams } from 'react-router';
 import './AdminForm.scss';
 
@@ -58,6 +58,7 @@ function AdminForm(props) {
     else if (model === 'area') formFetch = areaObj;
     else if (model === 'admin-user') formFetch = adminUserObj;
     else if (model === 'ad-package') formFetch = adPackageObj;
+    else if (model === 'features') formFetch = featuresObj;
 
     return (
         <Container fluid className='adminForm'>

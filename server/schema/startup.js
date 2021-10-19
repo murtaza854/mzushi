@@ -7,7 +7,7 @@ const startupSchema = new mongoose.Schema({
     ownerLastName: { type: String, required: true },
     email: { type: String, required: true },
     contactNumber: { type: String, required: true },
-    logo: { type: String },
+    logo: { data: Buffer, contentType: String},
     description: { type: String },
     minPrice: { type: Number },
     maxPrice: { type: Number },

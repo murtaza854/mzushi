@@ -10,11 +10,21 @@
         border-radius: 10px;
         font-size: 1rem;
     }
+    .rbt-input-wrapper {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
     .rbt-token-remove-button {
         background-color: white;
         border: 2px solid #f6d33e;
-        border-radius: 10px;
-        margin-left: 0.5rem;
+        border-radius: 34px;
+        margin: 0 0.5rem;
+        margin-bottom: 0.5rem;
+        width: 2rem;
+        height: 2rem;
+        line-height: 1rem;
+        font-size: 1rem;
         span {
             font-size: 1.5rem;
         }

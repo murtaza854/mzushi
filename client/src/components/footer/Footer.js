@@ -24,7 +24,7 @@ function Footer(props) {
           </div>
           <div className="special">
             <i className="fa fa-envelope" />
-            <p><a href="mailto:info@macaddictstore.com">info@mzushi.com</a></p>
+            <p><a href="mailto:help@mzushi.com">help@mzushi.com</a></p>
           </div>
         </div>
         <div className="footer-right">

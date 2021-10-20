@@ -12,7 +12,7 @@ const slugify = require('slugify');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads')
+        cb(null, path.resolve('../client/public/categoryUploads'))
     },
     filename: (req, file, cb) => {
         cb(null, file.fieldname + '-' + Date.now())
@@ -33,16 +33,21 @@ router.get('/get-categories', async (req, res) => {
     else res.json({ data: categories });
 });
 
+
 router.post('/add', upload.single('image'), async (req, res) => {
     const data = JSON.parse(req.body.data);
-    console.log(data);
-    // const newCategory = new Category({
-    //     name: data.name,
-    //     slug: slugify(data.name, { lower: true }),
-    //     keywords: data.keywords,
-    //     description: data.description,
-    // });
-    // newCategory.save();
+    const newCategory = new Category({
+        name: data.name,
+        slug: slugify(data.name, { lower: true }),
+        keywords: data.keywords,
+        description: data.description,
+        image: {
+            data: fs.readFileSync((path.resolve('../client/public/categoryUploads') + '/' + req.file.filename)),
+            contentType: req.file.mimetype
+        },
+        featured: data.featured
+    });
+    newCategory.save();
     res.json({ data: 'success' });
 });
 

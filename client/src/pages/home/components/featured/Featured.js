@@ -1,8 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Row } from 'react-bootstrap';
+import api from '../../../../api';
 import { Heading2, BigBox } from '../../../../components';
 
 function Featured(props) {
+
+    const handleSubmit = async e => {
+        e.preventDefault();
+    }
+
+    useEffect(() => {
+        (async () => {
+            // const response = await fetch(`${api}/admin-user/login`, {
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     credentials: 'include',
+            //     withCredentials: true,
+            // });
+        })()
+    }, [])
+
+
     return (
         <Container>
             <div className="margin-global-top-5" />

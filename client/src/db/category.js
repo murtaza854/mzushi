@@ -7,10 +7,25 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import api from '../api';
 import TreeItem from '@material-ui/lab/TreeItem';
 
+function arrayBufferToBase64(buffer) {
+    var binary = '';
+    var bytes = [].slice.call(new Uint8Array(buffer)); bytes.forEach((b) => binary += String.fromCharCode(b)); return window.btoa(binary);
+};
+
 const createTableData = (data) => {
-    const { _id, name } = data;
-    return { _id, name };
+    const { _id, name, featured } = data;
+    // console.log(data.image.contentType);
+    const base64Flag = `data:${data.image.contentType};base64,`;
+    const imagePath = base64Flag + arrayBufferToBase64(data.image.data.data);
+    return { _id, name, featured, imagePath };
 }
+
+function gcd(a, b) {
+    return (b === 0) ? a : gcd(b, a % b);
+}
+// if b == 0:
+//     return a
+// return gcd (b, a mod b)
 
 const editObjCheck = (data, value, editObj) => {
     if (editObj) return data.find(obj => obj.name.toLowerCase().trim() === value.toLowerCase().trim() && obj.name !== editObj.name);
@@ -24,6 +39,8 @@ const categoryObj = {
     headCells: [
         // { id: '_id', numeric: false, disablePadding: true, label: 'ID' },
         { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
+        { id: 'featured', numeric: false, disablePadding: false, label: 'Featured' },
+        { id: 'imagePath', numeric: false, disablePadding: false, label: 'Image' },
     ],
     ManyChild: '',
     checkboxSelection: '_id',
@@ -87,9 +104,11 @@ const categoryObj = {
             let flag = true;
             if (nameState.error === true) flag = true;
             else if (nameState.name.length === 0) flag = true;
+            else if (image.imgURl === '') flag = true;
+            else if (image.error === true) flag = true;
             else flag = false;
             setCanSubmit(flag);
-        }, [nameState]);
+        }, [nameState, image]);
 
         useEffect(() => {
             (
@@ -151,21 +170,24 @@ const categoryObj = {
                     reader.onload = ((theFile) => {
                         var image = new Image();
                         image.src = theFile.target.result;
-                        setImage(prevState => ({ ...prevState, picturePreview: event.target.files[0], imgURl: objectUrl, error: false }));
 
-                        // image.onload = function () {
-                        //     // access image size here 
-                        //     console.log(this.width, this.height);
-                        //     if (this.width / this.height !== 1) {
-                        //         alert("Please upload a square logo.");
-                        //     }
-                        //     else {
-                        //         setLogo(prevState => ({ ...prevState, picturePreview: objectUrl, imgURl: event.target.files[0] }));
-                        //     }
-                        // };
+                        image.onload = function () {
+                            // access image size here 
+                            // console.log(this.width, this.height);
+                            // console.log(gcd(this.width, this.height));
+                            const w = this.width;
+                            const h = this.height;
+                            const r = gcd(w, h);
+                            if (w / r > h / r) {
+                                setImage(prevState => ({ ...prevState, picturePreview: event.target.files[0], imgURl: objectUrl, error: false }));
+                            }
+                            else {
+                                alert("Please upload a landscape image.");
+                            }
+                        };
                     });
                 } else {
-                    setImage(prevState => ({ ...prevState, error: true }));
+                    alert("Size too large");
                 }
             }
         }
@@ -217,6 +239,7 @@ const categoryObj = {
             }
             else {
                 setNameState({ name: '', helperText: 'Enter name Ex. Electronic', error: false });
+                setImage({ picturePreview: '', imgURl: '', error: false });
                 setKeywordsState({ name: '', helperText: 'Comma seperated keywords for SEO (2 - 3 words)' });
                 setDescriptionState({ name: '', helperText: 'Enter description Ex. This category is...' });
                 queryID = '';
@@ -312,7 +335,7 @@ const categoryObj = {
                         image.imgURl !== '' ? (
                             <div>
                                 <div className="margin-global-top-2" />
-                                <img src={image.imgURl} alt="Preview" />
+                                <img style={{ width: '30rem' }} src={image.imgURl} alt="Preview" />
                                 <div className="margin-global-top-1" />
                             </div>
                         ) : null

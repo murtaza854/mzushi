@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import Slider from "react-slick";
+import api from '../../../../api';
 import { BusinessCard, Heading2, YellowButton } from '../../../../components';
 import './MzushiChoice.scss';
 
 function MzushiChoice(props) {
     // const [cards, setCards] = useState({karachi: [], lahore: [], islamabad: [], quetta: [], peshawer: []});
     const cards = [<BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />];
-
+    const [featuredCities, setFeaturedCities] = useState([]);
     // useEffect(() => {
     //     setCards({
     //         karachi: [<BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />],
@@ -17,6 +18,27 @@ function MzushiChoice(props) {
     //         peshawer: [<BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />],
     //     })
     // }, [])
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(`${api}/city/get-limit-by-featured?limit=${5}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const content = await response.json();
+            console.log(content);
+            // function splitArrayIntoChunksOfLen(arr, len) {
+            //     var chunks = [], i = 0, n = arr.length;
+            //     while (i < n) {
+            //         chunks.push(arr.slice(i, i += len));
+            //     }
+            //     return chunks;
+            // }
+            // setCategory(splitArrayIntoChunksOfLen(content.data, 4));
+        })()
+    }, []);
 
     const settingsCities = {
         dots: false,
@@ -97,7 +119,7 @@ function MzushiChoice(props) {
                     text=""
                     blue="mzushi's"
                     classes="text-center"
-                    text2="Choice"
+                    text2="choice"
                 />
                 <div className="margin-global-top-2" />
                 <Row className="justify-content-center">

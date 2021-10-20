@@ -5,22 +5,45 @@ import './BigBox.scss';
 
 function BigBox(props) {
     return (
-        <Link className={`big-box ${props.classes}`} to={props.to}>
-            <div>
-                {props.img}
-                <p className={`${props.classes_p}`}>
-                    <span>{props.text}</span>
-                    {
-                        props.text1 !== "" ? (
-                            <>
-                                <br />
-                                <span>{props.text1}</span>
-                            </>
-                        ) : null
-                    }
-                </p>
-            </div>
-        </Link>
+        <>
+            {
+                props.onClick ? (
+                    <Link onClick={props.onClick} className={`big-box ${props.classes}`} to={props.to}>
+                        <div>
+                            {props.img}
+                            <p className={`${props.classes_p}`}>
+                                <span>{props.text}</span>
+                                {
+                                    props.text1 !== "" ? (
+                                        <>
+                                            <br />
+                                            <span>{props.text1}</span>
+                                        </>
+                                    ) : null
+                                }
+                            </p>
+                        </div>
+                    </Link>
+                ) : (
+                    <Link className={`big-box ${props.classes}`} to={props.to}>
+                        <div>
+                            {props.img}
+                            <p className={`${props.classes_p}`}>
+                                <span>{props.text}</span>
+                                {
+                                    props.text1 !== "" ? (
+                                        <>
+                                            <br />
+                                            <span>{props.text1}</span>
+                                        </>
+                                    ) : null
+                                }
+                            </p>
+                        </div>
+                    </Link>
+                )
+            }
+        </>
     );
 }
 

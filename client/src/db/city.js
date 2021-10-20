@@ -7,10 +7,10 @@ import api from '../api';
 import TreeItem from '@material-ui/lab/TreeItem';
 
 const createTableData = (data) => {
-    const { _id, name, province } = data;
+    const { _id, name, province, featured } = data;
     const provinceName = province.name
     const countryName = province.country.name
-    return { _id, name, provinceName, countryName };
+    return { _id, name, provinceName, countryName, featured };
 }
 
 const editObjCheck = (data, value, editObj) => {
@@ -27,6 +27,7 @@ const cityObj = {
         { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
         { id: 'provinceName', numeric: false, disablePadding: false, label: 'Province' },
         { id: 'countryName', numeric: false, disablePadding: false, label: 'Country' },
+        { id: 'featured', numeric: false, disablePadding: false, label: 'Featured' },
     ],
     ManyChild: '',
     checkboxSelection: '_id',

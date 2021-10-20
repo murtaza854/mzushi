@@ -27,6 +27,12 @@ router.get('/table-data', async (req, res) => {
     else res.json({ data: categories });
 });
 
+router.get('/get-all-by-featured', async (req, res) => {
+    const categories = await Category.find({}).sort([['featured', 'descending']]);
+    if (!categories) res.json({ data: [] });
+    else res.json({ data: categories });
+});
+
 router.get('/get-categories', async (req, res) => {
     const categories = await Category.find({}, { _id: 0 });
     if (!categories) res.json({ data: [] });

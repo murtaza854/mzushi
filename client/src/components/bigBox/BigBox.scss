@@ -30,6 +30,8 @@
 .big-box-fixed-size-small {
     // height: 15rem;
     width: 18rem;
+    margin-bottom: 0.5rem;
+    display: block;
     img {
         // height: 100%;
         border-radius: 15px;
@@ -38,6 +40,8 @@
         left: 0;
         opacity: 0.5;
         transition: 0.3s ease-in-out;
+        object-fit: cover;
+        height: 12rem;
     }
 }
 

@@ -4,9 +4,19 @@ import { BusinessBigCard } from '../../../../components';
 import './BusinessList.scss';
 
 function BusinessList(props) {
+
     return (
         <div>
-            <Row>
+            {
+                props.startUps.map((value, index) => {
+                    return (
+                        <Row>
+                            <BusinessBigCard classes="" />
+                        </Row>
+                    )
+                })
+            }
+            {/* <Row>
                 <BusinessBigCard classes="" />
             </Row>
             <div className="margin-global-top-1" />
@@ -32,7 +42,7 @@ function BusinessList(props) {
             <div className="margin-global-top-1" />
             <Row>
                 <BusinessBigCard classes="" />
-            </Row>
+            </Row> */}
         </div>
     );
 }

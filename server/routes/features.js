@@ -3,7 +3,6 @@ const Feature = require('../schema').feature;
 
 router.get('/table-data', async (req, res) => {
     const features = await Feature.find({});
-    console.log(features)
     if (!features) res.json({ data: [] });
     else res.json({ data: features });
 });

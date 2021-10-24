@@ -1,12 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { BusinessCard, SearchBar } from '../../components';
 import { BusinessList, FilterPanel } from './components';
 import { GoSettings } from 'react-icons/go';
 import Slider from "react-slick";
 import './Businesses.scss';
+import { useParams } from 'react-router';
+import api from '../../api';
 
 function Businesses(props) {
+    const { category } = useParams();
+    const [startUps, setStartUps] = useState([]);
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(`${api}/startup/get-all-by-category?categorySlug=${category}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const content = await response.json();
+            setStartUps(content.data);
+            // setCategory(splitArrayIntoChunksOfLen(content.data, 4));
+        })()
+    }, [category]);
+
     const cards = [<BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />];
     let sliderLength = 4;
     // let sliderLength1250 = 3;
@@ -87,7 +106,7 @@ function Businesses(props) {
                         {/* <button className="unhide-1200" onClick={openFilterPanel} type="button">Filter panel</button> */}
                     </Col>
                     <Col xl={10}>
-                        <BusinessList />
+                        <BusinessList startUps={startUps} />
                     </Col>
                 </Row>
             </Container>

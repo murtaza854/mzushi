@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import Slider from "react-slick";
 import api from '../../../../api';
@@ -8,7 +8,7 @@ import './MzushiChoice.scss';
 function MzushiChoice(props) {
     // const [cards, setCards] = useState({karachi: [], lahore: [], islamabad: [], quetta: [], peshawer: []});
     const cards = [<BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />];
-    const [featuredCities, setFeaturedCities] = useState([]);
+    // const [featuredCities, setFeaturedCities] = useState([]);
     // useEffect(() => {
     //     setCards({
     //         karachi: [<BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />],

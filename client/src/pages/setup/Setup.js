@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState, Fragment, useContext } from 'react';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { ClickButton, Heading1 } from '../../components';
@@ -10,8 +10,18 @@ import MobileTimePicker from '@mui/lab/MobileTimePicker';
 import './Setup.scss';
 import api from '../../api';
 import { TextField } from '@material-ui/core';
+import UserContext from '../../contexts/userContext';
+import { useHistory } from 'react-router';
 
 function Setup(props) {
+    const user = useContext(UserContext);
+    const history = useHistory();
+
+    useEffect(() => {
+        if (user.userState) {
+            if (user.userState.accountSetup) history.push('/');
+        } else history.push('/login');
+    }, [history, user.userState]);
 
     const [businessName, setBusinessName] = useState({ text: '', error: false, errorText: '' });
     const [businessDescription, setBusinessDescription] = useState({ text: '', error: false, errorText: '' });
@@ -64,6 +74,8 @@ function Setup(props) {
     const [areaDS, setAreaDS] = useState({ value: [], readOnly: true });
     const [areaDSList, setAreaDSList] = useState([]);
     const [areaDSLoading, setAreaDSLoading] = useState(false);
+    
+    const [disabledBtn, setDisabledBtn] = useState(true);
 
     const handleAlignment = (event, newAlignment) => {
         if (newAlignment !== null) {
@@ -106,6 +118,7 @@ function Setup(props) {
                 });
             } else {
                 setLogo(prevState => ({ ...prevState, error: true }));
+                alert("Image is too large.")
             }
         }
     }
@@ -113,13 +126,13 @@ function Setup(props) {
         const minprice = /^\d*\.?\d*$/;
         if (event.target.value === '') setMinPrice({ text: event.target.value, errorText: 'Minimum price is required!', error: true });
         else if (!event.target.value.match(minprice)) setMinPrice({ text: event.target.value, errorText: "Only numericals are allowed!", error: true });
-        else setMinPrice({ name: event.target.value, errorText: '', error: false });
+        else setMinPrice({ text: event.target.value, errorText: '', error: false });
     }
     const handleMaxPrice = event => {
         const maxprice = /^\d*\.?\d*$/;
         if (event.target.value === '') setMaxPrice({ text: event.target.value, errorText: 'Maximum price is required!', error: true });
         else if (!event.target.value.match(maxprice)) setMaxPrice({ text: event.target.value, errorText: "Only numericals are allowed!", error: true });
-        else setMaxPrice({ name: event.target.value, errorText: '', error: false });
+        else setMaxPrice({ text: event.target.value, errorText: '', error: false });
     }
     const handleWebUrl = event => {
         const urlCheck = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)/g;
@@ -172,7 +185,6 @@ function Setup(props) {
 
     const changeProvince = async array => {
         if (array.length === 0) {
-            console.log(1)
             setProvince({ value: array, error: true, errortext: 'Province is required!', readOnly: false });
             setCity({ value: [], error: false, errortext: '', readOnly: true });
             setArea({ value: [], error: false, errortext: '', readOnly: true });
@@ -356,36 +368,77 @@ function Setup(props) {
     const filterByAreaDS = () => true;
 
     useEffect(() => {
-        setCategories([
-            { _id: 0, name: 'Plumber', active: '' },
-            { _id: 1, name: 'Plumber', active: '' },
-            { _id: 2, name: 'Plumber', active: '' },
-            { _id: 3, name: 'Plumber', active: '' },
-            { _id: 4, name: 'Plumber', active: '' },
-            { _id: 5, name: 'Plumber', active: '' },
-            { _id: 6, name: 'Plumber', active: '' },
-            { _id: 7, name: 'Plumber', active: '' },
-            { _id: 8, name: 'Plumber', active: '' },
-            { _id: 9, name: 'Plumber', active: '' },
-            { _id: 10, name: 'Plumber', active: '' },
-        ]);
+        (async () => {
+            const response = await fetch(`${api}/category/table-data`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const content = await response.json();
+            const catList = [];
+            let flag = false;
+            content.data.forEach(element => {
+                if (flag) element['active'] = '';
+                else {
+                    element['active'] = 'active';
+                    flag = true;
+                }
+                catList.push(element);
+            });
+            setCategories(catList);
+        })()
     }, []);
 
     useEffect(() => {
-        setFeatures([
-            { _id: 0, name: 'Wifi', active: '' },
-            { _id: 1, name: 'Wifi', active: '' },
-            { _id: 2, name: 'Wifi', active: '' },
-            { _id: 3, name: 'Wifi', active: '' },
-            { _id: 4, name: 'Wifi', active: '' },
-            { _id: 5, name: 'Wifi', active: '' },
-            { _id: 6, name: 'Wifi', active: '' },
-            { _id: 7, name: 'Wifi', active: '' },
-            { _id: 8, name: 'Wifi', active: '' },
-            { _id: 9, name: 'Wifi', active: '' },
-            { _id: 10, name: 'Wifi', active: '' },
-        ]);
+        (async () => {
+            const response = await fetch(`${api}/features/table-data`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const content = await response.json();
+            const featureList = [];
+            content.data.forEach(element => {
+                element['active'] = '';
+                featureList.push(element);
+            });
+            setFeatures(featureList);
+        })()
     }, []);
+
+    // useEffect(() => {
+    //     setCategories([
+    //         { _id: 0, name: 'Plumber', active: '' },
+    //         { _id: 1, name: 'Plumber', active: '' },
+    //         { _id: 2, name: 'Plumber', active: '' },
+    //         { _id: 3, name: 'Plumber', active: '' },
+    //         { _id: 4, name: 'Plumber', active: '' },
+    //         { _id: 5, name: 'Plumber', active: '' },
+    //         { _id: 6, name: 'Plumber', active: '' },
+    //         { _id: 7, name: 'Plumber', active: '' },
+    //         { _id: 8, name: 'Plumber', active: '' },
+    //         { _id: 9, name: 'Plumber', active: '' },
+    //         { _id: 10, name: 'Plumber', active: '' },
+    //     ]);
+    // }, []);
+
+    // useEffect(() => {
+    //     setFeatures([
+    //         { _id: 0, name: 'Wifi', active: '' },
+    //         { _id: 1, name: 'Wifi', active: '' },
+    //         { _id: 2, name: 'Wifi', active: '' },
+    //         { _id: 3, name: 'Wifi', active: '' },
+    //         { _id: 4, name: 'Wifi', active: '' },
+    //         { _id: 5, name: 'Wifi', active: '' },
+    //         { _id: 6, name: 'Wifi', active: '' },
+    //         { _id: 7, name: 'Wifi', active: '' },
+    //         { _id: 8, name: 'Wifi', active: '' },
+    //         { _id: 9, name: 'Wifi', active: '' },
+    //         { _id: 10, name: 'Wifi', active: '' },
+    //     ]);
+    // }, []);
 
     const handleDeliveryClick = _ => {
         setRadios({ delivery: true, service: false })
@@ -394,7 +447,6 @@ function Setup(props) {
     const handleServiceClick = _ => {
         setRadios({ delivery: false, service: true })
     }
-
     const onSubmit = async e => {
         e.preventDefault();
         const formData = new FormData();
@@ -403,17 +455,65 @@ function Setup(props) {
             // imageState.picturePreview
             logo.picturePreview
         );
-        console.log(logo.picturePreview);
-        // const response = await fetch(`${api}/startup/startup-setup`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Accept': 'multipart/form-data',
-        //     },
-        //     credentials: 'include',
-        //     // withCredentials: true,
-        //     body: formData
-        // });
+        const activeDays = [];
+        if (monday.check) activeDays.push({name: 'Monday', workingHourStart: monday.startValue, workingHourEnd: monday.endValue});
+        if (tuesday.check) activeDays.push({name: 'Tuesday', workingHourStart: tuesday.startValue, workingHourEnd: tuesday.endValue});
+        if (wednesday.check) activeDays.push({name: 'Wednesday', workingHourStart: wednesday.startValue, workingHourEnd: wednesday.endValue});
+        if (thursday.check) activeDays.push({name: 'Thursday', workingHourStart: thursday.startValue, workingHourEnd: thursday.endValue});
+        if (friday.check) activeDays.push({name: 'Friday', workingHourStart: friday.startValue, workingHourEnd: friday.endValue});
+        if (saturday.check) activeDays.push({name: 'Saturday', workingHourStart: saturday.startValue, workingHourEnd: saturday.endValue});
+        if (sunday.check) activeDays.push({name: 'Sunday', workingHourStart: sunday.startValue, workingHourEnd: sunday.endValue});
+        const category = categories.find(element => element.active === 'active');
+        delete category.active;
+        const featuresList = features.filter(element => element.active === 'active');
+        const finalFeaturesList = featuresList.forEach(function(v){ delete v.active });
+        formData.append(
+            "data",
+            JSON.stringify({ businessName: businessName.text, businessDescription: businessDescription.text, alignment: alignment, minPrice: minPrice.text, maxPrice: maxPrice.text, webUrl: webUrl.text, activeDays, category, finalFeaturesList, area: area.value, addressLine1: addressLine1.text, addressLine2: addressLine2.text, landmark: landmark.text, radios, provinceDS: provinceDS.value, cityDS: cityDS.value, areaDS: areaDS.value, user: user.userState })
+        );
+        // console.log(logo.picturePreview);
+        try {
+            const response = await fetch(`${api}/startup/startup-setup`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'multipart/form-data',
+                    'Cache-Control': 'no-store'
+                },
+                body: formData
+            });
+            const content = await response.json();
+            if (content.data) history.push("/__/auth/action?mode=accountSetup");
+            else alert("Error setting up account, please contact support if this issue persists.");
+        } catch (error) {
+            alert("Error setting up account, please contact support if this issue persists.");
+        }
     }
+
+    useEffect(() => {
+        let flag = true;
+        if (businessName.error === true) flag = true;
+        else if (businessName.text.length === 0) flag = true;
+        else if (businessDescription.error === true) flag = true;
+        else if (businessDescription.text.length === 0) flag = true;
+        else if (logo.error === true) flag = true;
+        else if (logo.imgURl === '') flag = true;
+        else if (minPrice.error === true) flag = true;
+        else if (minPrice.text.length === 0) flag = true;
+        else if (maxPrice.error === true) flag = true;
+        else if (maxPrice.text.length === 0) flag = true;
+        else if (province.error === true) flag = true;
+        else if (province.value.length === 0) flag = true;
+        else if (city.error === true) flag = true;
+        else if (city.value.length === 0) flag = true;
+        else if (area.error === true) flag = true;
+        else if (area.value.length === 0) flag = true;
+        if (addressLine1.error === true) flag = true;
+        else if (addressLine1.text.length === 0) flag = true;
+        else if (provinceDS.error === true) flag = true;
+        else if (provinceDS.value.length === 0) flag = true;
+        else flag = false;
+        setDisabledBtn(flag);
+    }, [businessName, businessDescription, logo, minPrice, maxPrice, province, city, area, addressLine1, provinceDS]);
 
     return (
         <Container className="setup">
@@ -592,6 +692,7 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
+                                            disabled={!monday.check}
                                             value={monday.startValue}
                                             onChange={(newValue) => {
                                                 setMonday(prevState => ({ ...prevState, startValue: newValue }));
@@ -604,6 +705,7 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
+                                            disabled={!monday.check}
                                             value={monday.endValue}
                                             onChange={(newValue) => {
                                                 setMonday(prevState => ({ ...prevState, endValue: newValue }));
@@ -629,6 +731,7 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
+                                            disabled={!tuesday.check}
                                             value={tuesday.startValue}
                                             onChange={(newValue) => {
                                                 setTuesday(prevState => ({ ...prevState, startValue: newValue }));
@@ -641,6 +744,7 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
+                                            disabled={!tuesday.check}
                                             value={tuesday.endValue}
                                             onChange={(newValue) => {
                                                 setTuesday(prevState => ({ ...prevState, endValue: newValue }));
@@ -666,6 +770,7 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
+                                            disabled={!wednesday.check}
                                             value={wednesday.startValue}
                                             onChange={(newValue) => {
                                                 setWednesday(prevState => ({ ...prevState, startValue: newValue }));
@@ -678,6 +783,7 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
+                                            disabled={!wednesday.check}
                                             value={wednesday.endValue}
                                             onChange={(newValue) => {
                                                 setWednesday(prevState => ({ ...prevState, endValue: newValue }));
@@ -703,6 +809,7 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
+                                            disabled={!thursday.check}
                                             value={thursday.startValue}
                                             onChange={(newValue) => {
                                                 setThursday(prevState => ({ ...prevState, startValue: newValue }));
@@ -715,6 +822,7 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
+                                            disabled={!thursday.check}
                                             value={thursday.endValue}
                                             onChange={(newValue) => {
                                                 setThursday(prevState => ({ ...prevState, endValue: newValue }));
@@ -740,6 +848,7 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
+                                            disabled={!friday.check}
                                             value={friday.startValue}
                                             onChange={(newValue) => {
                                                 setFriday(prevState => ({ ...prevState, startValue: newValue }));
@@ -752,6 +861,7 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
+                                            disabled={!friday.check}
                                             value={friday.endValue}
                                             onChange={(newValue) => {
                                                 setFriday(prevState => ({ ...prevState, endValue: newValue }));
@@ -777,6 +887,7 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
+                                            disabled={!saturday.check}
                                             value={saturday.startValue}
                                             onChange={(newValue) => {
                                                 setSaturday(prevState => ({ ...prevState, startValue: newValue }));
@@ -789,6 +900,7 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
+                                            disabled={!saturday.check}
                                             value={saturday.endValue}
                                             onChange={(newValue) => {
                                                 setSaturday(prevState => ({ ...prevState, endValue: newValue }));
@@ -814,6 +926,7 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
+                                            disabled={!sunday.check}
                                             value={sunday.startValue}
                                             onChange={(newValue) => {
                                                 setSunday(prevState => ({ ...prevState, startValue: newValue }));
@@ -826,6 +939,7 @@ function Setup(props) {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
                                             label=""
+                                            disabled={!sunday.check}
                                             value={sunday.endValue}
                                             onChange={(newValue) => {
                                                 setSunday(prevState => ({ ...prevState, endValue: newValue }));
@@ -1097,7 +1211,7 @@ function Setup(props) {
                     </Row>
                     <div className="margin-global-top-2" />
                     <Row className="justify-content-center">
-                        <Button type="submit">
+                        <Button disabled={disabledBtn} type="submit">
                             Submit
                         </Button>
                     </Row>

@@ -155,11 +155,11 @@ function Routes(props) {
                                 <MainNavbar />
                                 <Auth />
                             </Route>
-                            <Route path="/directory/business">
+                            <Route path="/:category/:startup">
                                 <MainNavbar />
                                 <Business />
                             </Route>
-                            <Route path="/directory">
+                            <Route path="/:category">
                                 <MainNavbar />
                                 <Businesses />
                             </Route>

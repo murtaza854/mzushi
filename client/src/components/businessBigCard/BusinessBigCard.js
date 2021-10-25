@@ -51,6 +51,7 @@ function BusinessBigCard(props) {
                             blue=""
                             classes="margin-bottom-0 fit-content"
                             text2=""
+                            to={props.slug}
                         />
                         <div className="margin-global-top-1" />
                         <ToggleButtonGroup
@@ -99,8 +100,8 @@ function BusinessBigCard(props) {
                         <AiOutlineClockCircle className={`icon ${classes}`} />
                         <p>{displayTime}</p>
                     </div>
-                    <div className="margin-global-top-06" />
-                    <Row>
+                    <div style={{display: 'none'}} className="margin-global-top-06" />
+                    <Row style={{display: 'none'}}>
                         <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
@@ -113,8 +114,6 @@ function BusinessBigCard(props) {
                             <AiOutlineClose className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
-                        {/* </Row>
-                    <Row> */}
                         <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
@@ -127,8 +126,6 @@ function BusinessBigCard(props) {
                             <AiOutlineClose className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
-                        {/* </Row>
-                    <Row> */}
                         <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>

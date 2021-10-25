@@ -2,6 +2,7 @@ const router = require('express').Router();
 const Startup = require('../schema').startup;
 const Category = require('../schema').category;
 const Address = require('../schema').address;
+const slugify = require('slugify');
 const dotenv = require('dotenv');
 const fs = require('fs');
 const multer = require('multer');
@@ -26,6 +27,25 @@ router.get('/table-data', async (req, res) => {
     const startups = await Startup.find({});
     if (!startups) res.json({ data: [] });
     else res.json({ data: startups });
+});
+
+router.get('/get-one-by-category-startup', async (req, res) => {
+    const { categorySlug, startupSlug } = req.query;
+    const category = await Category.findOne({ slug: categorySlug });
+    const startup = await Startup.findOne({ category: category, slug: startupSlug }).populate("category").populate({
+        path: 'address',
+        populate: {
+            path: 'area',
+            populate: {
+                path: 'city',
+                populate: {
+                    path: 'province',
+                }
+            }
+        }
+    });
+    if (!startup) res.json({ data: null });
+    else res.json({ data: startup });
 });
 
 router.get('/get-all-by-category', async (req, res) => {
@@ -119,7 +139,10 @@ router.post('/startup-setup', upload.single('image'), async (req, res, next) => 
     try {
         const data = JSON.parse(req.body.data);
         const startup = await Startup.findOne({ email: data.user.email });
+        // const slug = slugify(data.businessName, { lower: true });
+        // const startupCheck = await Startup.findOne({ slug: slug });
         startup.startupName = data.businessName;
+        startup.slug = slugify(data.businessName, { lower: true });
         startup.logo = {
             data: fs.readFileSync((path.resolve('../client/public/startupUploads') + '/' + req.file.filename)),
             contentType: req.file.mimetype
@@ -145,7 +168,8 @@ router.post('/startup-setup', upload.single('image'), async (req, res, next) => 
         startup.serviceCities = data.cityDS;
         startup.serviceProvinces = data.provinceDS;
         startup.accountSetup = true;
-        startup.features = data.finalFeaturesList;
+        console.log(data.features);
+        startup.features = data.features;
         startup.save();
         // const obj = {
         //     name: req.file.fieldname,

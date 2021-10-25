@@ -1,15 +1,27 @@
 .business-title {
-    color: black;
-    font-size: 1.6rem;
-    font-weight: 600;
-    span {
-        color: #8fbedf;
+    width: fit-content;
+    text-decoration: none;
+    h2 {
+        color: black;
+        font-size: 1.6rem;
+        font-weight: 600;
+        transition: .3s ease-in-out;
+        span {
+            color: #8fbedf;
+        }
+    }
+    &:hover {
+        h2 {
+            color: #8fbedf;
+        }
     }
 }
 // X-Large devices (large desktops, less than 1400px)
 @media (max-width: 87.49875em) {
     .business-title {
-        font-size: 1.4rem;
+        h2 {
+            font-size: 1.4rem;
+        }
     }
 }
 

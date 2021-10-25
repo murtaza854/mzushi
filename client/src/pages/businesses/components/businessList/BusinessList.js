@@ -21,6 +21,7 @@ function BusinessList(props) {
                                 classes=""
                                 logo={imagePath}
                                 startupName={value.startupName}
+                                slug={`/${value.category.slug}/${value.slug}`}
                                 moneyClass={value.moneyClass}
                                 category={value.category.name}
                                 rating={value.rating}

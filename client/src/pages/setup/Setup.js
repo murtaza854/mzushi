@@ -467,9 +467,10 @@ function Setup(props) {
         delete category.active;
         const featuresList = features.filter(element => element.active === 'active');
         const finalFeaturesList = featuresList.forEach(function(v){ delete v.active });
+        console.log(finalFeaturesList);
         formData.append(
             "data",
-            JSON.stringify({ businessName: businessName.text, businessDescription: businessDescription.text, alignment: alignment, minPrice: minPrice.text, maxPrice: maxPrice.text, webUrl: webUrl.text, activeDays, category, finalFeaturesList, area: area.value, addressLine1: addressLine1.text, addressLine2: addressLine2.text, landmark: landmark.text, radios, provinceDS: provinceDS.value, cityDS: cityDS.value, areaDS: areaDS.value, user: user.userState })
+            JSON.stringify({ businessName: businessName.text, businessDescription: businessDescription.text, alignment: alignment, minPrice: minPrice.text, maxPrice: maxPrice.text, webUrl: webUrl.text, activeDays, category, features: finalFeaturesList, area: area.value, addressLine1: addressLine1.text, addressLine2: addressLine2.text, landmark: landmark.text, radios, provinceDS: provinceDS.value, cityDS: cityDS.value, areaDS: areaDS.value, user: user.userState })
         );
         // console.log(logo.picturePreview);
         try {

@@ -16,11 +16,11 @@ function IconBanner(props) {
                         <i className="center-relative-horizontal fa fa-instagram"></i>
                     </a>
                 </Col>
-                <Col md={1}>
+                {/* <Col md={1}>
                     <a className="icon-cont" href="/">
                         <i className="center-relative-horizontal fa fa-whatsapp"></i>
                     </a>
-                </Col>
+                </Col> */}
             </Row>
         </Container>
     );

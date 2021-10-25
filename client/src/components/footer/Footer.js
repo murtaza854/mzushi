@@ -14,10 +14,10 @@ function Footer(props) {
           <p className="footer-company-name">mzushi © 2021</p>
         </div>
         <div className="footer-center">
-          <div>
+          {/* <div>
             <i className="fa fa-map-marker" />
             <p><span>Address Line 1</span>Address Line 2</p>
-          </div>
+          </div> */}
           <div>
             <i className="fa fa-phone" />
             <p><span>Phone number</span></p>
@@ -28,10 +28,10 @@ function Footer(props) {
           </div>
         </div>
         <div className="footer-right">
-          <p className="footer-company-about">
+          {/* <p className="footer-company-about">
             <span>About mzushi</span>
             Mzushi, your online local directory for the finest listings of food, clothes and all things homemade. Search for businesses, list your own, review site products or services and make the shift from yellow pages, today!
-          </p>
+          </p> */}
           {/* <div className="footer-icons">
             <a rel="noreferrer" target="_blank" href="https://www.facebook.com/fefsmp"><i className="fab fa-facebook" /></a>
             <a rel="noreferrer" target="_blank" href="https://wa.me/+923089602202"><i className="fab fa-whatsapp" /></a>

@@ -8,7 +8,7 @@ function Poster(props) {
                 src="https://s3-media0.fl.yelpcdn.com/assets/srv0/yelp_large_assets/a2a6dfbdce53/assets/img/home/hero_photos/Y52KtIDZeG8aAMBaLIjSlQ.jpg"
                 alt="Test"
             />
-            <h2 className="business-name text-uppercase">Name of the Business</h2>
+            <h2 className="business-name text-uppercase">{props.startupName}</h2>
         </div>
     );
 }

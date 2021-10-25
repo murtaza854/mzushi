@@ -6,7 +6,9 @@
     margin-bottom: 1rem;
     img {
         width: 100%;
+        height: 15rem;
         border-radius: 15px;
+        object-fit: cover;
     }
     .business-card-chip {
         background-color: #8fbedf;
@@ -28,6 +30,9 @@
             font-size: 1.3rem;
             position: absolute;
             color: #8fbedf;
+        }
+        .closed-business {
+            color: rgb(173, 40, 40);
         }
         p {
             font-size: 1rem;

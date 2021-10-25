@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { BusinessTitle } from '..';
 import Rating from '@material-ui/lab/Rating';
@@ -8,63 +8,96 @@ import { FiCheck } from 'react-icons/fi'
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import './BusinessBigCard.scss';
+import { formatAMPM } from '../../helperFunctions/formatAMPM';
 
 function BusinessBigCard(props) {
-    const [alignment] = useState('left');
+    const todayDate = new Date();
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const dayName = days[todayDate.getDay()];
+    const currentTime = todayDate.getTime();
+    let displayTime = "";
+    let classes = "";
+    for (let i = 0; i < props.activeDays.length; i++) {
+        const element = props.activeDays[i];
+        if (dayName === element.name) {
+            const startTime = new Date(element.workingHourStart);
+            const endTime = new Date(element.workingHourEnd);
+            // console.log(new Date(element.workingHourStart));
+            if (startTime.getTime() < currentTime && endTime.getTime() > currentTime) {
+                displayTime = `Today - ${formatAMPM(startTime)} to ${formatAMPM(endTime)}`;
+                break;
+            } else {
+                displayTime = "Closed";
+                classes = "closed-business";
+            }
+        } else {
+            displayTime = "Closed";
+            classes = "closed-business";
+        }
+    }
     return (
         <div className={`business-big-card ${props.classes}`}>
             <Row>
                 <Col lg={3}>
                     <img
-                        src="https://s3-media0.fl.yelpcdn.com/bphoto/JMaVR5nUiDXz2XDbyZvc8Q/l.jpg"
-                        alt="Test"
+                        src={props.logo}
+                        alt={props.startupName}
                     />
                 </Col>
                 <Col lg={9}>
                     <Row className="justify-content-between">
                         <BusinessTitle
-                            text="Business Name"
+                            text={props.startupName}
                             blue=""
                             classes="margin-bottom-0 fit-content"
                             text2=""
                         />
                         <div className="margin-global-top-1" />
                         <ToggleButtonGroup
-                            value={alignment}
+                            value={props.moneyClass}
                             size="small"
                             exclusive
                             onChange={_ => { }}
                             aria-label="text alignment"
                             className="fit-content"
                         >
-                            <ToggleButton className="first-toggle" disableRipple={true} value="left" aria-label="left aligned">
+                            <ToggleButton className="first-toggle" disableRipple={true} value="one" aria-label="left aligned">
                                 <strong className="bold-900">$</strong>
                             </ToggleButton>
-                            <ToggleButton disableRipple={true} className="square-toggle" value="center" aria-label="centered">
+                            <ToggleButton disableRipple={true} className="square-toggle" value="two" aria-label="centered">
                                 <strong className="bold-900">$$</strong>
                             </ToggleButton>
-                            <ToggleButton disableRipple={true} className="square-toggle" value="right" aria-label="right aligned">
+                            <ToggleButton disableRipple={true} className="square-toggle" value="three" aria-label="right aligned">
                                 <strong className="bold-900">$$$</strong>
                             </ToggleButton>
-                            <ToggleButton className="last-toggle" disableRipple={true} value="justify" aria-label="justified">
+                            <ToggleButton className="last-toggle" disableRipple={true} value="four" aria-label="justified">
                                 <strong className="bold-900">$$$$</strong>
                             </ToggleButton>
                         </ToggleButtonGroup>
                     </Row>
                     <div className="margin-global-top-1" />
                     <div className="business-card-chip">
-                        Category
+                        {props.category}
                     </div>
                     <div className="margin-global-top-06" />
-                    <Rating size="medium" name="read-only" value={3} readOnly />
+                    <Rating size="medium" name="read-only" value={props.rating} readOnly />
                     <div className="margin-global-top-02" />
                     <div className="icon-text">
-                        <IoLocationOutline className="icon" />
-                        <p>Lorem Ipsum</p>
+                        <IoLocationOutline className="icon center-relative-vertical" />
+                        <p>{props.addressLine1}</p>
+                        <p>{props.addressLine2}</p>
+                        {
+                            props.landmark !== "" ? (
+                                <p>{props.landmark}, {props.area}</p>
+                            ) : (
+                                <p>{props.area}</p>
+                            )
+                        }
+                        <p>{props.city}, {props.province}</p>
                     </div>
                     <div className="icon-text">
-                        <AiOutlineClockCircle className="icon" />
-                        <p>Today - 00:00 to 00:00</p>
+                        <AiOutlineClockCircle className={`icon ${classes}`} />
+                        <p>{displayTime}</p>
                     </div>
                     <div className="margin-global-top-06" />
                     <Row>
@@ -80,7 +113,7 @@ function BusinessBigCard(props) {
                             <AiOutlineClose className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
-                    {/* </Row>
+                        {/* </Row>
                     <Row> */}
                         <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
@@ -94,7 +127,7 @@ function BusinessBigCard(props) {
                             <AiOutlineClose className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
-                    {/* </Row>
+                        {/* </Row>
                     <Row> */}
                         <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />

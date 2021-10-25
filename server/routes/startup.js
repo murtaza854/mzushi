@@ -31,7 +31,18 @@ router.get('/table-data', async (req, res) => {
 router.get('/get-all-by-category', async (req, res) => {
     const { categorySlug } = req.query;
     const category = await Category.findOne({ slug: categorySlug });
-    const startups = await Startup.find({ category: category });
+    const startups = await Startup.find({ category: category }).populate("category").populate({
+        path: 'address',
+        populate: {
+            path: 'area',
+            populate: {
+                path: 'city',
+                populate: {
+                    path: 'province',
+                }
+            }
+        }
+    });
     if (!startups) res.json({ data: [] });
     else res.json({ data: startups });
 });
@@ -134,6 +145,7 @@ router.post('/startup-setup', upload.single('image'), async (req, res, next) => 
         startup.serviceCities = data.cityDS;
         startup.serviceProvinces = data.provinceDS;
         startup.accountSetup = true;
+        startup.features = data.finalFeaturesList;
         startup.save();
         // const obj = {
         //     name: req.file.fieldname,

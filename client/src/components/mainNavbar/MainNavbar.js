@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Container, Navbar, Nav } from 'react-bootstrap';
 import {
     Link,
 } from "react-router-dom";
+import UserContext from '../../contexts/userContext';
 import TransparentButton from '../transparentButton/TransparentButton';
 import YellowButton from '../yellowButton/YellowButton';
 import './MainNavbar.scss';
 
 function MainNavbar(props) {
+    const user = useContext(UserContext);
     let flag = false;
     if (window.location.pathname === '/packages') flag = true;
     else if (window.location.pathname === '/premium') flag = true;
@@ -25,19 +27,29 @@ function MainNavbar(props) {
                         <Navbar.Collapse id="responsive-navbar-nav">
                             <Nav className="me-auto">
                             </Nav>
-                            <Nav>
-                                <TransparentButton
-                                    to="/login"
-                                    text="Login"
-                                    classes=""
-                                />
-                                <div className="margin-global-left-2" />
-                                <YellowButton
-                                    to="/signup"
-                                    text="Sign Up"
-                                    classes="text-uppercase width-medium"
-                                />
-                            </Nav>
+                            {
+                                user.userState ? (
+                                    <Nav>
+                                        <Link className="dashboard-icon" to="/dashboard">
+                                            <img src="/android-chrome-192x192.png" alt="mzushi icon" />
+                                        </Link>
+                                    </Nav>
+                                ) : (
+                                    <Nav>
+                                        <TransparentButton
+                                            to="/login"
+                                            text="Login"
+                                            classes=""
+                                        />
+                                        <div className="margin-global-left-2" />
+                                        <YellowButton
+                                            to="/signup"
+                                            text="Sign Up"
+                                            classes="text-uppercase width-medium"
+                                        />
+                                    </Nav>
+                                )
+                            }
                         </Navbar.Collapse>
                     ) : null
                 }

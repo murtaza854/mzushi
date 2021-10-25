@@ -159,10 +159,6 @@ function Routes(props) {
                                 <MainNavbar />
                                 <Business />
                             </Route>
-                            <Route path="/:category">
-                                <MainNavbar />
-                                <Businesses />
-                            </Route>
                             <Route path="/premium">
                                 <MainNavbar />
                                 <Premium />
@@ -182,6 +178,10 @@ function Routes(props) {
                             <Route path="/setup">
                                 <MainNavbar />
                                 <Setup />
+                            </Route>
+                            <Route path="/:category">
+                                <MainNavbar />
+                                <Businesses />
                             </Route>
                             <Route path="/">
                                 <MainNavbar />

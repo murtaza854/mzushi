@@ -7,10 +7,12 @@ import Slider from "react-slick";
 import './Businesses.scss';
 import { useParams } from 'react-router';
 import api from '../../api';
+import { arrayBufferToBase64 } from '../../helperFunctions/arrayBufferToBase64';
 
 function Businesses(props) {
     const { category } = useParams();
     const [startUps, setStartUps] = useState([]);
+    const [featuredStartUps, setFeaturedStartUps] = useState([]);
 
     useEffect(() => {
         (async () => {
@@ -22,11 +24,11 @@ function Businesses(props) {
             });
             const content = await response.json();
             setStartUps(content.data);
+            setFeaturedStartUps(content.data.filter(element => element.mzushiChoice === true));
             // setCategory(splitArrayIntoChunksOfLen(content.data, 4));
         })()
     }, [category]);
 
-    const cards = [<BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />, <BusinessCard classes="horizontal-center-relative" />];
     let sliderLength = 4;
     // let sliderLength1250 = 3;
     let sliderLength991 = 2;
@@ -82,13 +84,31 @@ function Businesses(props) {
                 <Container className="card-container">
                     <Row className="justify-content-center">
                         <Slider {...settingsCards}>
-                            {
+                            {/* {
                                 cards.map((value, index) => (
                                     <div key={index} className="business-card-container">
                                         {value}
                                     </div>
                                 ))
-                            }
+                            } */}
+                            {
+                            featuredStartUps.map((value, index) => {
+                                const base64Flag = `data:${value.logo.contentType};base64,`;
+                                const imagePath = base64Flag + arrayBufferToBase64(value.logo.data.data);
+                                return (
+                                    <div key={index} className="business-card-container">
+                                        <BusinessCard
+                                            classes="horizontal-center-relative"
+                                            logo={imagePath}
+                                            startupName={value.startupName}
+                                            slug={`/${value.category.slug}/${value.slug}`}
+                                            category={value.category.name}
+                                            rating={value.rating}
+                                        />
+                                    </div>
+                                )
+                            })
+                        }
                         </Slider>
                     </Row>
                 </Container>

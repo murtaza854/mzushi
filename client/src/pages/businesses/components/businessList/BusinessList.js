@@ -11,7 +11,6 @@ function BusinessList(props) {
             {
                 props.startUps.map((value, index) => {
                     let classes = "";
-                    console.log(index, value);
                     if (index !== 0) classes = "margin-global-top-1";
                     const base64Flag = `data:${value.logo.contentType};base64,`;
                     const imagePath = base64Flag + arrayBufferToBase64(value.logo.data.data);
@@ -33,7 +32,6 @@ function BusinessList(props) {
                                 province={value.address.area.city.province.name}
                                 activeDays={value.activeDays}
                                 features={value.features}
-
                             />
                         </Row>
                     )

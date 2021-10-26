@@ -6,7 +6,16 @@ import './YellowButton.scss';
 
 function YellowButton(props) {
     return (
-        <Link className={`yellow-button ${props.classes}`} to={props.to}>{props.text}</Link>
+        <>
+            {
+                props.onClick ? (
+                    <Link onClick={e => props.onClick(e, props.id)} className={`yellow-button ${props.classes}`} to={props.to}>{props.text}</Link>
+                ) : (
+                    <Link className={`yellow-button ${props.classes}`} to={props.to}>{props.text}</Link>
+                )
+            }
+        </>
+        // <Link className={`yellow-button ${props.classes}`} to={props.to}>{props.text}</Link>
     );
 }
 

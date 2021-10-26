@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Fragment } from 'react';
 import { Form, Col, Container, Row } from 'react-bootstrap';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
@@ -7,18 +7,21 @@ import api from '../../api';
 import './SearchBar.scss';
 
 function SearchBar(props) {
-    const [country, setCountry] = useState({ value: [] });
-    const [countryList, setCountryList] = useState([]);
-    const [countryLoading, setCountryLoading] = useState(false);
+    const [cityList, setCityList] = useState([]);
+    const [selectedCity, setSelectedCity] = useState(null);
 
-    const changeCountry = async array => {
-        setCountry(prevState => ({ ...prevState, value: array }));
+    const [startup, setStartup] = useState({ value: [] });
+    const [startupList, setStartupList] = useState([]);
+    const [startupLoading, setStartupLoading] = useState(false);
+
+    const changeStartup = async array => {
+        setStartup(prevState => ({ ...prevState, value: array }));
     }
 
-    const handleCountrySearch = async (query) => {
-        setCountryLoading(true);
-        setCountryList([]);
-        const response = await fetch(`${api}/country/get-countries-search?countryText=${query}`, {
+    const handlStartupSearch = async (query) => {
+        setStartupLoading(true);
+        setStartupList([]);
+        const response = await fetch(`${api}/startup/get-startups-search?startupText=${query}&city=${JSON.stringify(selectedCity)}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -29,45 +32,79 @@ function SearchBar(props) {
         });
         const content = await response.json();
         setTimeout(() => {
-            setCountryList(content.data);
-            setCountryLoading(false);
+            setStartupList(content.data);
+            setStartupLoading(false);
         }, 1000)
     };
 
-    const filterByCountry = () => true;
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await fetch(`${api}/city/table-data`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                const content = await response.json();
+                setCityList(content.data);
+                if (content.data.length > 0) setSelectedCity(content.data[0]._id);
+            } catch (error) {
+                setCityList([]);
+            }
+        })()
+    }, []);
+
+    const filterByStartup = () => true;
+
+    const changeSelectedCity = e => {
+        // console.log(e.target.value);
+        // setStartupList([]);
+        setSelectedCity(e.target.value);
+    }
+
     return (
         <Container className={`search-bar ${props.classes}`} fluid>
+            <img className="background" src="https://s3-media0.fl.yelpcdn.com/assets/srv0/yelp_large_assets/a2a6dfbdce53/assets/img/home/hero_photos/Y52KtIDZeG8aAMBaLIjSlQ.jpg" alt="Background" />
             <Form className={`form-style ${props.centerclass}`}>
                 <Row className="justify-content-center">
-                    <Form.Group as={Col} xs={4} controlId="country">
+                    <Form.Group as={Col} xs={4} controlId="startup">
                         <AsyncTypeahead
-                            filterBy={filterByCountry}
-                            isLoading={countryLoading}
+                            filterBy={filterByStartup}
+                            isLoading={startupLoading}
                             placeholder="Search"
-                            id="country"
-                            labelKey="name"
+                            id="startup"
+                            labelKey="startupName"
                             minLength={2}
-                            onSearch={handleCountrySearch}
-                            onChange={changeCountry}
-                            options={countryList}
-                            selected={country.value}
+                            onSearch={handlStartupSearch}
+                            onChange={changeStartup}
+                            options={startupList}
+                            selected={startup.value}
                             renderMenuItemChildren={(option, props) => (
                                 <Fragment>
-                                    <span>{option.name}</span>
+                                    <span>{option.startupName}</span>
                                 </Fragment>
                             )}
                         />
                     </Form.Group>
                     <Form.Group as={Col} xs={4} className="input-form-group fit-content" controlId="country">
-                        <select className="browser-default ustom-select">
-                            <option value="Karachi">Karachi</option>
-                            <option value="Islamabad">Dera Ghazi Khan</option>
-                            <option value="3">Option 3</option>
-                        </select>
+                        {
+                            selectedCity ? (
+                                <select value={selectedCity} onChange={changeSelectedCity} className="browser-default ustom-select">
+                                    {
+                                        cityList.map((value, index) => {
+                                            return (
+                                                <option key={index} value={value._id}>{value.name}</option>
+                                            )
+                                        })
+                                    }
+                                </select>
+                            ) : null
+                        }
                     </Form.Group>
                     <Col xs={2} className="searchbar-btn">
                         {/* <Button className="searchbar-width border-radius-btn" type="submit"> */}
-                            <AiOutlineSearch className="icon" />
+                        <AiOutlineSearch className="icon" />
                         {/* </Button> */}
                     </Col>
                 </Row>

@@ -19,6 +19,7 @@ import {
 //   import './App.scss';
 import './form.scss';
 import './global.scss';
+import { Dashboard } from './dashboard';
 
 function Routes(props) {
     //   const [cart, setCart] = useState({ data: {}, count: 0 });
@@ -158,6 +159,10 @@ function Routes(props) {
                             <Route path="/:category/:startup">
                                 <MainNavbar />
                                 <Business />
+                            </Route>
+                            <Route path="/dashboard">
+                                <MainNavbar />
+                                <Dashboard />
                             </Route>
                             <Route path="/premium">
                                 <MainNavbar />

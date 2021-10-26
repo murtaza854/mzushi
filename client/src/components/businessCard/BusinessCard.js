@@ -9,25 +9,26 @@ function BusinessCard(props) {
         <div className={`business-card ${props.classes}`}>
             <div className="business-card-head">
                 <img
-                    src="https://s3-media0.fl.yelpcdn.com/bphoto/JMaVR5nUiDXz2XDbyZvc8Q/l.jpg"
+                    src={props.logo}
                     alt="Test"
                 />
                 <div className="business-card-chip">
-                    Breakfast
+                    {props.category}
                 </div>
             </div>
             <div className="margin-global-top-1" />
             <div className="business-card-body">
                 <BusinessTitle
-                    text="Business Name"
+                    text={props.startupName}
                     blue=""
                     classes="margin-bottom-0"
                     text2=""
+                    to={props.slug}
                 />
-                <Rating size="medium" name="read-only" value={3} readOnly />
+                <Rating size="medium" name="read-only" value={props.rating} readOnly />
             <div className="margin-global-top-1" />
                 <YellowButton
-                    to="/directory/business"
+                    to={props.slug}
                     text="View"
                     classes="text-uppercase small-yellow-button horizontal-center-relative"
                 />

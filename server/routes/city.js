@@ -9,10 +9,9 @@ router.get('/get-cities-search', async (req, res) => {
     res.json({ data: cities });
 });
 
-router.get('/get-limit-by-featured', async (req, res) => {
-    let { limit } = req.query;
-    limit = parseInt(limit);
-    const cities = await City.find({featured: true}).limit(limit);
+router.get('/get-featured', async (req, res) => {
+    
+    const cities = await City.find({featured: true});
     res.json({ data: cities });
 });
 

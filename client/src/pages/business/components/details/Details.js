@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import Rating from '@material-ui/lab/Rating';
 import { IoLocationOutline } from 'react-icons/io5'
-import { AiOutlineClockCircle, AiOutlineClose } from 'react-icons/ai'
+import { AiOutlineClockCircle } from 'react-icons/ai'
 import { FiCheck } from 'react-icons/fi'
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
@@ -87,8 +87,18 @@ function Details(props) {
                         <p>{displayTime}</p>
                     </div>
                     <div className="margin-global-top-06" />
-                    <Row style={{display: 'none'}}>
-                        <Col xs={4} className="icon-text yellow">
+                    <Row>
+                        {
+                            props.features.map((value, index) => {
+                                return (
+                                    <Col key={index} xs={4} className="icon-text yellow">
+                                        <FiCheck className="icon" />
+                                        <p>{value.name}</p>
+                                    </Col>
+                                )
+                            })
+                        }
+                        {/* <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
                         </Col>
@@ -119,7 +129,7 @@ function Details(props) {
                         <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
-                        </Col>
+                        </Col> */}
                     </Row>
                 </Col>
             </Row>

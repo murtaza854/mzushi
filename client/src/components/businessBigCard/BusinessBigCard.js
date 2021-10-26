@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap';
 import { BusinessTitle } from '..';
 import Rating from '@material-ui/lab/Rating';
 import { IoLocationOutline } from 'react-icons/io5'
-import { AiOutlineClockCircle, AiOutlineClose } from 'react-icons/ai'
+import { AiOutlineClockCircle } from 'react-icons/ai'
 import { FiCheck } from 'react-icons/fi'
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
@@ -35,6 +35,7 @@ function BusinessBigCard(props) {
             classes = "closed-business";
         }
     }
+    console.log(props.features);
     return (
         <div className={`business-big-card ${props.classes}`}>
             <Row>
@@ -85,23 +86,32 @@ function BusinessBigCard(props) {
                     <div className="margin-global-top-02" />
                     <div className="icon-text">
                         <IoLocationOutline className="icon center-relative-vertical" />
-                        <p>{props.addressLine1}</p>
-                        <p>{props.addressLine2}</p>
-                        {
-                            props.landmark !== "" ? (
-                                <p>{props.landmark}, {props.area}</p>
-                            ) : (
-                                <p>{props.area}</p>
-                            )
-                        }
-                        <p>{props.city}, {props.province}</p>
+                        <p>{props.area}, {props.city}, {props.province}</p>
                     </div>
                     <div className="icon-text">
                         <AiOutlineClockCircle className={`icon ${classes}`} />
                         <p>{displayTime}</p>
                     </div>
-                    <div style={{display: 'none'}} className="margin-global-top-06" />
-                    <Row style={{display: 'none'}}>
+                    <div className="margin-global-top-06" />
+                    <Row>
+                        {
+                            props.features.map((value, index) => {
+                                return (
+                                    <Col key={index} xs={4} className="icon-text yellow">
+                                        <FiCheck className="icon" />
+                                        <p>{value.name}</p>
+                                    </Col>
+                                )
+                            })
+                        }
+                        {/* <Col xs={4} className="icon-text yellow">
+                            <FiCheck className="icon" />
+                            <p>Lorem Ipsum</p>
+                        </Col>
+                        <Col xs={4} className="icon-text yellow">
+                            <AiOutlineClose className="icon" />
+                            <p>Lorem Ipsum</p>
+                        </Col>
                         <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
@@ -121,19 +131,7 @@ function BusinessBigCard(props) {
                         <Col xs={4} className="icon-text yellow">
                             <FiCheck className="icon" />
                             <p>Lorem Ipsum</p>
-                        </Col>
-                        <Col xs={4} className="icon-text yellow">
-                            <AiOutlineClose className="icon" />
-                            <p>Lorem Ipsum</p>
-                        </Col>
-                        <Col xs={4} className="icon-text yellow">
-                            <FiCheck className="icon" />
-                            <p>Lorem Ipsum</p>
-                        </Col>
-                        <Col xs={4} className="icon-text yellow">
-                            <FiCheck className="icon" />
-                            <p>Lorem Ipsum</p>
-                        </Col>
+                        </Col> */}
                     </Row>
                 </Col>
             </Row>

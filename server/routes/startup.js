@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Startup = require('../schema').startup;
 const Category = require('../schema').category;
+const Area = require('../schema').area;
 const Address = require('../schema').address;
 const slugify = require('slugify');
 const dotenv = require('dotenv');
@@ -29,10 +30,24 @@ router.get('/table-data', async (req, res) => {
     else res.json({ data: startups });
 });
 
+router.get('/get-mzushi-choice', async (req, res) => {
+    try {
+        const city = JSON.parse(req.query.city);
+        delete city.active;
+        const areas = await Area.find({ city: city });
+        const addresses = await Address.find({ area: areas });
+        const startups = await Startup.find({ mzushiChoice: false, address: addresses }).populate("category");
+        if (!startups) res.json({ data: [] });
+        else res.json({ data: startups });
+    } catch (error) {
+        res.json({ data: [] });
+    }
+});
+
 router.get('/get-one-by-category-startup', async (req, res) => {
     const { categorySlug, startupSlug } = req.query;
     const category = await Category.findOne({ slug: categorySlug });
-    const startup = await Startup.findOne({ category: category, slug: startupSlug }).populate("category").populate({
+    const startup = await Startup.findOne({ category: category, slug: startupSlug }).populate("category").populate("features").populate({
         path: 'address',
         populate: {
             path: 'area',
@@ -51,7 +66,7 @@ router.get('/get-one-by-category-startup', async (req, res) => {
 router.get('/get-all-by-category', async (req, res) => {
     const { categorySlug } = req.query;
     const category = await Category.findOne({ slug: categorySlug });
-    const startups = await Startup.find({ category: category }).populate("category").populate({
+    const startups = await Startup.find({ category: category }).populate("category").populate("features").populate({
         path: 'address',
         populate: {
             path: 'area',
@@ -96,6 +111,24 @@ router.post('/signup', async (req, res) => {
     } catch (error) {
         console.log(error);
         res.json({ data: false, error: error });
+    }
+});
+router.get('/get-startups-search', async (req, res) => {
+    try {
+        const { startupText, city } = req.query;
+        const startups = await Startup.find({ name: { "$regex": startupText, "$options": "i" }, city: JSON.parse(city) });
+        res.json({ data: startups });
+    } catch (error) {
+        res.json({ data: [] });
+    }
+});
+
+router.get('/logout', async (req, res) => {
+    try {
+        await firebase.auth().signOut();
+        res.json({ loggedIn: false });
+    } catch (error) {
+        res.json({ loggedIn: false, error: error });
     }
 });
 

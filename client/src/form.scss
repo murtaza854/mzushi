@@ -28,7 +28,7 @@
         border-color: #f6d33e;
     }
     .form-check-input:focus {
-        border-color: transparent;
+        border-color: white;
         box-shadow: none;
     }
     .form-label {
@@ -103,7 +103,7 @@
         font-size: 1rem;
         &:focus {
             box-shadow: none;
-            background-color: transparent;
+            background-color: white;
             border: 2px solid #f6d33e;
         }
     }
@@ -158,7 +158,7 @@
         margin: 0 1rem;
         box-shadow: none;
         &:hover {
-            background-color: transparent !important;
+            background-color: white !important;
             color: #f6d33e;
             border: 1px solid #f6d33e !important;
         }

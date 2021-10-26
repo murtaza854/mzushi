@@ -17,11 +17,11 @@ function Setup(props) {
     const user = useContext(UserContext);
     const history = useHistory();
 
-    useEffect(() => {
-        if (user.userState) {
-            if (user.userState.accountSetup) history.push('/');
-        } else history.push('/login');
-    }, [history, user.userState]);
+    // useEffect(() => {
+    //     if (user.userState) {
+    //         if (user.userState.accountSetup) history.push('/');
+    //     } else history.push('/login');
+    // }, [history, user.userState]);
 
     const [businessName, setBusinessName] = useState({ text: '', error: false, errorText: '' });
     const [businessDescription, setBusinessDescription] = useState({ text: '', error: false, errorText: '' });
@@ -978,7 +978,7 @@ function Setup(props) {
                     </Row>
                     <div className="margin-global-top-4" />
                     <Row>
-                        <Form.Group as={Col} controlId="firstName">
+                        <Form.Group as={Col}>
                             <Form.Label className="bold-600">What Features does your Business offer?</Form.Label>
                         </Form.Group>
                     </Row>

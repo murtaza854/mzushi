@@ -23,7 +23,7 @@ function FilterPanel(props) {
         <div id="filter-panel" className="filter-panel">
             <div className="filter-panel-container">
                 {/* <Row> */}
-                    <ImCancelCircle onClick={closeFilterPanel} className="unhide-1200 close-icon" />
+                <ImCancelCircle onClick={closeFilterPanel} className="unhide-1200 close-icon" />
                 {/* </Row> */}
                 <Row className="justify-content-center">
                     <ToggleButtonGroup
@@ -53,7 +53,6 @@ function FilterPanel(props) {
                         <Form.Check
                             className="center-relative-vertical bold-600"
                             type='checkbox'
-                            id="service"
                             label="mzushi’s choice"
                         // checked={radios.service}
                         // onClick={handleServiceClick}
@@ -73,7 +72,6 @@ function FilterPanel(props) {
                         <div className="filter-panel-section-list">
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -81,7 +79,6 @@ function FilterPanel(props) {
                             />
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -89,7 +86,6 @@ function FilterPanel(props) {
                             />
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -97,7 +93,6 @@ function FilterPanel(props) {
                             />
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -105,7 +100,6 @@ function FilterPanel(props) {
                             />
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -126,7 +120,6 @@ function FilterPanel(props) {
                         <div className="filter-panel-section-list">
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -134,7 +127,6 @@ function FilterPanel(props) {
                             />
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -142,7 +134,6 @@ function FilterPanel(props) {
                             />
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -150,7 +141,6 @@ function FilterPanel(props) {
                             />
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -158,7 +148,6 @@ function FilterPanel(props) {
                             />
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -179,7 +168,6 @@ function FilterPanel(props) {
                         <div className="filter-panel-section-list">
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -187,7 +175,6 @@ function FilterPanel(props) {
                             />
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -195,7 +182,6 @@ function FilterPanel(props) {
                             />
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -203,7 +189,6 @@ function FilterPanel(props) {
                             />
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -211,7 +196,6 @@ function FilterPanel(props) {
                             />
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -232,7 +216,6 @@ function FilterPanel(props) {
                         <div className="filter-panel-section-list">
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -240,7 +223,6 @@ function FilterPanel(props) {
                             />
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -248,7 +230,6 @@ function FilterPanel(props) {
                             />
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -256,7 +237,6 @@ function FilterPanel(props) {
                             />
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}
@@ -264,7 +244,6 @@ function FilterPanel(props) {
                             />
                             <Form.Check
                                 type='checkbox'
-                                id="service"
                                 label="Lorem Ipsum"
                             // checked={radios.service}
                             // onClick={handleServiceClick}

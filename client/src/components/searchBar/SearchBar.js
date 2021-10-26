@@ -7,6 +7,8 @@ import api from '../../api';
 import './SearchBar.scss';
 
 function SearchBar(props) {
+    let flag = true;
+    if (window.location.pathname !== "/") flag = false;
     const [cityList, setCityList] = useState([]);
     const [selectedCity, setSelectedCity] = useState(null);
 
@@ -65,7 +67,12 @@ function SearchBar(props) {
 
     return (
         <Container className={`search-bar ${props.classes}`} fluid>
-            <img className="background" src="https://s3-media0.fl.yelpcdn.com/assets/srv0/yelp_large_assets/a2a6dfbdce53/assets/img/home/hero_photos/Y52KtIDZeG8aAMBaLIjSlQ.jpg" alt="Background" />
+            {
+                flag ? (
+                    // <img className="background" src="https://s3-media0.fl.yelpcdn.com/assets/srv0/yelp_large_assets/a2a6dfbdce53/assets/img/home/hero_photos/Y52KtIDZeG8aAMBaLIjSlQ.jpg" alt="Background" />
+                    <img className="background" src="/background.jpeg" alt="Background" />
+                ) : null
+            }
             <Form className={`form-style ${props.centerclass}`}>
                 <Row className="justify-content-center">
                     <Form.Group as={Col} xs={4} controlId="startup">

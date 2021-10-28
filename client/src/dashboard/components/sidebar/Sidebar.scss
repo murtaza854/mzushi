@@ -1,11 +1,21 @@
 .dashboard-sidebar {
     border-right: 1px solid black;
     .link-row {
-        // display: flex;
-        // flex-direction: column;
+        display: flex;
+        flex-direction: column;
         a {
-            // width: fit-content;
-            // text-indent: 10rem;
+            width: fit-content;
+            color: black;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            text-decoration: none;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+        .active {
+            text-decoration: underline;
         }
     }
 }

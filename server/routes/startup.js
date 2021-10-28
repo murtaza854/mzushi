@@ -30,6 +30,21 @@ router.get('/table-data', async (req, res) => {
     else res.json({ data: startups });
 });
 
+router.get('/get-logged-in', async (req, res) => {
+    try {
+        const user = firebase.auth().currentUser;
+        if (user) {
+            const idTokenResult = await user.getIdTokenResult();
+            const admin = idTokenResult.claims.admin;
+            const uid = user.uid;
+            const startup = await Startup.findOne({ uid: uid });
+            res.json({ data: startup });
+        } else res.json({ data: null })
+    } catch (error) {
+        res.json({ data: null, error: error });
+    }
+});
+
 router.get('/get-mzushi-choice', async (req, res) => {
     try {
         const city = JSON.parse(req.query.city);

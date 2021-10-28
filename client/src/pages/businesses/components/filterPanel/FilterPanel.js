@@ -33,16 +33,16 @@ function FilterPanel(props) {
                         onChange={handleAlignment}
                         aria-label="text alignment"
                     >
-                        <ToggleButton className="first-toggle" disableRipple={true} value="left" aria-label="left aligned">
+                        <ToggleButton className="first-toggle" disableRipple={true} value="one" aria-label="left aligned">
                             <strong className="bold-900">$</strong>
                         </ToggleButton>
-                        <ToggleButton disableRipple={true} className="square-toggle" value="center" aria-label="centered">
+                        <ToggleButton disableRipple={true} className="square-toggle" value="two" aria-label="centered">
                             <strong className="bold-900">$$</strong>
                         </ToggleButton>
-                        <ToggleButton disableRipple={true} className="square-toggle" value="right" aria-label="right aligned">
+                        <ToggleButton disableRipple={true} className="square-toggle" value="three" aria-label="right aligned">
                             <strong className="bold-900">$$$</strong>
                         </ToggleButton>
-                        <ToggleButton className="last-toggle" disableRipple={true} value="justify" aria-label="justified">
+                        <ToggleButton className="last-toggle" disableRipple={true} value="four" aria-label="justified">
                             <strong className="bold-900">$$$$</strong>
                         </ToggleButton>
                     </ToggleButtonGroup>
@@ -70,7 +70,22 @@ function FilterPanel(props) {
                             text2=""
                         />
                         <div className="filter-panel-section-list">
-                            <Form.Check
+                            {
+                                props.features.map((value, index) => {
+                                    return (
+                                        <Form.Check
+                                            type='checkbox'
+                                            label={value.name}
+                                            id={value.name}
+                                            key={index}
+                                            checked={value.active}
+                                            onClick={e => props.handleFeatureChange(e, index)}
+                                            onChange={_ => { }}
+                                        />
+                                    )
+                                })
+                            }
+                            {/* <Form.Check
                                 type='checkbox'
                                 label="Lorem Ipsum"
                             // checked={radios.service}
@@ -104,7 +119,7 @@ function FilterPanel(props) {
                             // checked={radios.service}
                             // onClick={handleServiceClick}
                             // onChange={_ => { }}
-                            />
+                            /> */}
                         </div>
                     </div>
                     {/* </Row> */}
@@ -118,7 +133,22 @@ function FilterPanel(props) {
                             text2=""
                         />
                         <div className="filter-panel-section-list">
-                            <Form.Check
+                            {
+                                props.provinces.map((value, index) => {
+                                    return (
+                                        <Form.Check
+                                            type='checkbox'
+                                            label={value.name}
+                                            id={value.name}
+                                            key={index}
+                                            checked={value.active}
+                                            onClick={e => props.handleProvinceChange(e, index)}
+                                            onChange={_ => { }}
+                                        />
+                                    )
+                                })
+                            }
+                            {/* <Form.Check
                                 type='checkbox'
                                 label="Lorem Ipsum"
                             // checked={radios.service}
@@ -152,7 +182,7 @@ function FilterPanel(props) {
                             // checked={radios.service}
                             // onClick={handleServiceClick}
                             // onChange={_ => { }}
-                            />
+                            /> */}
                         </div>
                     </div>
                     {/* </Row> */}
@@ -166,7 +196,22 @@ function FilterPanel(props) {
                             text2=""
                         />
                         <div className="filter-panel-section-list">
-                            <Form.Check
+                            {
+                                props.cities.map((value, index) => {
+                                    return (
+                                        <Form.Check
+                                            type='checkbox'
+                                            label={value.name}
+                                            id={value.name}
+                                            key={index}
+                                            checked={value.active}
+                                            onClick={e => props.handleCityChange(e, index)}
+                                            onChange={_ => { }}
+                                        />
+                                    )
+                                })
+                            }
+                            {/* <Form.Check
                                 type='checkbox'
                                 label="Lorem Ipsum"
                             // checked={radios.service}
@@ -200,7 +245,7 @@ function FilterPanel(props) {
                             // checked={radios.service}
                             // onClick={handleServiceClick}
                             // onChange={_ => { }}
-                            />
+                            /> */}
                         </div>
                     </div>
                     {/* </Row> */}
@@ -214,7 +259,22 @@ function FilterPanel(props) {
                             text2=""
                         />
                         <div className="filter-panel-section-list">
-                            <Form.Check
+                            {
+                                props.areas.map((value, index) => {
+                                    return (
+                                        <Form.Check
+                                            type='checkbox'
+                                            label={value.name}
+                                            id={value.name}
+                                            key={index}
+                                            checked={value.active}
+                                            onClick={e => props.handleAreaChange(e, index)}
+                                            onChange={_ => { }}
+                                        />
+                                    )
+                                })
+                            }
+                            {/* <Form.Check
                                 type='checkbox'
                                 label="Lorem Ipsum"
                             // checked={radios.service}
@@ -248,7 +308,7 @@ function FilterPanel(props) {
                             // checked={radios.service}
                             // onClick={handleServiceClick}
                             // onChange={_ => { }}
-                            />
+                            /> */}
                         </div>
                     </div>
                 </Row>

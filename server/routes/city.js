@@ -32,6 +32,12 @@ router.get('/get-cities', async (req, res) => {
     else res.json({ data: cities });
 });
 
+router.get('/get-cities-with-ref', async (req, res) => {
+    const cities = await City.find({});
+    if (!cities) res.json({ data: [] });
+    else res.json({ data: cities });
+});
+
 router.post('/add', async (req, res) => {
     const data = req.body;
     const newCity = new City({

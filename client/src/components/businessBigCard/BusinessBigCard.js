@@ -35,7 +35,6 @@ function BusinessBigCard(props) {
             classes = "closed-business";
         }
     }
-    console.log(props.features);
     return (
         <div className={`business-big-card ${props.classes}`}>
             <Row>

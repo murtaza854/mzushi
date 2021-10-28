@@ -21,6 +21,12 @@ router.get('/get-provinces', async (req, res) => {
     else res.json({ data: provinces });
 });
 
+router.get('/get-provinces-with-ref', async (req, res) => {
+    const provinces = await Province.find({});
+    if (!provinces) res.json({ data: [] });
+    else res.json({ data: provinces });
+});
+
 router.post('/add', async (req, res) => {
     const data = req.body;
     const newProvince = new Province({

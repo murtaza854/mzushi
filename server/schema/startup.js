@@ -14,7 +14,8 @@ const startupSchema = new mongoose.Schema({
     maxPrice: { type: Number },
     active: { type: Boolean, required: true },
     premium: { type: Boolean, required: true },
-    rating: { type: Number, required: true },
+    totalRating: { type: Number, required: true, default: 0 },
+    numberOfRatingsDone: { type: Number, required: true, default: 0 },
     website: { type: String },
     moneyClass: { type: String },
     activeDays: [

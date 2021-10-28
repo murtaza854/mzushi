@@ -28,6 +28,12 @@ router.get('/get-areas', async (req, res) => {
     else res.json({ data: areas });
 });
 
+router.get('/get-areas-with-ref', async (req, res) => {
+    const areas = await Area.find({});
+    if (!areas) res.json({ data: [] });
+    else res.json({ data: areas });
+});
+
 router.post('/add', async (req, res) => {
     const data = req.body;
     const newArea = new Area({

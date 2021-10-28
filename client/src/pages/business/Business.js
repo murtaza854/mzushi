@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import { useParams } from 'react-router';
 import api from '../../api';
+import { arrayBufferToBase64 } from '../../helperFunctions/arrayBufferToBase64';
 import './Business.scss';
 import { Details, Poster, SmallGallery, BusinessDynamic } from './components';
 
 function Business(props) {
     const { category, startup } = useParams();
     const [startupObj, setStartupObj] = useState(null);
+    const [poster, setPoster] = useState(null);
 
     useEffect(() => {
         (async () => {
@@ -18,7 +20,9 @@ function Business(props) {
                 },
             });
             const content = await response.json();
-            console.log(content.data);
+            const base64Flag = `data:${content.data.logo.contentType};base64,`;
+            const imagePath = base64Flag + arrayBufferToBase64(content.data.logo.data.data);
+            setPoster(imagePath);
             setStartupObj(content.data);
         })()
     }, [category, startup]);
@@ -31,6 +35,7 @@ function Business(props) {
                         <div className="margin-global-top-4" />
                         <Row className="justify-content-center">
                             <Poster
+                                poster={poster}
                                 startupName={startupObj.startupName}
                             />
                         </Row>

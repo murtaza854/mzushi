@@ -12,6 +12,7 @@ import api from '../../api';
 import { TextField } from '@material-ui/core';
 import UserContext from '../../contexts/userContext';
 import { useHistory } from 'react-router';
+import { gcd } from '../../helperFunctions/gcd';
 
 function Setup(props) {
     const user = useContext(UserContext);
@@ -74,7 +75,7 @@ function Setup(props) {
     const [areaDS, setAreaDS] = useState({ value: [], readOnly: true });
     const [areaDSList, setAreaDSList] = useState([]);
     const [areaDSLoading, setAreaDSLoading] = useState(false);
-    
+
     const [disabledBtn, setDisabledBtn] = useState(true);
 
     const handleAlignment = (event, newAlignment) => {
@@ -104,17 +105,20 @@ function Setup(props) {
                     var image = new Image();
                     image.src = theFile.target.result;
                     setLogo(prevState => ({ ...prevState, picturePreview: event.target.files[0], imgURl: objectUrl, error: false }));
-
-                    // image.onload = function () {
-                    //     // access image size here 
-                    //     console.log(this.width, this.height);
-                    //     if (this.width / this.height !== 1) {
-                    //         alert("Please upload a square logo.");
-                    //     }
-                    //     else {
-                    //         setLogo(prevState => ({ ...prevState, picturePreview: objectUrl, imgURl: event.target.files[0] }));
-                    //     }
-                    // };
+                    image.onload = function () {
+                        // access image size here 
+                        // console.log(this.width, this.height);
+                        // console.log(gcd(this.width, this.height));
+                        const w = this.width;
+                        const h = this.height;
+                        const r = gcd(w, h);
+                        if (w / r > h / r) {
+                            setLogo(prevState => ({ ...prevState, picturePreview: event.target.files[0], imgURl: objectUrl, error: false }));
+                        }
+                        else {
+                            alert("Please upload a landscape image.");
+                        }
+                    };
                 });
             } else {
                 setLogo(prevState => ({ ...prevState, error: true }));
@@ -456,19 +460,19 @@ function Setup(props) {
             logo.picturePreview
         );
         const activeDays = [];
-        if (monday.check) activeDays.push({name: 'Monday', workingHourStart: monday.startValue, workingHourEnd: monday.endValue});
-        if (tuesday.check) activeDays.push({name: 'Tuesday', workingHourStart: tuesday.startValue, workingHourEnd: tuesday.endValue});
-        if (wednesday.check) activeDays.push({name: 'Wednesday', workingHourStart: wednesday.startValue, workingHourEnd: wednesday.endValue});
-        if (thursday.check) activeDays.push({name: 'Thursday', workingHourStart: thursday.startValue, workingHourEnd: thursday.endValue});
-        if (friday.check) activeDays.push({name: 'Friday', workingHourStart: friday.startValue, workingHourEnd: friday.endValue});
-        if (saturday.check) activeDays.push({name: 'Saturday', workingHourStart: saturday.startValue, workingHourEnd: saturday.endValue});
-        if (sunday.check) activeDays.push({name: 'Sunday', workingHourStart: sunday.startValue, workingHourEnd: sunday.endValue});
+        if (monday.check) activeDays.push({ name: 'Monday', workingHourStart: monday.startValue, workingHourEnd: monday.endValue });
+        if (tuesday.check) activeDays.push({ name: 'Tuesday', workingHourStart: tuesday.startValue, workingHourEnd: tuesday.endValue });
+        if (wednesday.check) activeDays.push({ name: 'Wednesday', workingHourStart: wednesday.startValue, workingHourEnd: wednesday.endValue });
+        if (thursday.check) activeDays.push({ name: 'Thursday', workingHourStart: thursday.startValue, workingHourEnd: thursday.endValue });
+        if (friday.check) activeDays.push({ name: 'Friday', workingHourStart: friday.startValue, workingHourEnd: friday.endValue });
+        if (saturday.check) activeDays.push({ name: 'Saturday', workingHourStart: saturday.startValue, workingHourEnd: saturday.endValue });
+        if (sunday.check) activeDays.push({ name: 'Sunday', workingHourStart: sunday.startValue, workingHourEnd: sunday.endValue });
         const category = categories.find(element => element.active === 'active');
         delete category.active;
         console.log(features);
         const featuresList = features.filter(element => element.active === 'active');
         console.log(featuresList);
-        featuresList.forEach(function(v){ delete v.active });
+        featuresList.forEach(function (v) { delete v.active });
         // console.log(finalFeaturesList);
         formData.append(
             "data",

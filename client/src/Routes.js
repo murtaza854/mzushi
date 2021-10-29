@@ -156,13 +156,13 @@ function Routes(props) {
                                 <MainNavbar />
                                 <Auth />
                             </Route>
+                            <Route path="/dashboard/account">
+                                <MainNavbar />
+                                <Dashboard />
+                            </Route>
                             <Route path="/:category/:startup">
                                 <MainNavbar />
                                 <Business />
-                            </Route>
-                            <Route path="/dashboard">
-                                <MainNavbar />
-                                <Dashboard />
                             </Route>
                             <Route path="/premium">
                                 <MainNavbar />
@@ -182,7 +182,10 @@ function Routes(props) {
                             </Route>
                             <Route path="/setup">
                                 <MainNavbar />
-                                <Setup />
+                                <Setup
+                                    title="Your Journey Starts Here!"
+                                    edit={false}
+                                />
                             </Route>
                             <Route path="/:category">
                                 <MainNavbar />

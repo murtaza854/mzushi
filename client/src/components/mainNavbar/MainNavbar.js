@@ -30,7 +30,7 @@ function MainNavbar(props) {
                             {
                                 user.userState ? (
                                     <Nav>
-                                        <Link className="dashboard-icon" to="/dashboard">
+                                        <Link className="dashboard-icon" to="/dashboard/account">
                                             <img src="/android-chrome-192x192.png" alt="mzushi icon" />
                                         </Link>
                                     </Nav>

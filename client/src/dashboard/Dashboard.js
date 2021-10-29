@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Sidebar, DashboardSetup } from './components';
+import { Setup } from '../pages';
 import { useHistory } from 'react-router';
 // import api from '../api';
 // import { YellowButton } from '../components';
@@ -51,6 +52,8 @@ function Dashboard(props) {
     //         alert("Error logging out. Please contact support.")
     //     }
     // }
+    if (startup === null) return <div></div>;
+
     return (
         // <Container className="user-dashboard text-center margin-global-top-2">
         //     Dashboard under construction, Please check back after a while. Sorry for the inconvenience.
@@ -69,34 +72,46 @@ function Dashboard(props) {
                 <Sidebar />
                 <Col>
                     <RouterSwitch>
-                        <Route path="/dashboard" children={
+                        <Route path="/dashboard/account/account-setup/edit" children={
+                            <div className="box-shadow-dashboard">
+                                <Setup
+                                    title="Edit Business details"
+                                    edit={true}
+                                    startupName={startup.startupName}
+                                    startupDescription={startup.description}
+                                    logo={startup.logo}
+                                    alignment={startup.moneyClass}
+                                    minPrice={startup.minPrice}
+                                    maxPrice={startup.maxPrice}
+                                    webUrl={startup.website}
+                                    activeDays={startup.activeDays}
+                                    category={startup.category}
+                                    features={startup.features}
+                                    address={startup.address}
+                                    radios={{ delivery: startup.delivery, service: startup.service }}
+                                    provinceDS={startup.serviceProvinces}
+                                    cityDS={startup.serviceCities}
+                                    areaDS={startup.serviceAreas}
+                                />
+                            </div>
+                        } />
+                        <Route path="/dashboard/account/account-setup" children={
                             <DashboardSetup
                                 startupName={startup.startupName}
-                                startupDescription={startup.startupName}
-                                logo={startup.startupName}
-                                alignment={startup.startupName}
-                                minPrice={startup.startupName}
-                                maxPrice={startup.startupName}
-                                webUrl={startup.startupName}
-                                monday={startup.startupName}
-                                tuesday={startup.startupName}
-                                wednesday={startup.startupName}
-                                thursday={startup.startupName}
-                                friday={startup.startupName}
-                                saturday={startup.startupName}
-                                sunday={startup.startupName}
-                                category={startup.startupName}
-                                features={startup.startupName}
-                                province={startup.startupName}
-                                city={startup.startupName}
-                                area={startup.startupName}
-                                addressLine1={startup.startupName}
-                                addressLine2={startup.startupName}
-                                landmark={startup.startupName}
-                                radios={startup.startupName}
-                                provinceDS={startup.startupName}
-                                cityDS={startup.startupName}
-                                areaDS={startup.startupName}
+                                startupDescription={startup.description}
+                                logo={startup.logo}
+                                alignment={startup.moneyClass}
+                                minPrice={startup.minPrice}
+                                maxPrice={startup.maxPrice}
+                                webUrl={startup.website}
+                                activeDays={startup.activeDays}
+                                category={startup.category}
+                                features={startup.features}
+                                address={startup.address}
+                                radios={{ delivery: startup.delivery, service: startup.service }}
+                                provinceDS={startup.serviceProvinces}
+                                cityDS={startup.serviceCities}
+                                areaDS={startup.serviceAreas}
                             />
                         } />
                         {/* <Route path="/dashboard/:model/add" children={<AdminForm />} />
@@ -105,7 +120,7 @@ function Dashboard(props) {
                     </RouterSwitch>
                 </Col>
             </Row>
-        </Container>
+        </Container >
     );
 }
 

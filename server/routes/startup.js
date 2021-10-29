@@ -37,7 +37,18 @@ router.get('/get-logged-in', async (req, res) => {
             const idTokenResult = await user.getIdTokenResult();
             const admin = idTokenResult.claims.admin;
             const uid = user.uid;
-            const startup = await Startup.findOne({ uid: uid });
+            const startup = await Startup.findOne({ uid: uid }).populate("category").populate("features").populate('serviceProvinces').populate('serviceCities').populate('serviceAreas').populate({
+                path: 'address',
+                populate: {
+                    path: 'area',
+                    populate: {
+                        path: 'city',
+                        populate: {
+                            path: 'province',
+                        }
+                    }
+                }
+            });
             res.json({ data: startup });
         } else res.json({ data: null })
     } catch (error) {

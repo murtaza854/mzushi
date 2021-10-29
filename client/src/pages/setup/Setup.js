@@ -13,6 +13,7 @@ import { TextField } from '@material-ui/core';
 import UserContext from '../../contexts/userContext';
 import { useHistory } from 'react-router';
 import { gcd } from '../../helperFunctions/gcd';
+import { arrayBufferToBase64 } from '../../helperFunctions/arrayBufferToBase64';
 
 function Setup(props) {
     const user = useContext(UserContext);
@@ -60,7 +61,7 @@ function Setup(props) {
 
     const [addressLine1, setAddressLine1] = useState({ text: '', error: false, errorText: '' });
     const [addressLine2, setAddressLine2] = useState({ text: '' });
-    const [landmark, setLandmark] = useState({ text: '' })
+    const [landmark, setLandmark] = useState({ text: '' });
 
     const [radios, setRadios] = useState({ delivery: true, service: false });
 
@@ -77,6 +78,47 @@ function Setup(props) {
     const [areaDSLoading, setAreaDSLoading] = useState(false);
 
     const [disabledBtn, setDisabledBtn] = useState(true);
+
+    useEffect(() => {
+        if (props.edit) {
+            setBusinessName({ text: props.startupName, error: false, errorText: '' });
+            setBusinessDescription({ text: props.startupDescription, error: false, errorText: '' });
+            const base64Flag = `data:${props.logo.contentType};base64,`;
+            const imagePath = base64Flag + arrayBufferToBase64(props.logo.data.data);
+            setLogo({ picturePreview: '', imgURl: imagePath, error: false });
+            setAlignment(props.alignment);
+            setMinPrice({ text: props.minPrice, error: false, errorText: '' });
+            setMaxPrice({ text: props.maxPrice, error: false, errorText: '' });
+            setWebUrl({ text: props.webUrl });
+            props.activeDays.forEach(element => {
+                if (element.name === 'Monday') {
+                    setMonday({ check: true, startValue: new Date(element.workingHourStart), endValue: new Date(element.workingHourEnd) });
+                } else if (element.name === 'Tuesday') {
+                    setTuesday({ check: true, startValue: new Date(element.workingHourStart), endValue: new Date(element.workingHourEnd) });
+                } else if (element.name === 'Wednesday') {
+                    setWednesday({ check: true, startValue: new Date(element.workingHourStart), endValue: new Date(element.workingHourEnd) });
+                } else if (element.name === 'Thursday') {
+                    setThursday({ check: true, startValue: new Date(element.workingHourStart), endValue: new Date(element.workingHourEnd) });
+                } else if (element.name === 'Friday') {
+                    setFriday({ check: true, startValue: new Date(element.workingHourStart), endValue: new Date(element.workingHourEnd) });
+                } else if (element.name === 'Saturday') {
+                    setSaturday({ check: true, startValue: new Date(element.workingHourStart), endValue: new Date(element.workingHourEnd) });
+                } else if (element.name === 'Sunday') {
+                    setSunday({ check: true, startValue: new Date(element.workingHourStart), endValue: new Date(element.workingHourEnd) });
+                }
+            });
+            setProvince({ value: [props.address.area.city.province], error: false, errortext: '', readOnly: false });
+            setCity({ value: [props.address.area.city], error: false, errortext: '', readOnly: false });
+            setArea({ value: [props.address.area], error: false, errortext: '', readOnly: false });
+            setAddressLine1({ text: props.address.addressLine1, error: false, errorText: '' });
+            setAddressLine2({ text: props.address.addressLine2 });
+            setLandmark({ text: props.address.landmark });
+            setRadios(props.radios);
+            setProvinceDS(prevState => ({ ...prevState, value: props.provinceDS }));
+            setCityDS(prevState => ({ ...prevState, value: props.cityDS }));
+            setAreaDS(prevState => ({ ...prevState, value: props.areaDS }));
+        }
+    }, [props]);
 
     const handleAlignment = (event, newAlignment) => {
         if (newAlignment !== null) {
@@ -382,17 +424,26 @@ function Setup(props) {
             const content = await response.json();
             const catList = [];
             let flag = false;
-            content.data.forEach(element => {
-                if (flag) element['active'] = '';
-                else {
-                    element['active'] = 'active';
-                    flag = true;
-                }
-                catList.push(element);
-            });
+            if (props.edit) {
+                content.data.forEach(element => {
+                    if (element._id === props.category._id) {
+                        element['active'] = 'active';
+                    }
+                    catList.push(element);
+                });
+            } else {
+                content.data.forEach(element => {
+                    if (flag) element['active'] = '';
+                    else {
+                        element['active'] = 'active';
+                        flag = true;
+                    }
+                    catList.push(element);
+                });
+            }
             setCategories(catList);
         })()
-    }, []);
+    }, [props.edit, props.category]);
 
     useEffect(() => {
         (async () => {
@@ -404,13 +455,22 @@ function Setup(props) {
             });
             const content = await response.json();
             const featureList = [];
-            content.data.forEach(element => {
-                element['active'] = '';
-                featureList.push(element);
-            });
+            if (props.edit) {
+                content.data.forEach(element => {
+                    const feature = props.features.find(e => e._id === element._id);
+                    if (feature) element['active'] = 'active';
+                    else element['active'] = '';
+                    featureList.push(element);
+                });
+            } else {
+                content.data.forEach(element => {
+                    element['active'] = '';
+                    featureList.push(element);
+                });
+            }
             setFeatures(featureList);
         })()
-    }, []);
+    }, [props.edit, props.features]);
 
     // useEffect(() => {
     //     setCategories([
@@ -528,7 +588,7 @@ function Setup(props) {
             <Row>
                 <Col>
                     <Heading1
-                        text="Your Journey Starts Here!"
+                        text={props.title}
                         classes="text-center"
                     />
                 </Col>

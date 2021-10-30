@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Row } from 'react-bootstrap';
-import { EmailVerified, AccountCreation, AccountSetup } from './components';
+import { EmailVerified, AccountCreation, AccountSetup, SendResetLink, ResetPassword, ResetPasswordCheck } from './components';
 import './Auth.scss';
 // import { Heading1 } from '../components';
 // import resetPasswordCheck from './functions/resetPasswordCheck';
@@ -14,10 +14,14 @@ function Auth(props) {
     const actionCode = params.get('oobCode') || null;
 
     let comp = <div />;
-    if (mode === 'verifyEmail') comp = <EmailVerified mode={mode} actionCode={actionCode}/>
-    else if (mode === 'emailNotVerified') comp = <EmailVerified mode={mode} actionCode=""/>
+    if (mode === 'verifyEmail') comp = <EmailVerified mode={mode} actionCode={actionCode} />
+    else if (mode === 'emailNotVerified') comp = <EmailVerified mode={mode} actionCode="" />
     else if (mode === 'accountCreation') comp = <AccountCreation />
     else if (mode === 'accountSetup') comp = <AccountSetup />
+    else if (mode === 'sendResetLink') comp = <SendResetLink />
+    else if (mode === 'resetPassword') comp = <ResetPassword mode={mode} actionCode={actionCode} />
+    else if (mode === 'resetSuccessful') comp = <ResetPasswordCheck title="Password Reset" message="Your password was successfully reset." />
+    else if (mode === 'resetFailed') comp = <ResetPasswordCheck title="Password Reset" message="The link you used has either expired or used more than once." />
     // const [heading, setHeading] = useState('');
     // const [headingAuth, setHeadingAuth] = useState({first: '', bold: ''});
     // const [line1First, setline1First] = useState('');
@@ -135,9 +139,15 @@ function Auth(props) {
 
     return (
         <Container fluid className="auth">
-            <Row className="justify-content-center margin-global-top-5">
-                <img src="/blueBoltCircle.png" alt="" />
-            </Row>
+            {
+                mode === 'resetPassword' ? (
+                    null
+                ) : (
+                    <Row className="justify-content-center margin-global-top-5">
+                        <img src="/blueBoltCircle.png" alt="" />
+                    </Row>
+                )
+            }
             {comp}
         </Container>
     );

@@ -2,6 +2,15 @@ const router = require('express').Router();
 const firebaseFile = require('../firebase');
 const firebase = firebaseFile.firebase;
 
+router.post('/reset-password-check', async (req, res) => {
+    try {
+        await firebase.auth().verifyPasswordResetCode(req.body.actionCode);
+        res.json({ data: true });
+    } catch (error) {
+        res.json({ data: false });
+    }
+});
+
 router.post('/', async (req, res) => {
     try {
         var mode = req.body.mode;
@@ -13,6 +22,8 @@ router.post('/', async (req, res) => {
             case 'resetPassword':
                 // Display reset password handler and UI.
                 // handleResetPassword(auth, actionCode, continueUrl, lang);
+                await firebase.auth().confirmPasswordReset(actionCode, req.body.password);
+                res.json({ data: 'Reset success' });
                 break;
             case 'recoverEmail':
                 // Display email recovery handler and UI.

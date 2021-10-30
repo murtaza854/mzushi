@@ -75,6 +75,7 @@ function DashboardSetup(props) {
                         </Form.Group>
                     </Col>
                 </Row>
+                <div className="margin-global-top-2" />
                 <Row>
                     <Col lg={6}>
                         <Row>

@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import { Sidebar, DashboardSetup } from './components';
+import { Sidebar, DashboardSetup, ChangeEmail, ChangePassword, DashboardHome, OwnerInfo, Gallery, GalleryForm } from './components';
 import { Setup } from '../pages';
 import { useHistory } from 'react-router';
-// import api from '../api';
+import api from '../api';
 // import { YellowButton } from '../components';
 import UserContext from './../contexts/userContext'
 import {
@@ -12,7 +12,6 @@ import {
     Route,
 } from "react-router-dom";
 import './Dashboard.scss'
-import api from '../api';
 
 function Dashboard(props) {
     const user = useContext(UserContext);
@@ -68,10 +67,14 @@ function Dashboard(props) {
         //     </Row>
         // </Container>
         <Container className="user-dashboard" fluid>
+            <div className="margin-global-top-3" />
             <Row>
                 <Sidebar />
                 <Col>
                     <RouterSwitch>
+                        <Route path="/dashboard/account/gallery/add" children={
+                            <GalleryForm />
+                        } />
                         <Route path="/dashboard/account/account-setup/edit" children={
                             <div className="box-shadow-dashboard">
                                 <Setup
@@ -112,6 +115,32 @@ function Dashboard(props) {
                                 provinceDS={startup.serviceProvinces}
                                 cityDS={startup.serviceCities}
                                 areaDS={startup.serviceAreas}
+                            />
+                        } />
+                        <Route path="/dashboard/account/change-email" children={
+                            <ChangeEmail
+                                email={startup.email}
+                            />
+                        } />
+                        <Route path="/dashboard/account/change-password" children={
+                            <ChangePassword />
+                        } />
+                        <Route path="/dashboard/account/owner-info" children={
+                            <OwnerInfo
+                                ownerFirstName={startup.ownerFirstName}
+                                ownerLastName={startup.ownerLastName}
+                                contactNumber={startup.contactNumber}
+                            />
+                        } />
+                        <Route path="/dashboard/account/gallery" children={
+                            <Gallery
+                                images={startup.images}
+                            />
+                        } />
+                        <Route path="/dashboard/account" children={
+                            <DashboardHome
+                                startupName={startup.startupName}
+                                ownerFirstName={startup.ownerFirstName}
                             />
                         } />
                         {/* <Route path="/dashboard/:model/add" children={<AdminForm />} />

@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const mongoose = require('mongoose');
 const Startup = require('../schema').startup;
 const Category = require('../schema').category;
 const Area = require('../schema').area;
@@ -158,6 +159,81 @@ router.get('/logout', async (req, res) => {
     }
 });
 
+router.post('/change-password', async (req, res) => {
+    try {
+        const user = firebase.auth().currentUser;
+        const email = user.email;
+        const credential = firebase.auth.EmailAuthProvider.credential(
+            email,
+            req.body.oldPassword
+        );
+        await user.reauthenticateWithCredential(credential);
+        await user.updatePassword(req.body.password);
+        res.json({ data: true });
+    } catch (error) {
+        console.log(error);
+        res.json({ data: false });
+    }
+});
+
+router.post('/change-email', async (req, res) => {
+    try {
+        const user = firebase.auth().currentUser;
+        const email = user.email;
+        const newEmail = req.body.email;
+        const credential = firebase.auth.EmailAuthProvider.credential(
+            email,
+            req.body.password
+        );
+        await user.reauthenticateWithCredential(credential);
+        const dbUser = await Startup.findOne({ uid: user.uid });
+        if (email !== newEmail) {
+            await user.updateEmail(newEmail);
+            user.sendEmailVerification();
+            dbUser.email = newEmail;
+            dbUser.save();
+        }
+        res.json({ data: true });
+    } catch (error) {
+        console.log(error);
+        res.json({ data: false });
+    }
+});
+
+router.post('/change-owner-info', async (req, res) => {
+    try {
+        const user = firebase.auth().currentUser;
+        const dbUser = await Startup.findOne({ uid: user.uid });
+        await user.updateProfile({
+            displayName: req.body.firstName
+        })
+        dbUser.ownerFirstName = req.body.firstName;
+        dbUser.ownerLastName = req.body.lastName;
+        dbUser.contactNumber = req.body.contactNumber;
+        dbUser.save();
+        const idTokenResult = await user.getIdTokenResult();
+        const admin = idTokenResult.claims.admin;
+        const displayName = user.displayName;
+        const email = user.email;
+        const emailVerified = user.emailVerified;
+        const accountSetup = dbUser.accountSetup;
+        res.json({ data: { displayName, email, emailVerified, accountSetup, admin }, check: true });
+    } catch (error) {
+        console.log(error);
+        res.json({ check: false });
+    }
+});
+
+router.post('/send-password-reset-link', async (req, res) => {
+    try {
+        await firebase.auth().sendPasswordResetEmail(req.body.email);
+        res.json({ data: true });
+    } catch (error) {
+        console.log(error);
+        res.json({ data: false });
+    }
+});
+
 router.post('/login', async (req, res) => {
     // console.log(req.body);
     try {
@@ -192,20 +268,73 @@ router.post('/mark-premium', async (req, res) => {
     }
 });
 
-// router.post('/startup-setup', upload.sin)
+router.post('/delete-image', async (req, res) => {
+    try {
+        const user = firebase.auth().currentUser;
+        const startup = await Startup.findOne({ uid: user.uid });
+        const images = startup.images;
+        const newImagesArray = images.filter(function (obj) {
+            return obj.fileName !== req.body.fileName;
+        });
+        console.log(req.body.fileName)
+        startup.images = newImagesArray;
+        // if (req.file) {
+        //     const image = {
+        //         data: fs.readFileSync((path.resolve('../client/public/startupUploads') + '/' + req.file.filename)),
+        //         contentType: req.file.mimetype
+        //     };
+        //     const imageObj = {
+        //         fileName: req.file.filename,
+        //         image: image
+        //     }
+        //     startup.images.push(imageObj);
+        // }
+        startup.save();
+        fs.unlinkSync(path.resolve('../client/public/startupUploads') + '/' + req.body.fileName);
+        res.json({ data: true });
+    } catch (error) {
+        console.log(error);
+        res.json({ data: false, error: error });
+    }
+});
+
+router.post('/add-image', upload.single('image'), async (req, res, next) => {
+    try {
+        const user = firebase.auth().currentUser;
+        const startup = await Startup.findOne({ uid: user.uid });
+        if (req.file) {
+            const image = {
+                data: fs.readFileSync((path.resolve('../client/public/startupUploads') + '/' + req.file.filename)),
+                contentType: req.file.mimetype
+            };
+            const imageObj = {
+                fileName: req.file.filename,
+                image: image
+            }
+            startup.images.push(imageObj);
+        }
+        startup.save();
+        res.json({ data: true });
+    } catch (error) {
+        console.log(error);
+        res.json({ data: false, error: error });
+    }
+});
 
 router.post('/startup-setup', upload.single('image'), async (req, res, next) => {
     try {
         const data = JSON.parse(req.body.data);
+        const edit = data.edit;
+        console.log(req.file.filename);
         const startup = await Startup.findOne({ email: data.user.email });
-        // const slug = slugify(data.businessName, { lower: true });
-        // const startupCheck = await Startup.findOne({ slug: slug });
         startup.startupName = data.businessName;
         startup.slug = slugify(data.businessName, { lower: true });
-        startup.logo = {
-            data: fs.readFileSync((path.resolve('../client/public/startupUploads') + '/' + req.file.filename)),
-            contentType: req.file.mimetype
-        };
+        if (req.file) {
+            startup.logo = {
+                data: fs.readFileSync((path.resolve('../client/public/startupUploads') + '/' + req.file.filename)),
+                contentType: req.file.mimetype
+            };
+        }
         startup.description = data.businessDescription;
         startup.minPrice = data.minPrice;
         startup.maxPrice = data.maxPrice;
@@ -213,6 +342,9 @@ router.post('/startup-setup', upload.single('image'), async (req, res, next) => 
         startup.moneyClass = data.alignment;
         startup.activeDays = data.activeDays;
         startup.category = data.category;
+        if (edit) {
+            await Address.deleteOne({ id: startup.address._id });
+        }
         const address = new Address({
             addressLine1: data.addressLine1,
             addressLine2: data.addressLine2,
@@ -227,39 +359,9 @@ router.post('/startup-setup', upload.single('image'), async (req, res, next) => 
         startup.serviceCities = data.cityDS;
         startup.serviceProvinces = data.provinceDS;
         startup.accountSetup = true;
-        console.log(data.features);
         startup.features = data.features;
         startup.save();
-        // const obj = {
-        //     name: req.file.fieldname,
-        //     img: {
-        //         data: fs.readFileSync(path.join(__dirname + '/..' + '/uploads/' + req.file.filename)),
-        //         contentType: 'image/png'
-        //     }
-        // }
-        // const newStartup = new Startup({
-        //     name: data.name,
-        //     slug: slugify(data.name, { lower: true }),
-        //     keywords: data.keywords,
-        //     description: data.description,
-        //     image: {
-        //         data: fs.readFileSync((path.resolve('../client/public/categoryUploads') + '/' + req.file.filename)),
-        //         contentType: req.file.mimetype
-        //     },
-        //     featured: data.featured
-        // });
-        // console.log('------------------');
-        // console.log(obj);
-        // imgModel.create(obj, (err, item) => {
-        //     if (err) {
-        //         console.log(err);
-        //     }
-        //     else {
-        //         // item.save();
-        //         res.redirect('/');
-        //     }
-        // });
-        res.json({ data: 'success' });
+        res.json({ data: true });
     } catch (error) {
         console.log(error);
         res.json({ data: false, error: error });

@@ -9,11 +9,19 @@ const startupSchema = new mongoose.Schema({
     email: { type: String, required: true },
     contactNumber: { type: String, required: true },
     logo: { data: Buffer, contentType: String },
+    images: [
+        {
+            fileName: { type: String, required: true },
+            image: { data: Buffer, contentType: String }
+        }
+    ],
     description: { type: String },
     minPrice: { type: Number },
     maxPrice: { type: Number },
     active: { type: Boolean, required: true },
     premium: { type: Boolean, required: true },
+    premiumAdminFlag: { type: Boolean, required: true, default: false },
+    paymentHistory: [{ amount: { type: Number, required: true }, paymentDate: { type: Date, required: true }, amountPaid: { type: Boolean, required: true, default: false } }],
     totalRating: { type: Number, required: true, default: 0 },
     numberOfRatingsDone: { type: Number, required: true, default: 0 },
     website: { type: String },

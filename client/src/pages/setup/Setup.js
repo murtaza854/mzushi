@@ -529,14 +529,11 @@ function Setup(props) {
         if (sunday.check) activeDays.push({ name: 'Sunday', workingHourStart: sunday.startValue, workingHourEnd: sunday.endValue });
         const category = categories.find(element => element.active === 'active');
         delete category.active;
-        console.log(features);
         const featuresList = features.filter(element => element.active === 'active');
-        console.log(featuresList);
         featuresList.forEach(function (v) { delete v.active });
-        // console.log(finalFeaturesList);
         formData.append(
             "data",
-            JSON.stringify({ businessName: businessName.text, businessDescription: businessDescription.text, alignment: alignment, minPrice: minPrice.text, maxPrice: maxPrice.text, webUrl: webUrl.text, activeDays, category, features: featuresList, area: area.value, addressLine1: addressLine1.text, addressLine2: addressLine2.text, landmark: landmark.text, radios, provinceDS: provinceDS.value, cityDS: cityDS.value, areaDS: areaDS.value, user: user.userState })
+            JSON.stringify({ businessName: businessName.text, businessDescription: businessDescription.text, alignment: alignment, minPrice: minPrice.text, maxPrice: maxPrice.text, webUrl: webUrl.text, activeDays, category, features: featuresList, area: area.value, addressLine1: addressLine1.text, addressLine2: addressLine2.text, landmark: landmark.text, radios, provinceDS: provinceDS.value, cityDS: cityDS.value, areaDS: areaDS.value, user: user.userState, edit: props.edit })
         );
         // console.log(logo.picturePreview);
         try {
@@ -549,8 +546,12 @@ function Setup(props) {
                 body: formData
             });
             const content = await response.json();
-            if (content.data) history.push("/__/auth/action?mode=accountSetup");
-            else alert("Error setting up account, please contact support if this issue persists.");
+            if (props.edit) {
+                history.push("/dashboard/account/account-setup");
+            } else {
+                if (content.data) history.push("/__/auth/action?mode=accountSetup");
+                else alert("Error setting up account, please contact support if this issue persists.");
+            }
         } catch (error) {
             alert("Error setting up account, please contact support if this issue persists.");
         }

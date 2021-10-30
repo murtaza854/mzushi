@@ -12,8 +12,8 @@ function BusinessDynamic(props) {
             classes="button-tab-fit-content active-button button-tab-center"
         />,
         // <ButtonTab
-        //     text="Menu"
-        //     to="/"
+        //     text="Timings"
+        //     to={`/${props.categorySlug}/${props.startupSlug}`}
         //     classes="button-tab-fit-content button-tab-center"
         // />,
         // <ButtonTab

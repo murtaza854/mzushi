@@ -11,6 +11,10 @@ function Signup(props) {
     const history = useHistory();
     const user = useContext(UserContext);
 
+    useEffect(() => {
+        if (user.userState) history.push('/');
+    }, [history, user.userState]);
+
     const [firstName, setFirstName] = useState({ name: '', errorText: '', error: false });
     const [lastName, setLastName] = useState({ name: '', errorText: '', error: false });
     const [email, setEmail] = useState({ name: '', errorText: '', error: false });
@@ -76,7 +80,6 @@ function Signup(props) {
                 body: JSON.stringify({ firstName, lastName, email, contactNumber, password }),
             });
             const content = await response.json();
-            console.log(content);
             if (content.data) history.push("/__/auth/action?mode=accountCreation");
             else if (content.error.code === 'auth/email-already-in-use') alert(content.error.message);
             else alert("Error creating account, please contact support if this issue persists.");
@@ -102,12 +105,6 @@ function Signup(props) {
         else flag = false;
         setDisable(flag);
     }, [firstName, lastName, email, contactNumber, password, confirmPassword]);
-
-    useEffect(() => {
-        if (user.userState) {
-            history.push('/');
-        }
-    }, [history, user.userState]);
 
     useEffect(() => {
         (

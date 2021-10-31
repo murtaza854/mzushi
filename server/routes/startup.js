@@ -268,6 +268,62 @@ router.post('/mark-premium', async (req, res) => {
     }
 });
 
+router.post('/add-product-service', upload.single('image'), async (req, res, next) => {
+    try {
+        const user = firebase.auth().currentUser;
+        const startup = await Startup.findOne({ uid: user.uid });
+        const data = JSON.parse(req.body.data);
+        if (req.file) {
+            const image = {
+                data: fs.readFileSync((path.resolve('../client/public/startupUploads') + '/' + req.file.filename)),
+                contentType: req.file.mimetype
+            };
+            const productServiceObj = {
+                fileName: req.file.filename,
+                image: image,
+                name: data.name,
+                price: data.price
+            }
+            startup.productsServices.push(productServiceObj);
+        }
+        startup.save();
+        res.json({ data: true });
+    } catch (error) {
+        console.log(error);
+        res.json({ data: false, error: error });
+    }
+});
+
+router.post('/delete-product-service', async (req, res) => {
+    try {
+        const user = firebase.auth().currentUser;
+        const startup = await Startup.findOne({ uid: user.uid });
+        const productsServices = startup.productsServices;
+        const newProductsServicesArray = productsServices.filter(function (obj) {
+            return obj.fileName !== req.body.fileName;
+        });
+        console.log(req.body.fileName)
+        startup.productsServices = newProductsServicesArray;
+        // if (req.file) {
+        //     const image = {
+        //         data: fs.readFileSync((path.resolve('../client/public/startupUploads') + '/' + req.file.filename)),
+        //         contentType: req.file.mimetype
+        //     };
+        //     const imageObj = {
+        //         fileName: req.file.filename,
+        //         image: image
+        //     }
+        //     startup.images.push(imageObj);
+        // }
+        startup.save();
+        fs.unlinkSync(path.resolve('../client/public/startupUploads') + '/' + req.body.fileName);
+        res.json({ data: true, productsServices: startup.productsServices });
+    } catch (error) {
+        console.log(error);
+        res.json({ data: false, error: error });
+    }
+});
+
 router.post('/delete-image', async (req, res) => {
     try {
         const user = firebase.auth().currentUser;
@@ -291,7 +347,7 @@ router.post('/delete-image', async (req, res) => {
         // }
         startup.save();
         fs.unlinkSync(path.resolve('../client/public/startupUploads') + '/' + req.body.fileName);
-        res.json({ data: true });
+        res.json({ data: true, images: startup.images });
     } catch (error) {
         console.log(error);
         res.json({ data: false, error: error });

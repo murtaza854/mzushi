@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import { Sidebar, DashboardSetup, ChangeEmail, ChangePassword, DashboardHome, OwnerInfo, Gallery, GalleryForm } from './components';
+import { Sidebar, DashboardSetup, ChangeEmail, ChangePassword, DashboardHome, OwnerInfo, Gallery, GalleryForm, PaymentHistory, DashboardPremium, Items, ItemsForm } from './components';
 import { Setup } from '../pages';
 import { useHistory } from 'react-router';
 import api from '../api';
@@ -12,6 +12,7 @@ import {
     Route,
 } from "react-router-dom";
 import './Dashboard.scss'
+import { GiHamburgerMenu } from 'react-icons/gi';
 
 function Dashboard(props) {
     const user = useContext(UserContext);
@@ -52,6 +53,11 @@ function Dashboard(props) {
     //     }
     // }
     if (startup === null) return <div></div>;
+    const openFilterPanel = _ => {
+        document.getElementById('dashboard-sidebar').classList.remove('remove-dashboard-sidebar');
+        document.getElementById('dashboard-sidebar').classList.add('active-dashboard-sidebar');
+        // document.body.classList.add('disable-scroll');
+    }
 
     return (
         // <Container className="user-dashboard text-center margin-global-top-2">
@@ -70,8 +76,16 @@ function Dashboard(props) {
             <div className="margin-global-top-3" />
             <Row>
                 <Sidebar />
+                <div className="unhide-1200 filter-icon-btn-container">
+                    <div className="dash-icon-btn">
+                        <GiHamburgerMenu className="dash-open-icon" onClick={openFilterPanel} />
+                    </div>
+                </div>
                 <Col>
                     <RouterSwitch>
+                        <Route path="/dashboard/account/items/add" children={
+                            <ItemsForm />
+                        } />
                         <Route path="/dashboard/account/gallery/add" children={
                             <GalleryForm />
                         } />
@@ -132,9 +146,22 @@ function Dashboard(props) {
                                 contactNumber={startup.contactNumber}
                             />
                         } />
+                        <Route path="/dashboard/account/items" children={
+                            <Items
+                                productsServices={startup.productsServices}
+                            />
+                        } />
                         <Route path="/dashboard/account/gallery" children={
                             <Gallery
                                 images={startup.images}
+                            />
+                        } />
+                        <Route path="/dashboard/account/premium" children={
+                            <DashboardPremium
+                            />
+                        } />
+                        <Route path="/dashboard/account/payment-history" children={
+                            <PaymentHistory
                             />
                         } />
                         <Route path="/dashboard/account" children={

@@ -1,0 +1,27 @@
+.dashboard-premium {
+    .icon-text {
+        position: relative;
+        .icon {
+            font-size: 1.5rem;
+            color: #f6d33e;
+        }
+        .icon-cont {
+            text-align: right;
+            // padding-right: calc(var(--bs-gutter-x) * .5);
+        }
+    }
+    .status-icon {
+        font-size: 1.5rem;
+        color: #f6d33e;
+    }
+}
+
+// X-Small devices (portrait phones, less than 576px)
+@media (max-width: 35.99875em) {
+    .dashboard-premium {
+        padding: 0 2rem;
+    }
+}
+
+// XX-Large devices (larger desktops)
+// No media query since the xxl breakpoint has no upper bound on its width

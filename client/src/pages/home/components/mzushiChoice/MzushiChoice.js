@@ -250,14 +250,14 @@ function MzushiChoice(props) {
                         }
                     </Slider>
                 </Row>
-                <div className="margin-global-top-4" />
+                {/* <div className="margin-global-top-4" />
                 <Row>
                     <YellowButton
                         to={"/"}
                         text="Show More"
                         classes="text-uppercase width-full horizontal-center-relative"
                     />
-                </Row>
+                </Row> */}
             </Container>
         </Container>
     );

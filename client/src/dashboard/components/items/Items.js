@@ -5,18 +5,18 @@ import { MDBDataTable } from 'mdbreact';
 import { Link } from 'react-router-dom';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { arrayBufferToBase64 } from '../../../helperFunctions/arrayBufferToBase64';
-import './Gallery.scss'
+import './Items.scss'
 import { AiOutlineDelete } from 'react-icons/ai';
 import api from '../../../api';
+// import { BiPencil } from 'react-icons/bi';
 
-function Gallery(props) {
+function Items(props) {
     const [rows, setRows] = useState([]);
 
     useEffect(() => {
         const rowsTemp = [];
         try {
-            props.images.forEach(element => {
-                console.log(element);
+            props.productsServices.forEach(element => {
                 const base64Flag = `data:${element.image.contentType};base64,`;
                 const imagePath = base64Flag + arrayBufferToBase64(element.image.data.data);
                 rowsTemp.push({
@@ -25,23 +25,29 @@ function Gallery(props) {
                         src={imagePath}
                         alt={element.fileName}
                     />,
-                    action: <div onClick={_ => deleteImage(element.fileName)} className="delete-icon">
-                        <AiOutlineDelete className="icon" />
-                    </div>,
+                    name: element.name,
+                    price: `PKR ${element.price}/-`,
+                    action: <>
+                        {/* <div onClick={_ => performAction(element.fileName, 'edit')} className="delete-icon">
+                            <BiPencil className="icon" />
+                        </div> */}
+                        <div onClick={_ => performAction(element.fileName)} className="delete-icon">
+                            <AiOutlineDelete className="icon" />
+                        </div>
+                    </>,
                     _id: element._id
                 });
             });
-            console.log(123);
             setRows(rowsTemp);
         } catch (error) {
-            // setRows(rowsTemp);
+            setRows(rowsTemp);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const deleteImage = async fileName => {
+    const performAction = async fileName => {
         const rowsTemp = [];
-        const response = await fetch(`${api}/startup/delete-image`, {
+        const response = await fetch(`${api}/startup/delete-product-service`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -52,8 +58,7 @@ function Gallery(props) {
         });
         const content = await response.json();
         if (content.data) {
-            content.images.forEach(element => {
-                console.log(element);
+            content.productsServices.forEach(element => {
                 const base64Flag = `data:${element.image.contentType};base64,`;
                 const imagePath = base64Flag + arrayBufferToBase64(element.image.data.data);
                 rowsTemp.push({
@@ -62,9 +67,16 @@ function Gallery(props) {
                         src={imagePath}
                         alt={element.fileName}
                     />,
-                    action: <div onClick={_ => deleteImage(element.fileName)} className="delete-icon">
-                        <AiOutlineDelete className="icon" />
-                    </div>,
+                    name: element.name,
+                    price: `PKR ${element.price}/-`,
+                    action: <>
+                        {/* <div onClick={_ => performAction(element.fileName, 'edit')} className="delete-icon">
+                            <BiPencil className="icon" />
+                        </div> */}
+                        <div onClick={_ => performAction(element.fileName)} className="delete-icon">
+                            <AiOutlineDelete className="icon" />
+                        </div>
+                    </>,
                     _id: element._id
                 });
             });
@@ -75,14 +87,20 @@ function Gallery(props) {
     const data = {
         columns: [
             {
-                label: 'File Name',
-                field: 'fileName',
+                label: 'Image',
+                field: 'image',
                 sort: 'asc',
                 width: 50
             },
             {
-                label: 'Image',
-                field: 'image',
+                label: 'Name',
+                field: 'name',
+                sort: 'asc',
+                width: 50
+            },
+            {
+                label: 'Price',
+                field: 'price',
                 sort: 'asc',
                 width: 50
             },
@@ -107,13 +125,13 @@ function Gallery(props) {
             <Row>
                 <Col>
                     <Heading2
-                        text="Gallery"
+                        text="Products/Services"
                         classes="text-left"
                     />
                 </Col>
                 <Col>
                     <Row>
-                        <Link className="icon-link" to="/dashboard/account/gallery/add">
+                        <Link className="icon-link" to="/dashboard/account/items/add">
                             <IoIosAddCircleOutline className="icon" />
                         </Link>
                     </Row>
@@ -136,4 +154,4 @@ function Gallery(props) {
     );
 }
 
-export default Gallery;
+export default Items;

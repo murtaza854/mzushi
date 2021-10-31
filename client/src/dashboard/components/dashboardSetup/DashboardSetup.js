@@ -7,6 +7,7 @@ import { formatAMPM } from '../../../helperFunctions/formatAMPM';
 import { BiPencil } from 'react-icons/bi';
 import './DashboardSetup.scss';
 import { Link } from 'react-router-dom';
+import { Heading2 } from '../../../components';
 
 function DashboardSetup(props) {
     const base64Flag = `data:${props.logo.contentType};base64,`;
@@ -47,11 +48,21 @@ function DashboardSetup(props) {
 
     return (
         <Container className="dashboard-about box-shadow-dashboard" fluid>
-            <Row>
+        <Row>
+            <Col>
+                <Heading2
+                    text="Business Setup"
+                    classes="text-left"
+                />
+            </Col>
+            <Col>
+                <Row>
                 <Link className="icon-link" to="/dashboard/account/account-setup/edit">
                     <BiPencil className="icon" />
                 </Link>
-            </Row>
+                </Row>
+            </Col>
+        </Row>
             <Form className="form-style margin-global-top-1">
                 <Row>
                     <Col md={7}>

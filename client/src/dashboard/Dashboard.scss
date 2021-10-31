@@ -1,6 +1,7 @@
 .user-dashboard {
+    min-height: 40vh;
     .box-shadow-dashboard {
-        box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 6px 0px;
+        // box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 6px 0px;
         padding: 1.5rem 2rem;
         padding-bottom: 0.5rem;
         border-radius: 15px;
@@ -49,6 +50,29 @@
         transition: 0.3s ease-in-out;
         &:hover {
             color: #8fbedf;
+        }
+    }
+    .dash-open-icon {
+        color: #f6d33e;
+        right: 1rem;
+        top: 1rem;
+        font-size: 2rem;
+        transition: .3s ease-in-out;
+        &:hover {
+            color: black;
+            cursor: pointer;
+        }
+    }
+    .close-icon {
+        color: #f6d33e;
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        font-size: 2rem;
+        transition: .3s ease-in-out;
+        &:hover {
+            color: black;
+            cursor: pointer;
         }
     }
 }

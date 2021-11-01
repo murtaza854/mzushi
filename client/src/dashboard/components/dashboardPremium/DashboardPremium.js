@@ -1,8 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { Col, Container, Form, Row } from 'react-bootstrap';
-import { FiCheck } from 'react-icons/fi'
+import { FiCheck } from 'react-icons/fi';
+import { AiOutlineClose } from 'react-icons/ai';
 import { useHistory } from 'react-router';
-import { Heading2 } from '../../../components';
+import { DescriptionText, Heading2 } from '../../../components';
 import UserContext from '../../../contexts/userContext';
 import './DashboardPremium.scss';
 
@@ -39,8 +40,14 @@ function DashboardPremium(props) {
                 </Col>
             </Row>
             <Row>
-                    <Form.Label className="bold-600">Status: <FiCheck className="status-icon" /></Form.Label>
-                    {/* <p className="content-read">s</p> */}
+                {
+                    props.premium ? (
+                        <Form.Label className="bold-600">Status: <FiCheck className="status-icon" /></Form.Label>
+                    ) : (
+                        <Form.Label className="bold-600">Status: <AiOutlineClose className="status-icon" /></Form.Label>
+                    )
+                }
+                {/* <p className="content-read">s</p> */}
             </Row>
             <div className="feature-list margin-global-top-1">
                 {
@@ -54,6 +61,27 @@ function DashboardPremium(props) {
                     })
                 }
             </div>
+            <Row className="margin-global-top-2">
+                <Col>
+                    {
+                        props.premium ? (
+                            <DescriptionText
+                                text="The images you upload may be edited and used for marketing purposes."
+                                link=""
+                                to="/"
+                                classes="text-center"
+                            />
+                        ) : (
+                            <DescriptionText
+                                text="By transfering the amount, you acknowledge that the images you upload may be edited and used for marketing purposes."
+                                link=""
+                                to="/"
+                                classes="text-center"
+                            />
+                        )
+                    }
+                </Col>
+            </Row>
         </Container>
     );
 }

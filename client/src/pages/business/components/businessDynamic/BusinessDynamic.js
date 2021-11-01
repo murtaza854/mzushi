@@ -1,30 +1,54 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Form } from 'react-bootstrap';
-import { ButtonTab } from '../../../../components';
+import { ButtonTab, DescriptionText, Heading3 } from '../../../../components';
 import Slider from "react-slick";
+import { arrayBufferToBase64 } from '../../../../helperFunctions/arrayBufferToBase64';
+import { MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
 import './BusinessDynamic.scss';
 
 function BusinessDynamic(props) {
 
     const [urlObj, setUrlObj] = useState({
         about: 'active-button',
-        productService: '',
+        location: '',
+        productsServices: '',
     });
+    const [page, setPage] = useState(1);
+    const [maxLength, setMaxLength] = useState(0);
+    const [disabledClass, setDisabledClass] = useState({ back: 'disabled-icon', front: '' })
+    const [productsServicesList, setProductsServicesList] = useState([]);
 
-    let productServiceText = "Service";
-    if (props.delivery) productServiceText = "Delivery";
-    // if (window.location.pathname.includes('delivery') || window.location.pathname.includes('service')) urlObj.productService = 'active-button';
-    // else urlObj.about = 'active-button';
+    let locationText = "Service";
+    let productsServicesText = 'Services';
+    if (props.delivery) {
+        locationText = "Delivery";
+        productsServicesText = "Products";
+    }
 
     const onClick = (e, section) => {
         e.preventDefault();
         const obj = {
             about: '',
-            productService: '',
+            location: '',
+            productsServices: '',
         };
         obj[`${section}`] = 'active-button';
         setUrlObj(obj);
     }
+
+    const onClickPage = (e, direction) => {
+        if (direction === 'back') {
+            if (page - 1 !== 0) setPage(page - 1);
+        } else if (direction === 'front') {
+            if (page !== maxLength) setPage(page + 1);
+        }
+    }
+
+    useEffect(() => {
+        if (page - 1 === 0) setDisabledClass({ back: 'disabled-icon', front: '' });
+        else if (page === maxLength) setDisabledClass({ back: '', front: 'disabled-icon' });
+        else setDisabledClass({ back: '', front: '' });
+    }, [page, maxLength]);
 
     let provincesString = props.provinceDS.map(function (elem) {
         return elem.name;
@@ -52,22 +76,36 @@ function BusinessDynamic(props) {
         <ButtonTab
             text="Location"
             to="/"
-            classes={`button-tab-fit-content button-tab-center ${urlObj.productService}`}
+            classes={`button-tab-fit-content button-tab-center ${urlObj.location}`}
             onClick={onClick}
-            section="productService"
+            section="location"
         />,
-        // <ButtonTab
-        //     text="Deals"
-        //     to="/"
-        //     classes="button-tab-fit-content button-tab-center"
-        // />,
+        <ButtonTab
+            text={productsServicesText}
+            to="/"
+            classes={`button-tab-fit-content button-tab-center ${urlObj.productsServices}`}
+            onClick={onClick}
+            section="productsServices"
+        />,
         // <ButtonTab
         //     text="Deals"
         //     to="/"
         //     classes="button-tab-fit-content button-tab-center"
         // />
     ];
-    let sliderLength = 5;
+
+    useEffect(() => {
+        const results = [];
+
+        while (props.productsServices.length) {
+            results.push(props.productsServices.splice(0, 5));
+        }
+        setMaxLength(results.length);
+        setProductsServicesList(results);
+
+    }, [props.productsServices])
+
+    // let sliderLength = 5;
     let sliderLength991 = 3;
     let sliderLength767 = 2;
     let sliderLength567 = 1;
@@ -79,7 +117,7 @@ function BusinessDynamic(props) {
         dots: false,
         infinite: false,
         speed: 500,
-        slidesToShow: sliderLength,
+        slidesToShow: 3,
         slidesToScroll: 1,
         // initialSlide: 0,
         arrows: false,
@@ -141,9 +179,9 @@ function BusinessDynamic(props) {
                             ) : null
                         }
                         {
-                            urlObj.productService === 'active-button' ? (
+                            urlObj.location === 'active-button' ? (
                                 <>
-                                    <p className="content-read">{productServiceText} provided at:</p>
+                                    <p className="content-read">{locationText} provided at:</p>
                                     <Row>
                                         <Form.Group as={Col}>
                                             <Form.Label className="bold-600 margin-bottom-0">Provinces</Form.Label>
@@ -162,6 +200,59 @@ function BusinessDynamic(props) {
                                             <p className="content-read">{areasString}</p>
                                         </Form.Group>
                                     </Row>
+                                </>
+                            ) : null
+                        }
+                        {
+                            urlObj.productsServices === 'active-button' ? (
+                                <>
+                                    {
+                                        productsServicesList.length > 0 ? (
+                                            <>
+                                                {
+                                                    productsServicesList[page - 1].map((value, index) => {
+                                                        const base64Flag = `data:${value.image.contentType};base64,`;
+                                                        const imagePath = base64Flag + arrayBufferToBase64(value.image.data.data);
+                                                        return (
+                                                            <Row className="product-row" key={index}>
+                                                                <Col md={3}>
+                                                                    <img
+                                                                        src={imagePath}
+                                                                        alt={value.name}
+                                                                    />
+                                                                </Col>
+                                                                <Col md={7}>
+                                                                    <Heading3
+                                                                        text={value.name}
+                                                                        classes="text-left"
+                                                                    />
+                                                                </Col>
+                                                                <Col md={2}>
+                                                                    PKR {value.price}/-
+                                                                </Col>
+                                                            </Row>
+                                                        )
+                                                    })
+                                                }
+                                                <Row className="justify-content-center">
+                                                    <div onClick={e => onClickPage(e, 'back')} className={`page-icon ${disabledClass.back}`}>
+                                                        <MdNavigateBefore className="icon" />
+                                                    </div>
+                                                    <div onClick={e => onClickPage(e, 'front')} className={`page-icon ${disabledClass.front}`}>
+                                                        <MdNavigateNext className="icon" />
+                                                    </div>
+                                                </Row>
+                                            </>
+                                        ) : (
+                                            <DescriptionText
+                                                text={`No ${productsServicesText} provided.`}
+                                                link=""
+                                                to="/"
+                                                classes="text-center"
+                                            />
+                                        )
+                                    }
+
                                 </>
                             ) : null
                         }

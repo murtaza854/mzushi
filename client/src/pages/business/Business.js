@@ -76,6 +76,7 @@ function Business(props) {
                                 provinceDS={startupObj.serviceProvinces}
                                 cityDS={startupObj.serviceCities}
                                 areaDS={startupObj.serviceAreas}
+                                productsServices={startupObj.productsServices}
                             />
                         </Row>
                     </Container>

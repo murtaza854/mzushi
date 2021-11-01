@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { FiCheck } from 'react-icons/fi'
 import { useHistory } from 'react-router';
-import api from '../../api';
+// import api from '../../api';
 import { Heading1 } from '../../components';
 import UserContext from '../../contexts/userContext';
 import './Premium.scss';
@@ -38,21 +38,17 @@ function Premium(props) {
         e.preventDefault();
         setCheck(true);
         try {
-            const response = await fetch(`${api}/startup/mark-premium`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-                withCredentials: true,
-                body: JSON.stringify({ user: user.userState, mark: true })
-            });
-            const content = await response.json();
-            if (content.data) history.push('/setup');
-            else {
-                alert("Error confirming premium. Please contact support if issue persists.");
-                setCheck(false);
-            }
+            // const response = await fetch(`${api}/startup/mark-premium`, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     credentials: 'include',
+            //     withCredentials: true,
+            //     body: JSON.stringify({ user: user.userState, mark: true })
+            // });
+            // const content = await response.json();
+            history.push('/setup');
         } catch (error) {
             alert("Error confirming premium. Please contact support if issue persists.");
             setCheck(false);

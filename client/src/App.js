@@ -34,7 +34,7 @@ function App() {
           setUserState({ displayName, email, emailVerified, accountSetup, admin });
           setLoading(false);
         } catch (error) {
-          // setUserState(null);
+          setUserState(null);
           setLoading(false);
         }
       })();

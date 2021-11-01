@@ -24,7 +24,7 @@ function MainNavbar(props) {
                 </div>
                 {
                     !flag ? (
-                        <Navbar.Collapse id="responsive-navbar-nav">
+                        <Navbar id="responsive-navbar-nav">
                             <Nav className="me-auto">
                             </Nav>
                             {
@@ -50,7 +50,7 @@ function MainNavbar(props) {
                                     </Nav>
                                 )
                             }
-                        </Navbar.Collapse>
+                        </Navbar>
                     ) : null
                 }
             </Container>

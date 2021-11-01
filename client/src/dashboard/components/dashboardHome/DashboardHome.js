@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import api from '../../../api';
 import { DescriptionText, Heading2, YellowButton } from '../../../components';
+import UserContext from '../../../contexts/userContext';
 import './DashboardHome.scss';
 
 function DashboardHome(props) {
+    const user = useContext(UserContext);
 
     const logout = async (e, id) => {
         e.preventDefault();
@@ -16,6 +18,7 @@ function DashboardHome(props) {
                 },
             });
             // history.push('/');
+            user.setUserState(null);
         } catch (error) {
             alert("Error logging out. Please contact support.")
         }

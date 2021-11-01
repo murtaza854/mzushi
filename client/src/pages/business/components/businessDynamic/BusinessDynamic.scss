@@ -5,4 +5,60 @@
     .button-dynamic-cont {
         width: fit-content !important;
     }
+    img {
+        width: 100%;
+        border-radius: 15px;
+        object-fit: cover;
+        height: 10rem;
+    }
+    .product-row {
+        margin-bottom: 1rem;
+    }
+    .page-icon {
+        width: fit-content;
+        background-color: #F6D33E;
+        border: 1px solid #F6D33E;
+        font-size: 1.8rem;
+        border-radius: 100px;
+        padding: 0.3rem 0.7rem;
+        margin: 0 0.5rem;
+        margin-top: 1rem;
+        transition: .3s ease-in-out;
+        .icon {
+            transition: .3s ease-in-out;
+            color: black;
+        }
+        &:hover {
+            cursor: pointer;
+            background-color: white;
+            .icon {
+                color: #F6D33E;
+            }
+        }
+    }
+    .disabled-icon {
+        opacity: 0.65;
+        &:hover {
+            cursor: default;
+            background-color: #F6D33E;
+            .icon {
+                color: black;
+            }
+        }
+    }
+}
+
+// Small devices (landscape phones, less than 768px)
+@media (max-width: 47.99875em) {
+    .business-dynamic {
+        .product-row {
+            text-align: center;
+        }
+        img {
+            width: 15rem;
+            border-radius: 15px;
+            object-fit: cover;
+            height: 10rem;
+        }
+    }
 }

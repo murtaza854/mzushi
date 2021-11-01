@@ -63,7 +63,7 @@ router.get('/get-mzushi-choice', async (req, res) => {
         delete city.active;
         const areas = await Area.find({ city: city });
         const addresses = await Address.find({ area: areas });
-        const startups = await Startup.find({ mzushiChoice: false, address: addresses }).populate("category");
+        const startups = await Startup.find({ mzushiChoice: true, address: addresses }).populate("category");
         if (!startups) res.json({ data: [] });
         else res.json({ data: startups });
     } catch (error) {
@@ -92,21 +92,38 @@ router.get('/get-one-by-category-startup', async (req, res) => {
 
 router.get('/get-all-by-category', async (req, res) => {
     const { categorySlug } = req.query;
-    const category = await Category.findOne({ slug: categorySlug });
-    const startups = await Startup.find({ category: category }).populate("category").populate("features").populate({
-        path: 'address',
-        populate: {
-            path: 'area',
+    if (categorySlug === 'directory') {
+        const startups = await Startup.find({}).populate("category").populate("features").populate({
+            path: 'address',
             populate: {
-                path: 'city',
+                path: 'area',
                 populate: {
-                    path: 'province',
+                    path: 'city',
+                    populate: {
+                        path: 'province',
+                    }
                 }
             }
-        }
-    });
-    if (!startups) res.json({ data: [] });
-    else res.json({ data: startups });
+        });
+        if (!startups) res.json({ data: [] });
+        else res.json({ data: startups });
+    } else {
+        const category = await Category.findOne({ slug: categorySlug });
+        const startups = await Startup.find({ category: category }).populate("category").populate("features").populate({
+            path: 'address',
+            populate: {
+                path: 'area',
+                populate: {
+                    path: 'city',
+                    populate: {
+                        path: 'province',
+                    }
+                }
+            }
+        });
+        if (!startups) res.json({ data: [] });
+        else res.json({ data: startups });
+    }
 });
 
 router.post('/signup', async (req, res) => {

@@ -87,7 +87,10 @@ function Dashboard(props) {
                             <ItemsForm />
                         } />
                         <Route path="/dashboard/account/gallery/add" children={
-                            <GalleryForm />
+                            <GalleryForm
+                                premium={startup.premium}
+                                images={startup.images}
+                            />
                         } />
                         <Route path="/dashboard/account/account-setup/edit" children={
                             <div className="box-shadow-dashboard">
@@ -158,6 +161,7 @@ function Dashboard(props) {
                         } />
                         <Route path="/dashboard/account/premium" children={
                             <DashboardPremium
+                                premium={startup.premium}
                             />
                         } />
                         <Route path="/dashboard/account/payment-history" children={

@@ -7,10 +7,22 @@ import { gcd } from '../../../helperFunctions/gcd';
 function GalleryForm(props) {
 
     const [logo, setLogo] = useState({ picturePreview: '', imgURl: '', error: false });
+    const [flag, setFlag] = useState(false);
+    const [count, setCount] = useState(props.images.length);
 
     const [disabledBtn, setDisabledBtn] = useState(true);
 
     const [message, setMessage] = useState({ display: false, text: '' });
+
+    useEffect(() => {
+        if (props.premium) {
+            if (count >= 21) setFlag(false);
+            else setFlag(true);
+        } else {
+            if (count >= 3) setFlag(false);
+            else setFlag(true);
+        }
+    }, [count, props.premium]);
 
     const onSubmit = async e => {
         e.preventDefault();
@@ -33,6 +45,7 @@ function GalleryForm(props) {
             });
             const content = await response.json();
             if (content.data) {
+                setCount(count + 1);
                 setMessage({ display: true, text: 'Image has been added successfully!' })
                 setTimeout(() => {
                     setMessage({ display: false, text: '' });
@@ -45,6 +58,7 @@ function GalleryForm(props) {
             }, 5000);
         }
     }
+
     const handleFileClick = _ => {
         document.getElementById('logo-upload').click();
     }
@@ -57,7 +71,6 @@ function GalleryForm(props) {
                 reader.onload = ((theFile) => {
                     var image = new Image();
                     image.src = theFile.target.result;
-                    setLogo(prevState => ({ ...prevState, picturePreview: event.target.files[0], imgURl: objectUrl, error: false }));
                     image.onload = function () {
                         // access image size here 
                         // console.log(this.width, this.height);
@@ -69,12 +82,13 @@ function GalleryForm(props) {
                             setLogo(prevState => ({ ...prevState, picturePreview: event.target.files[0], imgURl: objectUrl, error: false }));
                         }
                         else {
+                            setLogo({ picturePreview: '', imgURl: '', error: true });
                             alert("Please upload a landscape image.");
                         }
                     };
                 });
             } else {
-                setLogo(prevState => ({ ...prevState, error: true }));
+                setLogo({ picturePreview: '', imgURl: '', error: true });
                 alert("Image is too large.")
             }
         }
@@ -134,11 +148,28 @@ function GalleryForm(props) {
                         </Col>
                     </Row>
                     <div className="margin-global-top-2" />
-                    <Row className="justify-content-center">
-                        <Button disabled={disabledBtn} type="submit">
-                            Submit
-                        </Button>
-                    </Row>
+                    {
+                        flag ? (
+                            <>
+                                <Row className="justify-content-center">
+                                    <Button disabled={disabledBtn} type="submit">
+                                        Submit
+                                    </Button>
+                                </Row>
+                            </>
+                        ) : (
+                            <Row className="margin-global-top-1">
+                                <Col>
+                                    <DescriptionText
+                                        text="You have reached the maximum limit of uploading images that your account has allowed you to upload."
+                                        link=""
+                                        to="/"
+                                        classes="text-center"
+                                    />
+                                </Col>
+                            </Row>
+                        )
+                    }
                     {
                         message.display ? (
                             <Row className="margin-global-top-1">

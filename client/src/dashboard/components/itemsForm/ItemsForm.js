@@ -78,7 +78,6 @@ function ItemsForm(props) {
                 reader.onload = ((theFile) => {
                     var image = new Image();
                     image.src = theFile.target.result;
-                    setLogo(prevState => ({ ...prevState, picturePreview: event.target.files[0], imgURl: objectUrl, error: false }));
                     image.onload = function () {
                         // access image size here 
                         // console.log(this.width, this.height);
@@ -90,12 +89,13 @@ function ItemsForm(props) {
                             setLogo(prevState => ({ ...prevState, picturePreview: event.target.files[0], imgURl: objectUrl, error: false }));
                         }
                         else {
+                            setLogo({ picturePreview: '', imgURl: '', error: true });
                             alert("Please upload a landscape image.");
                         }
                     };
                 });
             } else {
-                setLogo(prevState => ({ ...prevState, error: true }));
+                setLogo({ picturePreview: '', imgURl: '', error: true });
                 alert("Image is too large.")
             }
         }

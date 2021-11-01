@@ -35,13 +35,13 @@ function Setup(props) {
 
     const [webUrl, setWebUrl] = useState({ text: '' });
 
-    const [monday, setMonday] = useState({ check: false, startValue: null, endValue: null });
-    const [tuesday, setTuesday] = useState({ check: false, startValue: null, endValue: null });
-    const [wednesday, setWednesday] = useState({ check: false, startValue: null, endValue: null });
-    const [thursday, setThursday] = useState({ check: false, startValue: null, endValue: null });
-    const [friday, setFriday] = useState({ check: false, startValue: null, endValue: null });
-    const [saturday, setSaturday] = useState({ check: false, startValue: null, endValue: null });
-    const [sunday, setSunday] = useState({ check: false, startValue: null, endValue: null });
+    const [monday, setMonday] = useState({ check: false, startValue: new Date(), endValue: new Date() });
+    const [tuesday, setTuesday] = useState({ check: false, startValue: new Date(), endValue: new Date() });
+    const [wednesday, setWednesday] = useState({ check: false, startValue: new Date(), endValue: new Date() });
+    const [thursday, setThursday] = useState({ check: false, startValue: new Date(), endValue: new Date() });
+    const [friday, setFriday] = useState({ check: false, startValue: new Date(), endValue: new Date() });
+    const [saturday, setSaturday] = useState({ check: false, startValue: new Date(), endValue: new Date() });
+    const [sunday, setSunday] = useState({ check: false, startValue: new Date(), endValue: new Date() });
 
     const [categories, setCategories] = useState([]);
 

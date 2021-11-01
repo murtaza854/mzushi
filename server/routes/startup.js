@@ -74,7 +74,7 @@ router.get('/get-mzushi-choice', async (req, res) => {
 router.get('/get-one-by-category-startup', async (req, res) => {
     const { categorySlug, startupSlug } = req.query;
     const category = await Category.findOne({ slug: categorySlug });
-    const startup = await Startup.findOne({ category: category, slug: startupSlug }).populate("category").populate("features").populate({
+    const startup = await Startup.findOne({ category: category, slug: startupSlug }).populate("category").populate("features").populate('serviceProvinces').populate('serviceCities').populate('serviceAreas').populate({
         path: 'address',
         populate: {
             path: 'area',

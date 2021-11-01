@@ -23,6 +23,7 @@ function Business(props) {
             const base64Flag = `data:${content.data.logo.contentType};base64,`;
             const imagePath = base64Flag + arrayBufferToBase64(content.data.logo.data.data);
             setPoster(imagePath);
+            console.log(content.data);
             setStartupObj(content.data);
         })()
     }, [category, startup]);
@@ -42,6 +43,7 @@ function Business(props) {
                         <div className="margin-global-top-4" />
                         <Row>
                             <Details
+                                startupName={startupObj.startupName}
                                 moneyClass={startupObj.moneyClass}
                                 category={startupObj.category.name}
                                 rating={startupObj.rating}
@@ -53,11 +55,16 @@ function Business(props) {
                                 province={startupObj.address.area.city.province.name}
                                 activeDays={startupObj.activeDays}
                                 features={startupObj.features}
+                                website={startupObj.website}
+                                minPrice={startupObj.minPrice}
+                                maxPrice={startupObj.maxPrice}
                             />
                         </Row>
                         <div className="margin-global-top-4" />
                         <Row>
-                            <SmallGallery />
+                            <SmallGallery 
+                                images={startupObj.images}
+                                />
                         </Row>
                         <div className="margin-global-top-4" />
                         <Row>
@@ -65,6 +72,10 @@ function Business(props) {
                                 categorySlug={category}
                                 startupSlug={startup}
                                 description={startupObj.description}
+                                delivery={startupObj.delivery}
+                                provinceDS={startupObj.serviceProvinces}
+                                cityDS={startupObj.serviceCities}
+                                areaDS={startupObj.serviceAreas}
                             />
                         </Row>
                     </Container>

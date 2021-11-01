@@ -6,7 +6,15 @@ import './ButtonTab.scss';
 
 function ButtonTab(props) {
     return (
-        <Link className={`button-tab ${props.classes}`} to={props.to}>{props.text}</Link>
+        <>
+            {
+                props.onClick ? (
+                    <Link onClick={e => props.onClick(e, props.section)} className={`button-tab ${props.classes}`} to={props.to}>{props.text}</Link>
+                ) : (
+                    <Link className={`button-tab ${props.classes}`} to={props.to}>{props.text}</Link>
+                )
+            }
+        </>
     );
 }
 

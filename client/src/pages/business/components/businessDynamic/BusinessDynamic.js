@@ -1,21 +1,61 @@
-import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Row, Col, Form } from 'react-bootstrap';
 import { ButtonTab } from '../../../../components';
 import Slider from "react-slick";
 import './BusinessDynamic.scss';
 
 function BusinessDynamic(props) {
+
+    const [urlObj, setUrlObj] = useState({
+        about: 'active-button',
+        productService: '',
+    });
+
+    let productServiceText = "Service";
+    if (props.delivery) productServiceText = "Delivery";
+    // if (window.location.pathname.includes('delivery') || window.location.pathname.includes('service')) urlObj.productService = 'active-button';
+    // else urlObj.about = 'active-button';
+
+    const onClick = (e, section) => {
+        e.preventDefault();
+        const obj = {
+            about: '',
+            productService: '',
+        };
+        obj[`${section}`] = 'active-button';
+        setUrlObj(obj);
+    }
+
+    let provincesString = props.provinceDS.map(function (elem) {
+        return elem.name;
+    }).join(", ");
+    if (props.provinceDS.length === 0) provincesString = 'Not provided';
+
+    let citiesString = props.cityDS.map(function (elem) {
+        return elem.name;
+    }).join(", ");
+    if (props.cityDS.length === 0) citiesString = 'Not provided';
+
+    let areasString = props.areaDS.map(function (elem) {
+        return elem.name;
+    }).join(", ");
+    if (props.areaDS.length === 0) areasString = 'Not provided';
+
     const buttons = [
         <ButtonTab
             text="About"
-            to={`/${props.categorySlug}/${props.startupSlug}`}
-            classes="button-tab-fit-content active-button button-tab-center"
+            to="/"
+            classes={`button-tab-fit-content button-tab-center ${urlObj.about}`}
+            onClick={onClick}
+            section="about"
         />,
-        // <ButtonTab
-        //     text="Timings"
-        //     to={`/${props.categorySlug}/${props.startupSlug}`}
-        //     classes="button-tab-fit-content button-tab-center"
-        // />,
+        <ButtonTab
+            text="Location"
+            to="/"
+            classes={`button-tab-fit-content button-tab-center ${urlObj.productService}`}
+            onClick={onClick}
+            section="productService"
+        />,
         // <ButtonTab
         //     text="Deals"
         //     to="/"
@@ -83,61 +123,7 @@ function BusinessDynamic(props) {
                                 </div>
                             ))
                         }
-                        {/* <Col xs={2}>
-                        <ButtonTab
-                            text="About"
-                            to="/"
-                            classes="button-tab-fit-content active-button"
-                        />
-                    </Col>
-                    <Col xs={2}>
-                        <YellowButton
-                            to="/"
-                            text="Lahore"
-                            classes="text-uppercase width-high horizontal-center-relative"
-                        />
-                    </Col>
-                    <Col xs={2}>
-                        <YellowButton
-                            to="/"
-                            text="Islamabad"
-                            classes="text-uppercase width-high horizontal-center-relative"
-                        />
-                    </Col>
-                    <Col xs={2}>
-                        <YellowButton
-                            to="/"
-                            text="Quetta"
-                            classes="text-uppercase width-high horizontal-center-relative"
-                        />
-                    </Col>
-                    <Col xs={2}>
-                        <YellowButton
-                            to="/"
-                            text="Peshawer"
-                            classes="text-uppercase width-high horizontal-center-relative"
-                        />
-                    </Col> */}
                     </Slider>
-                    {/* <Col md={11}>
-                    <Row>
-                        <ButtonTab
-                            text="About"
-                            to="/"
-                            classes="button-tab-fit-content active-button"
-                        />
-                        <ButtonTab
-                            text="Menu"
-                            to="/"
-                            classes="button-tab-fit-content"
-                        />
-                        <ButtonTab
-                            text="Deals"
-                            to="/"
-                            classes="button-tab-fit-content"
-                        />
-                    </Row>
-                </Col> */}
                 </Col>
             </Row>
             <div className="margin-global-top-1" />
@@ -149,9 +135,36 @@ function BusinessDynamic(props) {
 
                             Ut pulvinar maximus consectetur.Fusce ultricies mi at lacus vestibulum, a finibus felis pretium.Etiam posuere quam est, a vulputate nibh sollicitudin et.Etiam suscipit vehicula nisl ut tincidunt.Praesent lobortis aliquam nisl nec lacinia.Phasellus sed quam porttitor, eleifend odio a, condimentum mi.Nam laoreet feugiat quam.Integer accumsan, lacus quis egestas dictum, sem lorem ultricies libero, eget laoreet urna ex a elit.Quisque semper nisl in volutpat pharetra.Etiam id quam at lacus suscipit congue a blandit elit.Vestibulum tempor lacus ac massa gravida, id facilisis sem facilisis.Interdum et malesuada fames ac ante ipsum primis in faucibus.Vestibulum commodo nunc non semper dapibus.Suspendisse nec purus at metus rhoncus vehicula eget ac lacus.Suspendisse consectetur massa eget ante faucibus, id interdum turpis malesuada.Etiam eget varius neque.Pellentesque ullamcorper sapien augue, a tristique metus pellentesque sed.Duis semper velit at libero iaculis cursus at vitae eros.Aenean.
                         </p> */}
-                        <p className="content-read">
-                            {props.description}
-                        </p>
+                        {
+                            urlObj.about === 'active-button' ? (
+                                <p className="content-read">{props.description}</p>
+                            ) : null
+                        }
+                        {
+                            urlObj.productService === 'active-button' ? (
+                                <>
+                                    <p className="content-read">{productServiceText} provided at:</p>
+                                    <Row>
+                                        <Form.Group as={Col}>
+                                            <Form.Label className="bold-600 margin-bottom-0">Provinces</Form.Label>
+                                            <p className="content-read">{provincesString}</p>
+                                        </Form.Group>
+                                    </Row>
+                                    <Row>
+                                        <Form.Group as={Col}>
+                                            <Form.Label className="bold-600 margin-bottom-0">Cities</Form.Label>
+                                            <p className="content-read">{citiesString}</p>
+                                        </Form.Group>
+                                    </Row>
+                                    <Row>
+                                        <Form.Group as={Col}>
+                                            <Form.Label className="bold-600 margin-bottom-0">Areas</Form.Label>
+                                            <p className="content-read">{areasString}</p>
+                                        </Form.Group>
+                                    </Row>
+                                </>
+                            ) : null
+                        }
                     </Row>
                 </Col>
             </Row>

@@ -2,7 +2,6 @@ import React from 'react';
 import './Poster.scss';
 
 function Poster(props) {
-    console.log(props.poster);
     return (
         <div className="poster">
             

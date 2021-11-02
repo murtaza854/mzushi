@@ -1,11 +1,6 @@
-import dotenv from 'dotenv';
-// import firebase from "firebase/app";
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithPopup, FacebookAuthProvider, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
-
-
-
-dotenv.config();
+import { getAuth, signInWithPopup, FacebookAuthProvider, GoogleAuthProvider } from "firebase/auth";
+import api from './api';
 
 initializeApp({
     apiKey: "AIzaSyBJqs4AR8o7P9HsxiZSehD0jYyI6dnfH7Q",
@@ -17,14 +12,43 @@ initializeApp({
 });
 
 
-const provider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
 const auth = getAuth();
 
 export const signInWithGoogle = () => {
-    signInWithPopup(auth, provider).then((res) => {
-        console.log(res.user)
+    signInWithPopup(auth, googleProvider).then(async (res) => {
+        const response = await fetch(`${api}/startup/signup`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            withCredentials: true,
+            body: JSON.stringify({ user: res.user, provider: 'google' })
+        });
+        const content = await response.json();
+        console.log(content.data);
     }).catch((error) => {
-        console.log(error.message)
+        console.log(error.message);
+    })
+}
+
+export const signInWithFacebook = () => {
+    signInWithPopup(auth, facebookProvider).then(async (res) => {
+        const response = await fetch(`${api}/startup/signup`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            withCredentials: true,
+            body: JSON.stringify({ user: res.user, provider: 'facebook' })
+        });
+        const content = await response.json();
+        console.log(content.data);
+    }).catch((error) => {
+        console.log(error.message);
     })
 }
 

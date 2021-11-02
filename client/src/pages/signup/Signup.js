@@ -77,7 +77,7 @@ function Signup(props) {
                     'Content-Type': 'application/json',
                     'Cache-Control': 'no-store'
                 },
-                body: JSON.stringify({ firstName, lastName, email, contactNumber, password }),
+                body: JSON.stringify({ firstName, lastName, email, contactNumber, password, provider: 'email-password' }),
             });
             const content = await response.json();
             if (content.data) history.push("/__/auth/action?mode=accountCreation");

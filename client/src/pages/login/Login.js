@@ -2,9 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Container, Form, Col, Row, InputGroup, Button } from 'react-bootstrap';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 import { useHistory } from 'react-router-dom';
-import { signInWithGoogle } from '../../firebase';
+import { signInWithGoogle, signInWithFacebook } from '../../firebase';
 import api from '../../api';
-// import firebase from "firebase/app";
 import { DescriptionText, Heading1 } from '../../components';
 import UserContext from '../../contexts/userContext';
 
@@ -29,26 +28,6 @@ function Login(props) {
 
     const changeEmail = event => {
         setEmail(prevState => ({ ...prevState, name: event.target.value }));
-    }
-
-    const handleFacebookLogin = async (e, provider) => {
-        e.preventDefault();
-        try {
-            console.log(window.location.protocol);
-            const response = await fetch(`${api}/startup/social-login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-                withCredentials: true,
-                body: JSON.stringify({ provider })
-            });
-            const content = await response.json();
-            console.log(content.data);
-        } catch (error) {
-
-        }
     }
 
     const handleSubmit = async e => {
@@ -183,11 +162,17 @@ function Login(props) {
                             />
                         </Col>
                     </Row>
+                    <Row className="justify-content-center">
+                        <button onClick={signInWithGoogle} type="button" className="login-with-google-btn spacing-btns" >
+                            Login with Google
+                        </button>
+                        <button onClick={signInWithFacebook} type="button" className="login-with-fb-btn connect-fb spacing-btns" >
+                            Login with Facebook
+                        </button>
+                        {/* <Button onClick={e => handleFacebookLogin(e, 'facebook')} type="text">Facebook</Button> */}
+                        {/* <Button onClick={signInWithFacebook} type="text">Facebook</Button> */}
+                    </Row>
                 </Form>
-            </Row>
-            <Row>
-                {/* <Button onClick={e => handleFacebookLogin(e, 'facebook')} type="text">Facebook</Button> */}
-                <Button onClick={signInWithGoogle} type="text">Facebook</Button>
             </Row>
         </Container>
     );

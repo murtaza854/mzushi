@@ -127,7 +127,9 @@ router.get('/get-all-by-category', async (req, res) => {
 });
 
 router.post('/signup', async (req, res) => {
+    const { provider } = req.body;
     try {
+        // if ()
         const { firstName, lastName, email, contactNumber, password } = req.body;
         const response = await firebase.auth().createUserWithEmailAndPassword(email.name, password.name);
         const user = response.user;

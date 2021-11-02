@@ -251,6 +251,46 @@ router.post('/send-password-reset-link', async (req, res) => {
     }
 });
 
+router.post('/social-login', async (req, res) => {
+    try {
+        const provider = new firebase.auth.FacebookAuthProvider();
+        console.log(1);
+        firebase.auth().useDeviceLanguage();
+        // provider.setCustomParameters({
+        //     'display': 'popup'
+        //   });
+        const result = await firebase.auth().signInWithRedirect(provider);
+        const credential = result.credential;
+
+        // The signed-in user info.
+        const user = result.user;
+
+        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+        const accessToken = credential.accessToken;
+        console.log(credential);
+        console.log(user);
+        console.log(accessToken);
+        // const response = await firebase.auth().signInWithEmailAndPassword(req.body.email.name, req.body.password.name);
+        // const user = response.user;
+        // const idTokenResult = await user.getIdTokenResult();
+        // const admin = idTokenResult.claims.admin;
+        // const displayName = user.displayName;
+        // const email = user.email;
+        // const emailVerified = user.emailVerified;
+        // const startup = await Startup.findOne({ uid: user.uid });
+        // const accountSetup = startup.accountSetup;
+        // if (!emailVerified) {
+        //     user.sendEmailVerification();
+        //     await firebase.auth().signOut();
+        //     throw "Email not verified";
+        // } else res.json({ data: true });
+        res.json({ data: true });
+    } catch (error) {
+        console.log(error);
+        res.json({ data: null, error: error });
+    }
+});
+
 router.post('/login', async (req, res) => {
     // console.log(req.body);
     try {

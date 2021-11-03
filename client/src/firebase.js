@@ -18,7 +18,7 @@ const auth = getAuth();
 
 export const signInWithGoogle = () => {
     signInWithPopup(auth, googleProvider).then(async (res) => {
-        const response = await fetch(`${api}/startup/signup`, {
+        const response = await fetch(`${api}/startup/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ export const signInWithGoogle = () => {
 
 export const signInWithFacebook = () => {
     signInWithPopup(auth, facebookProvider).then(async (res) => {
-        const response = await fetch(`${api}/startup/signup`, {
+        const response = await fetch(`${api}/startup/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

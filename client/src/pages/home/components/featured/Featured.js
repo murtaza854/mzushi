@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import api from '../../../../api';
 import { Heading2, BigBox } from '../../../../components';
+import { Link } from 'react-router-dom';
 import './Featured.scss'
 
 function Featured(props) {
+    const [featuredCategory, setFeaturedCategory] = useState([]);
     const [category, setCategory] = useState([]);
     const [display, setDisplay] = useState('display-hidden');
     const [catText, setCatText] = useState(['Explore', 'More']);
@@ -18,14 +20,17 @@ function Featured(props) {
                 },
             });
             const content = await response.json();
-            function splitArrayIntoChunksOfLen(arr, len) {
-                var chunks = [], i = 0, n = arr.length;
-                while (i < n) {
-                    chunks.push(arr.slice(i, i += len));
-                }
-                return chunks;
-            }
-            setCategory(splitArrayIntoChunksOfLen(content.data, 4));
+            const array = content.data;
+            // function splitArrayIntoChunksOfLen(arr, len) {
+            //     var chunks = [], i = 0, n = arr.length;
+            //     while (i < n) {
+            //         chunks.push(arr.slice(i, i += len));
+            //     }
+            //     return chunks;
+            // }
+            setFeaturedCategory(array.slice(0, 4));
+            setCategory(array.slice(4, array.length));
+            // setCategory(splitArrayIntoChunksOfLen(content.data, 4));
         })()
     }, []);
 
@@ -75,45 +80,54 @@ function Featured(props) {
                 />
             </Row>
             <div className="margin-global-top-1" />
-            {
+            {/* {
                 category.map((row, rowIndex) => {
                     let displayClass = '';
                     if (rowIndex !== 0) displayClass = display;
-                    return (
-                        <Row className={`justify-content-center ${displayClass}`} key={rowIndex}>
-                            {
-                                row.map((cat, catIndex) => {
-                                    function arrayBufferToBase64(buffer) {
-                                        var binary = '';
-                                        var bytes = [].slice.call(new Uint8Array(buffer)); bytes.forEach((b) => binary += String.fromCharCode(b)); return window.btoa(binary);
-                                    };
-                                    const base64Flag = `data:${cat.image.contentType};base64,`;
-                                    const imagePath = base64Flag + arrayBufferToBase64(cat.image.data.data);
-                                    return (
-                                        <div className="big-box-div" key={catIndex}>
-                                            <BigBox
-                                                text={cat.name}
-                                                text1=""
-                                                size={2}
-                                                classes="text-center big-box-fixed-size-small"
-                                                classes_p="center-absolute"
-                                                to={cat.slug}
-                                                img={
-                                                    <img
-                                                        src={imagePath}
-                                                        alt={cat.name}
-                                                    />
-                                                }
-                                                onClick={null}
-                                            />
-                                        </div>
-                                    )
-                                })
-                            }
-                        </Row>
-                    )
-                })
-            }
+                    return ( */}
+            <Row className={`justify-content-center`}>
+                {
+                    featuredCategory.map((cat, catIndex) => {
+                        function arrayBufferToBase64(buffer) {
+                            var binary = '';
+                            var bytes = [].slice.call(new Uint8Array(buffer)); bytes.forEach((b) => binary += String.fromCharCode(b)); return window.btoa(binary);
+                        };
+                        const base64Flag = `data:${cat.image.contentType};base64,`;
+                        const imagePath = base64Flag + arrayBufferToBase64(cat.image.data.data);
+                        return (
+                            <div className="big-box-div" key={catIndex}>
+                                <BigBox
+                                    text={cat.name}
+                                    text1=""
+                                    size={2}
+                                    classes="text-center big-box-fixed-size-small"
+                                    classes_p="center-absolute"
+                                    to={cat.slug}
+                                    img={
+                                        <img
+                                            src={imagePath}
+                                            alt={cat.name}
+                                        />
+                                    }
+                                    onClick={null}
+                                />
+                            </div>
+                        )
+                    })
+                }
+            </Row>
+            <Row className={`justify-content-center margin-global-top-1 extra-categories ${display}`}>
+                {
+                    category.map((cat, catIndex) => {
+                        return (
+                            <Link key={catIndex} className="content-read" to={`/${cat.slug}`}>{cat.name}</Link>
+                        )
+                    })
+                }
+            </Row>
+            {/* //         )
+            //     })
+            // } */}
             {/* <Row className="justify-content-center">
                 <BigBox
                     text="Restaurants"

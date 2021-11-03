@@ -69,6 +69,7 @@ const createServer = async (callback) => {
     app.get('/api/logged-in', async (req, res) => {
         try {
             const user = firebase.auth().currentUser;
+            console.log(user);
             if (user) {
                 const idTokenResult = await user.getIdTokenResult();
                 const displayName = user.displayName;

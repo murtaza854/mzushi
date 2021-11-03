@@ -163,7 +163,7 @@ function Login(props) {
                         </Col>
                     </Row>
                     <Row className="justify-content-center">
-                        <button onClick={signInWithGoogle} type="button" className="login-with-google-btn spacing-btns" >
+                        <button onClick={e => signInWithGoogle(user)} type="button" className="login-with-google-btn spacing-btns" >
                             Login with Google
                         </button>
                         <button onClick={signInWithFacebook} type="button" className="login-with-fb-btn connect-fb spacing-btns" >

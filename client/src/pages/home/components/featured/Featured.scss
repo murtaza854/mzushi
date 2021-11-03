@@ -6,4 +6,16 @@
     .display-hidden {
         display: none;
     }
+    .extra-categories {
+        flex-wrap: wrap;
+        flex-direction: row;
+        a {
+            width: fit-content;
+            text-decoration: none;
+            transition: .3s ease-in-out;
+            &:hover {
+                color: #8fbedf;
+            }
+        }
+    }
 }

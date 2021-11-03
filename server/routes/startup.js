@@ -255,7 +255,6 @@ router.post('/send-password-reset-link', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-    // console.log(req.body);
     const { provider } = req.body;
     try {
         if (provider === 'email-password') {
@@ -273,6 +272,64 @@ router.post('/login', async (req, res) => {
                 await firebase.auth().signOut();
                 throw "Email not verified";
             } else res.json({ data: { displayName, email, emailVerified, accountSetup, admin } });
+        } else if (provider === 'google') {
+            const { user } = req.body;
+            const id_token = user.getAuthResponse().id_token;
+            const credential = GoogleAuthProvider.credential(id_token);
+
+            console.log(1)
+            // await firebase.auth().signInWithCredential(credential);
+            firebase.auth().signInWithCredential(credential);
+            console.log(2);
+            const displayName = user.displayName;
+            const email = user.email;
+            const emailVerified = user.emailVerified;
+            const startup = await Startup.findOne({ uid: user.uid });
+            if (startup) {
+                const accountSetup = startup.accountSetup;
+                res.json({ data: { displayName, email, emailVerified, accountSetup, admin: false, credential } });
+            } else {
+                const newStartup = new Startup({
+                    ownerFirstName: user.displayName,
+                    ownerLastName: '',
+                    email: user.email,
+                    contactNumber: '',
+                    active: true,
+                    premium: false,
+                    rating: 0,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    lastLogin: new Date(),
+                    uid: user.uid
+                });
+                newStartup.save();
+                res.json({ data: { displayName, email, emailVerified, accountSetup: false, admin: false } });
+            }
+        } else if (provider === 'facebook') {
+            const { user } = req.body;
+            const displayName = user.displayName;
+            const email = user.email;
+            const startup = await Startup.findOne({ uid: user.uid });
+            if (startup) {
+                const accountSetup = startup.accountSetup;
+                res.json({ data: { displayName, email, emailVerified: true, accountSetup, admin: false } });
+            } else {
+                const newStartup = new Startup({
+                    ownerFirstName: user.displayName,
+                    ownerLastName: '',
+                    email: user.email,
+                    contactNumber: '',
+                    active: true,
+                    premium: false,
+                    rating: 0,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    lastLogin: new Date(),
+                    uid: user.uid
+                });
+                newStartup.save();
+                res.json({ data: { displayName, email, emailVerified, accountSetup: false, admin: false } });
+            }
         }
     } catch (error) {
         res.json({ data: null, error: error });

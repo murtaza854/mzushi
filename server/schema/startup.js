@@ -5,9 +5,9 @@ const startupSchema = new mongoose.Schema({
     startupName: { type: String },
     slug: { type: String },
     ownerFirstName: { type: String, required: true },
-    ownerLastName: { type: String, required: true },
+    ownerLastName: { type: String },
     email: { type: String, required: true },
-    contactNumber: { type: String, required: true },
+    contactNumber: { type: String },
     logo: { data: Buffer, contentType: String },
     images: [
         {

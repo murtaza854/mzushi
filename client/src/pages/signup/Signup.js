@@ -15,6 +15,10 @@ function Signup(props) {
         if (user.userState) history.push('/');
     }, [history, user.userState]);
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const [firstName, setFirstName] = useState({ name: '', errorText: '', error: false });
     const [lastName, setLastName] = useState({ name: '', errorText: '', error: false });
     const [email, setEmail] = useState({ name: '', errorText: '', error: false });

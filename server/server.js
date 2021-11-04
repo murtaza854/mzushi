@@ -31,8 +31,8 @@ const createServer = async (callback) => {
     ));
     app.use(cors({
         credentials: true,
-        origin: [process.env.API_URL1, process.env.API_URL2]
-        // origin: [process.env.API_URL3]
+        // origin: [process.env.API_URL1, process.env.API_URL2]
+        origin: [process.env.API_URL3]
         // origin: '*'
     }));
     app.use(express.static('./build'));

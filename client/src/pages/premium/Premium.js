@@ -13,6 +13,10 @@ function Premium(props) {
     const [check, setCheck] = useState(false);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
         if (user.userState) {
             if (user.userState.accountSetup) history.push('/');
         } else history.push('/login');

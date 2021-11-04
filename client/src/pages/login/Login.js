@@ -12,6 +12,10 @@ function Login(props) {
     const [password, setPassword] = useState({ name: '', errorText: '', error: false, showPassword: false });
     const history = useHistory();
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const [disable, setDisable] = useState(false);
 
     const user = useContext(UserContext);

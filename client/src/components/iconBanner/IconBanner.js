@@ -7,7 +7,7 @@ function IconBanner(props) {
         <Container fluid className="icon-banner">
             <Row className="justify-content-center">
                 <Col md={1}>
-                    <a className="icon-cont" href="/">
+                    <a className="icon-cont" rel="noreferrer" target="_blank" href="https://www.facebook.com/mzushipk/">
                         <i className="center-relative-horizontal fa fa-facebook-f"></i>
                     </a>
                 </Col>

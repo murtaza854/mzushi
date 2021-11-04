@@ -10,6 +10,10 @@ function ForgotPassword(props) {
     const history = useHistory();
     const user = useContext(UserContext);
 
+    useEffect(() => {
+      window.scrollTo(0, 0);
+  }, []);
+
     const [email, setEmail] = useState({ name: '', errorText: '', error: false });
 
     useEffect(() => {

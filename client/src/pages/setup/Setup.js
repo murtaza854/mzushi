@@ -80,6 +80,10 @@ function Setup(props) {
     const [disabledBtn, setDisabledBtn] = useState(true);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
         if (props.edit) {
             setBusinessName({ text: props.startupName, error: false, errorText: '' });
             setBusinessDescription({ text: props.startupDescription, error: false, errorText: '' });

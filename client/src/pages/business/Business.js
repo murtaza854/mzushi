@@ -12,6 +12,10 @@ function Business(props) {
     const [poster, setPoster] = useState(null);
 
     useEffect(() => {
+      window.scrollTo(0, 0);
+  }, []);
+
+    useEffect(() => {
         (async () => {
             const response = await fetch(`${api}/startup/get-one-by-category-startup?categorySlug=${category}&startupSlug=${startup}`, {
                 method: 'GET',

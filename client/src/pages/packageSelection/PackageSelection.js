@@ -12,6 +12,10 @@ function PackageSelection(props) {
     const history = useHistory();
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
         if (user.userState) {
             if (user.userState.accountSetup) history.push('/');
         }

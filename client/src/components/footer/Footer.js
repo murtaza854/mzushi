@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Footer.scss'
 
 function Footer(props) {
@@ -7,7 +8,7 @@ function Footer(props) {
         <div className="footer-left">
           <h3><span>mzushi</span></h3>
           <p className="footer-links">
-            <a href="/" className="link-1">Home</a>
+            <Link to="/" className="link-1">Home</Link>
             {/* <a href="/diy">DIY</a> */}
             {/* <a href="/contact-us">Contact Us</a> */}
           </p>
@@ -18,10 +19,10 @@ function Footer(props) {
             <i className="fa fa-map-marker" />
             <p><span>Address Line 1</span>Address Line 2</p>
           </div> */}
-          <div>
+          {/* <div>
             <i className="fa fa-phone" />
             <p><span>Phone number</span></p>
-          </div>
+          </div> */}
           <div className="special">
             <i className="fa fa-envelope" />
             <p><a href="mailto:help@mzushi.com">help@mzushi.com</a></p>

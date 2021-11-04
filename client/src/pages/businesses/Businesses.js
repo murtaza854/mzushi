@@ -29,6 +29,10 @@ function Businesses(props) {
     const feature = params.get('feature') || null;
 
     useEffect(() => {
+      window.scrollTo(0, 0);
+  }, []);
+
+    useEffect(() => {
         (
             async () => {
                 const response = await fetch(`${api}/features/table-data`, {
@@ -123,35 +127,40 @@ function Businesses(props) {
     }, [category]);
 
     useEffect(() => {
-        const activeFeatures = features.filter(e => e.active === true);
-        const activeProvinces = provinces.filter(e => e.active === true);
-        const activeCities = filteredCities.filter(e => e.active === true);
-        const activeAreas = filteredAreas.filter(e => e.active === true);
-        const filteredStartups = [];
-        for (let i = 0; i < startUps.length; i++) {
-            const s = startUps[i];
-            const startupFeatures = s.features;
-            const startupArea = s.address.area;
-            const startupCity = startupArea.city;
-            const startupProvince = startupCity.province;
-            let flag = true;
-            for (let j = 0; j < activeFeatures.length; j++) {
-                const activeF = activeFeatures[j];
-                flag = startupFeatures.some(elem => elem.name === activeF.name);
-                if (!flag) break;
+        try {
+            const activeFeatures = features.filter(e => e.active === true);
+            const activeProvinces = provinces.filter(e => e.active === true);
+            const activeCities = filteredCities.filter(e => e.active === true);
+            const activeAreas = filteredAreas.filter(e => e.active === true);
+            const filteredStartups = [];
+            for (let i = 0; i < startUps.length; i++) {
+                const s = startUps[i];
+                const startupFeatures = s.features;
+                const startupArea = s.address.area;
+                const startupCity = startupArea.city;
+                const startupProvince = startupCity.province;
+                let flag = true;
+                for (let j = 0; j < activeFeatures.length; j++) {
+                    const activeF = activeFeatures[j];
+                    flag = startupFeatures.some(elem => elem.name === activeF.name);
+                    if (!flag) break;
+                }
+                if (flag) {
+                    if (activeProvinces.find(elem => elem.name !== startupProvince.name)) flag = false;
+                }
+                if (flag) {
+                    if (activeCities.find(elem => elem.name !== startupCity.name)) flag = false;
+                }
+                if (flag) {
+                    if (activeAreas.find(elem => elem.name !== startupArea.name)) flag = false;
+                }
+                if (flag) filteredStartups.push(s);
             }
-            if (flag) {
-                if (activeProvinces.find(elem => elem.name !== startupProvince.name)) flag = false;
-            }
-            if (flag) {
-                if (activeCities.find(elem => elem.name !== startupCity.name)) flag = false;
-            }
-            if (flag) {
-                if (activeAreas.find(elem => elem.name !== startupArea.name)) flag = false;
-            }
-            if (flag) filteredStartups.push(s);
+            console.log(filteredStartups);
+            setSelectedStartups(filteredStartups);
+        } catch (error) {
+            console.log(error);
         }
-        setSelectedStartups(filteredStartups);
     }, [startUps, features, provinces, filteredCities, filteredAreas]);
 
     // useEffect(() => {

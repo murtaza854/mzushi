@@ -51,6 +51,7 @@ const startupSchema = new mongoose.Schema({
     accountSetup: { type: Boolean, required: true, default: false },
     mzushiChoice: { type: Boolean, default: false },
     features: [{ type: Schema.Types.ObjectId, ref: 'features', required: true }],
+    provider : { type: String, required: true },
 });
 
 const Startup = mongoose.model('startups', startupSchema);

@@ -64,7 +64,7 @@ function Featured(props) {
                     size={4}
                     classes="text-center yellow-big-box big-box-fixed-size"
                     classes_p="center-absolute"
-                    to="/directory"
+                    to="/directory?feature=female-owned"
                     img=""
                     onClick={null}
                 />
@@ -77,6 +77,7 @@ function Featured(props) {
                     to="/"
                     img=""
                     onClick={handleDisplay}
+                    featureSelected=""
                 />
             </Row>
             <div className="margin-global-top-1" />

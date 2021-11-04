@@ -25,6 +25,8 @@ function Businesses(props) {
     // const [areas, setAreas] = useState([]);
     const [filteredAreas, setFilteredAreas] = useState([]);
     // const [areaChange, setAreaChange] = useState(true);
+    const params = new URLSearchParams(window.location.search);
+    const feature = params.get('feature') || null;
 
     useEffect(() => {
         (
@@ -39,11 +41,12 @@ function Businesses(props) {
                 const featuresList = [];
                 content.data.forEach(element => {
                     element['active'] = false;
+                    if (feature && element.slug === feature) element['active'] = true;
                     featuresList.push(element);
                 });
                 setFeatures(featuresList);
             })();
-    }, []);
+    }, [feature]);
 
     useEffect(() => {
         (

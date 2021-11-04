@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Container, Form, Col, Row, InputGroup, Button } from 'react-bootstrap';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 import { useHistory } from 'react-router-dom';
-import { signInWithGoogle, signInWithFacebook } from '../../firebase';
+import { onSignIn, responseFacebook } from '../../firebase';
 import api from '../../api';
 import { DescriptionText, Heading1 } from '../../components';
 import UserContext from '../../contexts/userContext';
@@ -51,8 +51,8 @@ function Login(props) {
                 setPassword(prevState => ({ ...prevState, name: '', errorText: 'Invalid Credentials!', error: true, showPassword: false }));
                 setDisable(false);
             } else {
-                const { displayName, email, emailVerified, accountSetup, admin } = content.data;
-                user.setUserState({ displayName, email, emailVerified, accountSetup, admin });
+                const { displayName, email, emailVerified, accountSetup, admin, provider } = content.data;
+                user.setUserState({ displayName, email, emailVerified, accountSetup, admin, provider });
                 if (accountSetup) history.push("/");
                 // else history.push("/packages");
                 // history.push("/packages");
@@ -74,6 +74,19 @@ function Login(props) {
             else history.push('/packages');
         }
     }, [history, user.userState]);
+
+    useEffect(() => {
+        window.gapi.signin2.render('g-signin2', {
+            'scope': 'https://www.googleapis.com/auth/plus.login',
+            //   'width': 200,
+            //   'height': 50,
+            'longtitle': true,
+            'border-radius': 15,
+            'theme': 'dark',
+            'onsuccess': googleuser => onSignIn(googleuser, user),
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <Container>
@@ -163,12 +176,27 @@ function Login(props) {
                         </Col>
                     </Row>
                     <Row className="justify-content-center">
-                        <button onClick={e => signInWithGoogle(user)} type="button" className="login-with-google-btn spacing-btns" >
+                        <div id="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+                        <div className="facebook-button-container">
+                            <button className="login-with-fb-btn connect-fb" onClick={e => responseFacebook(user)}>
+                                <i className="fa fa-facebook mr-1"></i>
+                                <span>Sign in with Facebook</span>
+                            </button>
+                        </div>
+                        {/* <button  data-onsuccess={onSignIn} type="button" className="signin2 login-with-google-btn spacing-btns" >
                             Login with Google
-                        </button>
-                        <button onClick={signInWithFacebook} type="button" className="login-with-fb-btn connect-fb spacing-btns" >
+                        </button> */}
+                        {/* <div class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="rounded" data-auto-logout-link="true" data-use-continue-as="true">Login</div> */}
+                        {/* <button onClick={signInWithFacebook} type="button" className="login-with-fb-btn connect-fb spacing-btns" >
                             Login with Facebook
-                        </button>
+                        </button> */}
+                        {/* <FacebookLogin
+          appId="166380605707790"
+          autoLoad={true}
+          fields="name,email,picture"
+          scope="public_profile,user_friends,user_actions.books"
+          onClick={res => responseFacebook(res)}
+        /> */}
                         {/* <Button onClick={e => handleFacebookLogin(e, 'facebook')} type="text">Facebook</Button> */}
                         {/* <Button onClick={signInWithFacebook} type="text">Facebook</Button> */}
                     </Row>

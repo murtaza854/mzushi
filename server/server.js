@@ -69,7 +69,6 @@ const createServer = async (callback) => {
     app.get('/api/logged-in', async (req, res) => {
         try {
             const user = firebase.auth().currentUser;
-            console.log(user);
             if (user) {
                 const idTokenResult = await user.getIdTokenResult();
                 const displayName = user.displayName;
@@ -77,14 +76,16 @@ const createServer = async (callback) => {
                 const emailVerified = user.emailVerified;
                 const admin = idTokenResult.claims.admin;
                 let accountSetup = true;
+                let provider = '';
                 if (!admin) {
                     const startup = await Startup.findOne({ uid: user.uid });
                     accountSetup = startup.accountSetup;
+                    provider = startup.provider;
                 }
                 else {
                     accountSetup = true;
                 }
-                res.json({ data: { displayName, email, emailVerified, accountSetup, admin } });
+                res.json({ data: { displayName, email, emailVerified, accountSetup, admin, provider } });
             } else res.json({ data: null })
         } catch (error) {
             res.json({ data: null, error: error });

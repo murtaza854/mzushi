@@ -20,7 +20,7 @@ function WordSlider(props) {
                 </div>
                 <p className="text-center">Check out the Trending Business of your City</p>
                 <YellowButton
-                    to="/"
+                    to="/directory"
                     text="Explore More"
                     classes="text-uppercase width-full horizontal-center-relative"
                 />

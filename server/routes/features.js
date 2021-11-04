@@ -17,6 +17,7 @@ router.post('/add', async (req, res) => {
     const data = req.body;
     const newFeature = new Feature({
         name: data.name,
+        slug: slugify(data.name, { lower: true }),
     });
     newFeature.save();
     res.json({ data: 'success' });
@@ -26,6 +27,7 @@ router.post('/update', async (req, res) => {
     const data = req.body;
     const feature = await Feature.findOne({ _id: data._id });
     feature.name = data.name;
+    feature.slug = slugify(data.name, { lower: true });
     feature.save();
     res.json({ data: 'success' });
 });

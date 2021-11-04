@@ -29,9 +29,9 @@ function App() {
           });
           const content = await response.json();
           const user = content.data;
-          const { displayName, email, emailVerified, accountSetup, admin } = user;
+          const { displayName, email, emailVerified, accountSetup, admin, provider } = user;
           console.log(user)
-          setUserState({ displayName, email, emailVerified, accountSetup, admin });
+          setUserState({ displayName, email, emailVerified, accountSetup, admin, provider });
           setLoading(false);
         } catch (error) {
           setUserState(null);

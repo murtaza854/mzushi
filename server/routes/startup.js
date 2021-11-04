@@ -149,7 +149,8 @@ router.post('/signup', async (req, res) => {
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 lastLogin: new Date(),
-                uid: user.uid
+                uid: user.uid,
+                provider: provider
             });
             newStartup.save();
             await firebase.auth().signOut();
@@ -267,27 +268,25 @@ router.post('/login', async (req, res) => {
             const emailVerified = user.emailVerified;
             const startup = await Startup.findOne({ uid: user.uid });
             const accountSetup = startup.accountSetup;
+            const provider = startup.provider;
             if (!emailVerified) {
                 user.sendEmailVerification();
                 await firebase.auth().signOut();
                 throw "Email not verified";
-            } else res.json({ data: { displayName, email, emailVerified, accountSetup, admin } });
+            } else res.json({ data: { displayName, email, emailVerified, accountSetup, admin, provider } });
         } else if (provider === 'google') {
-            const { user } = req.body;
-            const id_token = user.getAuthResponse().id_token;
-            const credential = GoogleAuthProvider.credential(id_token);
-
-            console.log(1)
-            // await firebase.auth().signInWithCredential(credential);
-            firebase.auth().signInWithCredential(credential);
-            console.log(2);
+            const { id_token } = req.body;
+            const credential = firebase.auth.GoogleAuthProvider.credential(id_token);
+            const response = await firebase.auth().signInWithCredential(credential);
+            const user = response.user;
             const displayName = user.displayName;
             const email = user.email;
             const emailVerified = user.emailVerified;
             const startup = await Startup.findOne({ uid: user.uid });
+            console.log(user.uid);
             if (startup) {
                 const accountSetup = startup.accountSetup;
-                res.json({ data: { displayName, email, emailVerified, accountSetup, admin: false, credential } });
+                res.json({ data: { displayName, email, emailVerified, accountSetup, admin: false, provider } });
             } else {
                 const newStartup = new Startup({
                     ownerFirstName: user.displayName,
@@ -300,19 +299,23 @@ router.post('/login', async (req, res) => {
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     lastLogin: new Date(),
-                    uid: user.uid
+                    uid: user.uid,
+                    provider: provider
                 });
                 newStartup.save();
-                res.json({ data: { displayName, email, emailVerified, accountSetup: false, admin: false } });
+                res.json({ data: { displayName, email, emailVerified, accountSetup: false, admin: false, provider } });
             }
         } else if (provider === 'facebook') {
-            const { user } = req.body;
+            const { accessToken } = req.body;
+            const credential = firebase.auth.FacebookAuthProvider.credential(accessToken);
+            const response = await firebase.auth().signInWithCredential(credential);
+            const user = response.user;
             const displayName = user.displayName;
             const email = user.email;
             const startup = await Startup.findOne({ uid: user.uid });
             if (startup) {
                 const accountSetup = startup.accountSetup;
-                res.json({ data: { displayName, email, emailVerified: true, accountSetup, admin: false } });
+                res.json({ data: { displayName, email, emailVerified: true, accountSetup, admin: false, provider } });
             } else {
                 const newStartup = new Startup({
                     ownerFirstName: user.displayName,
@@ -325,13 +328,15 @@ router.post('/login', async (req, res) => {
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     lastLogin: new Date(),
-                    uid: user.uid
+                    uid: user.uid,
+                    provider: provider
                 });
                 newStartup.save();
-                res.json({ data: { displayName, email, emailVerified, accountSetup: false, admin: false } });
+                res.json({ data: { displayName, email, emailVerified: true, accountSetup: false, admin: false, provider } });
             }
         }
     } catch (error) {
+        console.log(error);
         res.json({ data: null, error: error });
     }
 });

@@ -45,8 +45,14 @@ function Sidebar(props) {
                 <Link className={activeClass.paymentHistory} to="/dashboard/account/payment-history">Payment History</Link>
                 <Link className={activeClass.setup} to="/dashboard/account/account-setup">Setup</Link>
                 <Link className={activeClass.gallery} to="/dashboard/account/gallery">Gallery</Link>
-                <Link className={activeClass.email} to="/dashboard/account/change-email">Change Email</Link>
-                <Link className={activeClass.password} to="/dashboard/account/change-password">Change Password</Link>
+                {
+                    props.provider === 'email-password' ? (
+                        <>
+                            <Link className={activeClass.email} to="/dashboard/account/change-email">Change Email</Link>
+                            <Link className={activeClass.password} to="/dashboard/account/change-password">Change Password</Link>
+                        </>
+                    ) : null
+                }
             </Row>
             <div className="margin-global-top-3" />
         </Col>

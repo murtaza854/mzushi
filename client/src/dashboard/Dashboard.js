@@ -22,6 +22,9 @@ function Dashboard(props) {
 
     useEffect(() => {
         if (!user.userState) history.push('/login');
+        else {
+            if (!user.userState.accountSetup) history.push('/packages');
+        }
     }, [history, user.userState]);
 
     useEffect(() => {
@@ -75,7 +78,7 @@ function Dashboard(props) {
         <Container className="user-dashboard" fluid>
             <div className="margin-global-top-3" />
             <Row>
-                <Sidebar />
+                <Sidebar provider={user.userState.provider} />
                 <div className="unhide-1200 filter-icon-btn-container">
                     <div className="dash-icon-btn">
                         <GiHamburgerMenu className="dash-open-icon" onClick={openFilterPanel} />

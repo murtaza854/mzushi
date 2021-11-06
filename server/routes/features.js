@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const slugify = require('slugify');
 const Feature = require('../schema').feature;
 
 router.get('/table-data', async (req, res) => {

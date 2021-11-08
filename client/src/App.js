@@ -13,7 +13,7 @@ import api from './api';
 
 function App() {
   const [userState, setUserState] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (
@@ -32,22 +32,22 @@ function App() {
           const { displayName, email, emailVerified, accountSetup, admin, provider } = user;
           console.log(user)
           setUserState({ displayName, email, emailVerified, accountSetup, admin, provider });
-          setLoading(false);
+          // setLoading(false);
         } catch (error) {
           setUserState(null);
-          setLoading(false);
+          // setLoading(false);
         }
       })();
   }, []);
 
-  if (loading) return <div></div>
+  // if (loading) return <div></div>
 
   return (
     <UserContext.Provider value={{ userState: userState, setUserState: setUserState }}>
       <Router>
         <Switch>
           <Route path="/admin">
-            <Admin loading={loading} />
+            <Admin />
           </Route>
           <Route path="*">
             <div id="overlay" className="overlay"></div>

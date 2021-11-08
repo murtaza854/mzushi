@@ -96,7 +96,7 @@ function Featured(props) {
                         const base64Flag = `data:${cat.image.contentType};base64,`;
                         const imagePath = base64Flag + arrayBufferToBase64(cat.image.data.data);
                         return (
-                            <div className="big-box-div" key={catIndex}>
+                            <div className="big-box-div featured-cats" key={catIndex}>
                                 <BigBox
                                     text={cat.name}
                                     text1=""

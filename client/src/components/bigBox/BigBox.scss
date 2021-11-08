@@ -7,7 +7,7 @@
         text-decoration: none;
     }
     p {
-        font-size: 2rem;
+        font-size: 1.5rem;
         font-weight: 600;
         color: black;
     }
@@ -88,7 +88,7 @@
 @media (max-width: 87.49875em) {
     .big-box {
         p {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
         }
     }
     .big-box-fixed-size {
@@ -108,7 +108,7 @@
 @media (max-width: 74.99875em) {
     .big-box {
         p {
-            font-size: 1.6rem;
+            font-size: 1.3rem;
         }
     }
     .big-box-fixed-size-small {
@@ -125,7 +125,7 @@
     .big-box {
         margin: 0 0.3rem;
         p {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             width: 18rem;
         }
     }
@@ -142,7 +142,7 @@
 @media (max-width: 47.99875em) {
     .big-box {
         p {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             width: 14rem;
         }
     }
@@ -159,7 +159,7 @@
 @media (max-width: 35.99875em) {
     .big-box {
         p {
-            font-size: 1.2rem;
+            // font-size: 1.2rem;
             width: 90%;
         }
     }

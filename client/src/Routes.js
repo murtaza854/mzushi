@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
     Switch,
     Route,
@@ -28,113 +28,6 @@ function Routes(props) {
     //   const [mainNavOptions, setMainNavOptions] = useState([]);
 
     let location = useLocation();
-
-    useEffect(() => {
-        (
-            async () => {
-                // setDiscountState(null);
-                // const response = await fetch(`${api}/category/client-categories`, {
-                //   method: 'GET',
-                //   headers: {
-                //     'Content-Type': 'application/json',
-                //     'Cache-Control': 'no-store'
-                //   },
-                //   credentials: 'include',
-                //   withCredentials: true,
-                // });
-                // const content = await response.json();
-                // // console.log(content);
-                // try {
-                //   const data = content.data;
-                //   const options = [
-                //     {
-                //       content: [{ id: 1, name: "Brands", to: "/brands" }]
-                //     },
-                //   ];
-                //   const mainNav = [
-                //     { name: "Brands", to: "/brands" }
-                //   ];
-                //   data.forEach(category => {
-                //     const newCat = {
-                //       hideBorder: false,
-                //       content: [
-                //         {
-                //           id: category._id,
-                //           name: category.name,
-                //         }
-                //       ]
-                //     };
-                //     const mainNewCat = {
-                //       name: category.name,
-                //       to: `/${category.slug}`
-                //     }
-                //     if (category.subCategories.length === 0) {
-                //       newCat.content[0]['to'] = `/${category.slug}`;
-                //     } else {
-                //       newCat.content[0]['children'] = [
-                //         {
-                //           content: [
-                //             { id: category._id, name: `All ${category.name}`, to: `/${category.slug}` }
-                //           ]
-                //         }
-                //       ];
-                //       mainNewCat['children'] = [];
-                //       category.subCategories.forEach(subCategory => {
-                //         const newSubCat = {
-                //           id: subCategory._id,
-                //           name: subCategory.name,
-                //         }
-                //         const mainNewSubCat = {
-                //           name: subCategory.name,
-                //           to: `/${category.slug}/${subCategory.slug}`
-                //         }
-                //         if (subCategory.furtherSubCategories.length === 0) {
-                //           newSubCat['to'] = `/${category.slug}/${subCategory.slug}`;
-                //         } else {
-                //           newSubCat['children'] = [
-                //             {
-                //               content: [
-                //                 { id: subCategory._id, name: `All ${subCategory.name}`, to: `/${category.slug}/${subCategory.slug}` }
-                //               ]
-                //             }
-                //           ];
-                //           mainNewSubCat['children'] = [];
-                //           subCategory.furtherSubCategories.forEach(furtherSubCategory => {
-                //             const newFurtherSubCat = { id: furtherSubCategory._id, name: furtherSubCategory.name, to: `/${category.slug}/${subCategory.slug}/${furtherSubCategory.slug}` };
-                //             const mainNewFurtherSubCat = { name: furtherSubCategory.name, to: `/${category.slug}/${subCategory.slug}/${furtherSubCategory.slug}` };
-                //             newSubCat['children'][0].content.push(newFurtherSubCat);
-                //             mainNewSubCat['children'].push(mainNewFurtherSubCat);
-                //           });
-                //         }
-                //         newCat.content[0]['children'][0].content.push(newSubCat);
-                //         mainNewCat['children'].push(mainNewSubCat);
-                //       });
-                //     }
-                //     options.push(newCat);
-                //     mainNav.push(mainNewCat);
-                //   });
-                //   options.push(
-                //     {
-                //       content: [{ id: 2, name: "Pre-Orders", to: "/pre-orders" }]
-                //     }
-                //   );
-                //   options.push(
-                //     {
-                //       content: [{ id: 2, name: "SALE", to: "/sale" }]
-                //     }
-                //   );
-                //   mainNav.push(
-                //     { name: "Pre-Orders", to: "/pre-orders" }
-                //   );
-                //   mainNav.push(
-                //     { name: "SALE", to: "/sale" }
-                //   );
-                //   setNavOptions(options);
-                //   setMainNavOptions(mainNav);
-                // } catch (error) {
-                // }
-            })();
-    }, []);
 
     return (
         // <CartContext.Provider value={{ cartObj: cart, setCart: setCart }}>

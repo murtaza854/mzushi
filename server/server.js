@@ -12,8 +12,8 @@ const app = express();
 const Startup = require('./schema').startup;
 
 const firebaseFile = require('./firebase');
-const firebase = firebaseFile.firebase;
-// const firebaseAdmin = firebaseFile.admin;
+// const firebase = firebaseFile.firebase;
+const firebaseAdmin = firebaseFile.admin;
 
 const url = process.env.DATABASE_URL;
 const port = process.env.PORT;
@@ -31,8 +31,8 @@ const createServer = async (callback) => {
     ));
     app.use(cors({
         credentials: true,
-        origin: [process.env.API_URL1, process.env.API_URL2]
-        // origin: [process.env.API_URL3]
+        // origin: [process.env.API_URL1, process.env.API_URL2]
+        origin: [process.env.API_URL3]
         // origin: '*'
     }));
     app.use(express.static('./build'));
@@ -68,25 +68,34 @@ const createServer = async (callback) => {
 
     app.get('/api/logged-in', async (req, res) => {
         try {
-            const user = firebase.auth().currentUser;
-            if (user) {
-                const idTokenResult = await user.getIdTokenResult();
-                const displayName = user.displayName;
-                const email = user.email;
-                const emailVerified = user.emailVerified;
-                const admin = idTokenResult.claims.admin;
-                let accountSetup = true;
-                let provider = '';
-                if (!admin) {
-                    const startup = await Startup.findOne({ uid: user.uid });
-                    accountSetup = startup.accountSetup;
-                    provider = startup.provider;
-                }
-                else {
-                    accountSetup = true;
-                }
-                res.json({ data: { displayName, email, emailVerified, accountSetup, admin, provider } });
-            } else res.json({ data: null })
+            const sessionCookie = req.cookies.session || "";
+            if (sessionCookie) {
+                const user = await firebaseAdmin.auth().verifySessionCookie(sessionCookie, true);
+                if (user) {
+                    const displayName = user.name;
+                    const email = user.email;
+                    const emailVerified = user.emailVerified || user.email_verified;
+                    const admin = user.admin;
+                    let accountSetup = true;
+                    let provider = '';
+                    if (!admin) {
+                        const startup = await Startup.findOne({ uid: user.uid });
+                        accountSetup = startup.accountSetup;
+                        provider = startup.provider;
+                    }
+                    else {
+                        accountSetup = true;
+                    }
+                    if (!emailVerified && provider !== 'facebook') {
+                        res.clearCookie("session");
+                        res.json({ data: { displayName, email, emailVerified, accountSetup, admin, provider } });
+                    } else {
+                        res.json({ data: { displayName, email, emailVerified, accountSetup, admin, provider } });
+                    }
+                } else res.json({ data: null })
+            } else {
+                res.json({ data: null });
+            }
         } catch (error) {
             res.json({ data: null, error: error });
         }

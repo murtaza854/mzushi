@@ -49,18 +49,27 @@ function Login(props) {
                 body: JSON.stringify({ email, password, provider: 'email-password' }),
             });
             const content = await response.json();
-            if (content.error === "Email not verified") {
-                history.push("/__/auth/action?mode=emailNotVerified");
-            } else if (content.error) {
+            if (content.data) {
+                const response1 = await fetch(`${api}/logged-in`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    withCredentials: true,
+                });
+                const content1 = await response1.json();
+                const { displayName, email, emailVerified, accountSetup, admin, provider } = content1.data;
+                if (!emailVerified) {
+                    history.push("/__/auth/action?mode=emailNotVerified");
+                } else {
+                    user.setUserState({ displayName, email, emailVerified, accountSetup, admin, provider });
+                    if (accountSetup) history.push("/");
+                }
+            } else {
                 setEmail(prevState => ({ ...prevState, name: '', errorText: 'Invalid Credentials!', error: true }));
                 setPassword(prevState => ({ ...prevState, name: '', errorText: 'Invalid Credentials!', error: true, showPassword: false }));
                 setDisable(false);
-            } else {
-                const { displayName, email, emailVerified, accountSetup, admin, provider } = content.data;
-                user.setUserState({ displayName, email, emailVerified, accountSetup, admin, provider });
-                if (accountSetup) history.push("/");
-                // else history.push("/packages");
-                // history.push("/packages");
             }
             // if (userLoggedin === null) {
             //     setEmail(prevState => ({ ...prevState, name: '', errorText: 'Invalid Credentials!', error: true }));

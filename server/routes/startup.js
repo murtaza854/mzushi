@@ -9,10 +9,12 @@ const dotenv = require('dotenv');
 const fs = require('fs');
 const multer = require('multer');
 const path = require('path');
+const { signInWithEmailAndPassword, signOut, getAuth, signInWithCredential, createUserWithEmailAndPassword, sendEmailVerification, GoogleAuthProvider, FacebookAuthProvider, EmailAuthProvider, reauthenticateWithCredential, updatePassword, updateEmail, updateProfile, sendPasswordResetEmail } = require('firebase/auth');
 const firebaseFile = require('../firebase');
-const firebase = firebaseFile.firebase;
 const firebaseAdmin = firebaseFile.admin;
 dotenv.config();
+
+const auth = getAuth();
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -34,24 +36,25 @@ router.get('/table-data', async (req, res) => {
 
 router.get('/get-logged-in', async (req, res) => {
     try {
-        const user = firebase.auth().currentUser;
-        if (user) {
-            const idTokenResult = await user.getIdTokenResult();
-            const admin = idTokenResult.claims.admin;
-            const uid = user.uid;
-            const startup = await Startup.findOne({ uid: uid }).populate("category").populate("features").populate('serviceProvinces').populate('serviceCities').populate('serviceAreas').populate({
-                path: 'address',
-                populate: {
-                    path: 'area',
+        const sessionCookie = req.cookies.session || "";
+        if (sessionCookie) {
+            const user = await firebaseAdmin.auth().verifySessionCookie(sessionCookie, true);
+            if (user) {
+                const uid = user.uid;
+                const startup = await Startup.findOne({ uid: uid }).populate("category").populate("features").populate('serviceProvinces').populate('serviceCities').populate('serviceAreas').populate({
+                    path: 'address',
                     populate: {
-                        path: 'city',
+                        path: 'area',
                         populate: {
-                            path: 'province',
+                            path: 'city',
+                            populate: {
+                                path: 'province',
+                            }
                         }
                     }
-                }
-            });
-            res.json({ data: startup });
+                });
+                res.json({ data: startup });
+            } else res.json({ data: null })
         } else res.json({ data: null })
     } catch (error) {
         res.json({ data: null, error: error });
@@ -132,10 +135,11 @@ router.post('/signup', async (req, res) => {
     try {
         if (provider === 'email-password') {
             const { firstName, lastName, email, contactNumber, password } = req.body;
-            const response = await firebase.auth().createUserWithEmailAndPassword(email.name, password.name);
+            const response = await createUserWithEmailAndPassword(auth, email.name, password.name);
             const user = response.user;
             await firebaseAdmin.auth().setCustomUserClaims(user.uid, { admin: false });
             user.sendEmailVerification();
+            sendEmailVerification(user);
             await user.updateProfile({
                 displayName: firstName.name,
             });
@@ -154,7 +158,7 @@ router.post('/signup', async (req, res) => {
                 provider: provider
             });
             newStartup.save();
-            await firebase.auth().signOut();
+            await signOut();
             res.json({ data: true });
         }
     } catch (error) {
@@ -174,23 +178,24 @@ router.get('/get-startups-search', async (req, res) => {
 
 router.get('/logout', async (req, res) => {
     try {
-        await firebase.auth().signOut();
-        res.json({ loggedIn: false });
+        await signOut();
+        res.json({ data: null });
     } catch (error) {
-        res.json({ loggedIn: false, error: error });
+        res.json({ data: null, error: error });
     }
 });
 
 router.post('/change-password', async (req, res) => {
     try {
-        const user = firebase.auth().currentUser;
+        const sessionCookie = req.cookies.session;
+        const user = await firebaseAdmin.auth().verifySessionCookie(sessionCookie, true);
         const email = user.email;
-        const credential = firebase.auth.EmailAuthProvider.credential(
+        const credential = EmailAuthProvider.credential(
             email,
             req.body.oldPassword
         );
-        await user.reauthenticateWithCredential(credential);
-        await user.updatePassword(req.body.password);
+        await reauthenticateWithCredential(user, credential);
+        await updatePassword(user, req.body.password);
         res.json({ data: true });
     } catch (error) {
         console.log(error);
@@ -200,21 +205,28 @@ router.post('/change-password', async (req, res) => {
 
 router.post('/change-email', async (req, res) => {
     try {
-        const user = firebase.auth().currentUser;
+        const sessionCookie = req.cookies.session;
+        const user = await firebaseAdmin.auth().verifySessionCookie(sessionCookie, true);
         const email = user.email;
         const newEmail = req.body.email;
-        const credential = firebase.auth.EmailAuthProvider.credential(
+        const credential = EmailAuthProvider.credential(
             email,
             req.body.password
         );
-        await user.reauthenticateWithCredential(credential);
+        await reauthenticateWithCredential(user, credential);
+
         const dbUser = await Startup.findOne({ uid: user.uid });
         if (email !== newEmail) {
-            await user.updateEmail(newEmail);
-            user.sendEmailVerification();
+            await updateEmail(user, newEmail);
+            sendEmailVerification(user);
             dbUser.email = newEmail;
             dbUser.save();
         }
+        const idToken = await user.getIdToken();
+        const expiresIn = 60 * 60 * 24 * 5 * 1000;
+        const sessionCookieNew = await firebaseAdmin.auth().createSessionCookie(idToken, { expiresIn });
+        const options = { maxAge: expiresIn, httpOnly: true };
+        res.cookie("session", sessionCookieNew, options);
         res.json({ data: true });
     } catch (error) {
         console.log(error);
@@ -224,22 +236,23 @@ router.post('/change-email', async (req, res) => {
 
 router.post('/change-owner-info', async (req, res) => {
     try {
-        const user = firebase.auth().currentUser;
+        const sessionCookie = req.cookies.session;
+        const user = await firebaseAdmin.auth().verifySessionCookie(sessionCookie, true);
         const dbUser = await Startup.findOne({ uid: user.uid });
-        await user.updateProfile({
-            displayName: req.body.firstName
+        await updateProfile(user, {
+            displayName: req.body.firstName,
         })
         dbUser.ownerFirstName = req.body.firstName;
         dbUser.ownerLastName = req.body.lastName;
         dbUser.contactNumber = req.body.contactNumber;
         dbUser.save();
-        const idTokenResult = await user.getIdTokenResult();
-        const admin = idTokenResult.claims.admin;
-        const displayName = user.displayName;
+        const displayName = user.name;
         const email = user.email;
-        const emailVerified = user.emailVerified;
+        const emailVerified = user.emailVerified || user.email_verified;
+        const admin = user.admin;
         const accountSetup = dbUser.accountSetup;
-        res.json({ data: { displayName, email, emailVerified, accountSetup, admin }, check: true });
+        const provider = startup.provider;
+        res.json({ data: { displayName, email, emailVerified, accountSetup, admin, provider }, check: true });
     } catch (error) {
         console.log(error);
         res.json({ check: false });
@@ -248,7 +261,7 @@ router.post('/change-owner-info', async (req, res) => {
 
 router.post('/send-password-reset-link', async (req, res) => {
     try {
-        await firebase.auth().sendPasswordResetEmail(req.body.email);
+        await sendPasswordResetEmail(auth, req.body.email);
         res.json({ data: true });
     } catch (error) {
         console.log(error);
@@ -256,44 +269,37 @@ router.post('/send-password-reset-link', async (req, res) => {
     }
 });
 
-// console.log(firebase.auth.Auth.Persistence)
+// console.log(firebase.auth.Auth.Persistence.NONE);
 
 router.post('/login', async (req, res) => {
     const { provider } = req.body;
     console.log(provider);
     try {
         if (provider === 'email-password') {
-            // await firebase.auth().setPersistence
-            await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
-            const response = await firebase.auth().signInWithEmailAndPassword(req.body.email.name, req.body.password.name);
+            const response = await signInWithEmailAndPassword(auth, req.body.email.name, req.body.password.name)
             const user = response.user;
-            const idTokenResult = await user.getIdTokenResult();
-            const admin = idTokenResult.claims.admin;
-            const displayName = user.displayName;
-            const email = user.email;
-            const emailVerified = user.emailVerified;
-            const startup = await Startup.findOne({ uid: user.uid });
-            const accountSetup = startup.accountSetup;
-            const provider = startup.provider;
-            if (!emailVerified) {
-                user.sendEmailVerification();
-                await firebase.auth().signOut();
-                throw "Email not verified";
-            } else res.json({ data: { displayName, email, emailVerified, accountSetup, admin, provider } });
+            if (!user.emailVerified) sendEmailVerification(user);
+            const idToken = await user.getIdToken();
+            const expiresIn = 60 * 60 * 24 * 5 * 1000;
+            const sessionCookie = await firebaseAdmin.auth().createSessionCookie(idToken, { expiresIn });
+            const options = { maxAge: expiresIn, httpOnly: true };
+            res.cookie("session", sessionCookie, options);
+            signOut(auth);
+            res.json({ data: true });
         } else if (provider === 'google') {
             const { id_token } = req.body;
-            const credential = firebase.auth.GoogleAuthProvider.credential(id_token);
-            await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
-            const response = await firebase.auth().signInWithCredential(credential);
+            const credential = GoogleAuthProvider.credential(id_token);
+            const response = await signInWithCredential(auth, credential);
             const user = response.user;
-            const displayName = user.displayName;
-            const email = user.email;
-            const emailVerified = user.emailVerified;
+            const idToken = await user.getIdToken();
+            const expiresIn = 60 * 60 * 24 * 5 * 1000;
+            const sessionCookie = await firebaseAdmin.auth().createSessionCookie(idToken, { expiresIn });
+            const options = { maxAge: expiresIn, httpOnly: true };
+            res.cookie("session", sessionCookie, options);
+            signOut(auth);
             const startup = await Startup.findOne({ uid: user.uid });
-            console.log(user.uid);
             if (startup) {
-                const accountSetup = startup.accountSetup;
-                res.json({ data: { displayName, email, emailVerified, accountSetup, admin: false, provider } });
+                res.json({ data: true });
             } else {
                 const newStartup = new Startup({
                     ownerFirstName: user.displayName,
@@ -310,20 +316,22 @@ router.post('/login', async (req, res) => {
                     provider: provider
                 });
                 newStartup.save();
-                res.json({ data: { displayName, email, emailVerified, accountSetup: false, admin: false, provider } });
+                res.json({ data: true });
             }
         } else if (provider === 'facebook') {
             const { accessToken } = req.body;
-            const credential = firebase.auth.FacebookAuthProvider.credential(accessToken);
-            await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
-            const response = await firebase.auth().signInWithCredential(credential);
+            const credential = FacebookAuthProvider.credential(accessToken);
+            const response = await signInWithCredential(auth, credential);
             const user = response.user;
-            const displayName = user.displayName;
-            const email = user.email;
+            const idToken = await user.getIdToken();
+            const expiresIn = 60 * 60 * 24 * 5 * 1000;
+            const sessionCookie = await firebaseAdmin.auth().createSessionCookie(idToken, { expiresIn });
+            const options = { maxAge: expiresIn, httpOnly: true };
+            res.cookie("session", sessionCookie, options);
+            signOut(auth);
             const startup = await Startup.findOne({ uid: user.uid });
             if (startup) {
-                const accountSetup = startup.accountSetup;
-                res.json({ data: { displayName, email, emailVerified: true, accountSetup, admin: false, provider } });
+                res.json({ data: true });
             } else {
                 const newStartup = new Startup({
                     ownerFirstName: user.displayName,
@@ -340,7 +348,7 @@ router.post('/login', async (req, res) => {
                     provider: provider
                 });
                 newStartup.save();
-                res.json({ data: { displayName, email, emailVerified: true, accountSetup: false, admin: false, provider } });
+                res.json({ data: true });
             }
         }
     } catch (error) {
@@ -363,7 +371,8 @@ router.post('/mark-premium', async (req, res) => {
 
 router.post('/add-product-service', upload.single('image'), async (req, res, next) => {
     try {
-        const user = firebase.auth().currentUser;
+        const sessionCookie = req.cookies.session;
+        const user = await firebaseAdmin.auth().verifySessionCookie(sessionCookie, true);
         const startup = await Startup.findOne({ uid: user.uid });
         const data = JSON.parse(req.body.data);
         if (req.file) {
@@ -388,13 +397,13 @@ router.post('/add-product-service', upload.single('image'), async (req, res, nex
 
 router.post('/delete-product-service', async (req, res) => {
     try {
-        const user = firebase.auth().currentUser;
+        const sessionCookie = req.cookies.session;
+        const user = await firebaseAdmin.auth().verifySessionCookie(sessionCookie, true);
         const startup = await Startup.findOne({ uid: user.uid });
         const productsServices = startup.productsServices;
         const newProductsServicesArray = productsServices.filter(function (obj) {
             return obj.fileName !== req.body.fileName;
         });
-        console.log(req.body.fileName)
         startup.productsServices = newProductsServicesArray;
         startup.save();
         fs.unlinkSync('/startupUploads/' + req.file.filename);
@@ -407,13 +416,13 @@ router.post('/delete-product-service', async (req, res) => {
 
 router.post('/delete-image', async (req, res) => {
     try {
-        const user = firebase.auth().currentUser;
+        const sessionCookie = req.cookies.session;
+        const user = await firebaseAdmin.auth().verifySessionCookie(sessionCookie, true);
         const startup = await Startup.findOne({ uid: user.uid });
         const images = startup.images;
         const newImagesArray = images.filter(function (obj) {
             return obj.fileName !== req.body.fileName;
         });
-        console.log(req.body.fileName)
         startup.images = newImagesArray;
         // if (req.file) {
         //     const image = {
@@ -437,7 +446,8 @@ router.post('/delete-image', async (req, res) => {
 
 router.post('/add-image', upload.single('image'), async (req, res, next) => {
     try {
-        const user = firebase.auth().currentUser;
+        const sessionCookie = req.cookies.session;
+        const user = await firebaseAdmin.auth().verifySessionCookie(sessionCookie, true);
         const startup = await Startup.findOne({ uid: user.uid });
         if (req.file) {
             const image = {
@@ -465,7 +475,6 @@ router.post('/startup-setup', upload.single('image'), async (req, res, next) => 
         const startup = await Startup.findOne({ email: data.user.email });
         startup.startupName = data.businessName;
         startup.slug = slugify(data.businessName, { lower: true });
-        console.log(startup.logo);
         if (startup.logo) {
             fs.unlinkSync(startup.logo.filePath);
         }
@@ -476,7 +485,6 @@ router.post('/startup-setup', upload.single('image'), async (req, res, next) => 
                 // data: fs.readFileSync((path.resolve('../client/public/startupUploads') + '/' + req.file.filename)),
                 // contentType: req.file.mimetype
             };
-            console.log(startup.logo);
         }
         startup.description = data.businessDescription;
         startup.minPrice = data.minPrice;

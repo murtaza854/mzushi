@@ -10,12 +10,14 @@ import './MainNavbar.scss';
 
 function MainNavbar(props) {
     const user = useContext(UserContext);
+    let className = '';
     let flag = false;
     if (window.location.pathname === '/packages') flag = true;
     else if (window.location.pathname === '/premium') flag = true;
     else if (window.location.pathname === '/setup') flag = true;
+    if (window.location.pathname === '/') className = 'main-navbar-absolute';
     return (
-        <Navbar className="main-navbar" collapseOnSelect expand="lg" bg="white" variant="white">
+        <Navbar className={`main-navbar ${className}`} collapseOnSelect expand="lg" bg="white" variant="white">
             <Container>
                 <div className="img-cont">
                     <Link to="/">

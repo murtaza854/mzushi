@@ -16,40 +16,55 @@ initializeApp({
 const auth = getAuth();
 
 export const onSignIn = (googleUser, user) => {
-    console.log('Google Auth Response', googleUser);
-    // We need to register an Observer on Firebase Auth to make sure auth is initialized.
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-        unsubscribe();
-        // Check if we are already signed-in Firebase with the correct user.
-        if (true) {
-            // Build Firebase credential with the Google ID token.
-            const response = await fetch(`${api}/startup/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-                withCredentials: true,
-                body: JSON.stringify({ provider: 'google', id_token: googleUser.getAuthResponse().id_token })
-            });
-            const content = await response.json();
-            const { displayName, email, emailVerified, accountSetup, admin, provider } = content.data;
-            user.setUserState({ displayName, email, emailVerified, accountSetup, admin, provider });
-            // Sign in with credential from the Google user.
-            // signInWithCredential(auth, credential).catch((error) => {
-            //   // Handle Errors here.
-            //   const errorCode = error.code;
-            //   const errorMessage = error.message;
-            //   // The email of the user's account used.
-            //   const email = error.email;
-            //   // The credential that was used.
-            //   const credential = GoogleAuthProvider.credentialFromError(error);
-            //   // ...
-            // });
-        } else {
-            console.log('User already signed-in Firebase.');
-        }
-    });
+    try {
+        console.log('Google Auth Response', googleUser);
+        // We need to register an Observer on Firebase Auth to make sure auth is initialized.
+        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+            unsubscribe();
+            // Check if we are already signed-in Firebase with the correct user.
+            if (true) {
+                console.log('We are authenticated', firebaseUser);
+                // Build Firebase credential with the Google ID token.
+                const response = await fetch(`${api}/startup/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    withCredentials: true,
+                    body: JSON.stringify({ provider: 'google', id_token: googleUser.getAuthResponse().id_token })
+                });
+                const content = await response.json();
+                if (content.data) {
+                    const response1 = await fetch(`${api}/logged-in`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        credentials: 'include',
+                        withCredentials: true,
+                    });
+                    const content1 = await response1.json();
+                    const { displayName, email, emailVerified, accountSetup, admin, provider } = content1.data;
+                    user.setUserState({ displayName, email, emailVerified, accountSetup, admin, provider });
+                }
+                // Sign in with credential from the Google user.
+                // signInWithCredential(auth, credential).catch((error) => {
+                //   // Handle Errors here.
+                //   const errorCode = error.code;
+                //   const errorMessage = error.message;
+                //   // The email of the user's account used.
+                //   const email = error.email;
+                //   // The credential that was used.
+                //   const credential = GoogleAuthProvider.credentialFromError(error);
+                //   // ...
+                // });
+            } else {
+                console.log('User already signed-in Firebase.');
+            }
+        });
+    } catch (error) {
+    }
 }
 
 
@@ -96,19 +111,36 @@ export const onSignIn = (googleUser, user) => {
 // }
 
 export const responseFacebook = async user => {
-    const { authResponse } = await new Promise(window.FB.login);
-    const response = await fetch(`${api}/startup/login`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        withCredentials: true,
-        body: JSON.stringify({ provider: 'facebook', accessToken: authResponse.accessToken })
-    });
-    const content = await response.json();
-    const { displayName, email, emailVerified, accountSetup, admin, provider } = content.data;
-    user.setUserState({ displayName, email, emailVerified, accountSetup, admin, provider });
+    try {
+        const { authResponse } = await new Promise(window.FB.login);
+        const response = await fetch(`${api}/startup/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            withCredentials: true,
+            body: JSON.stringify({ provider: 'facebook', accessToken: authResponse.accessToken })
+        });
+        const content = await response.json();
+        if (content.data) {
+            const response1 = await fetch(`${api}/logged-in`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                withCredentials: true,
+            });
+            const content1 = await response1.json();
+            const { displayName, email, accountSetup, admin, provider } = content1.data;
+            user.setUserState({ displayName, email, emailVerified: true, accountSetup, admin, provider });
+        }
+        // const { displayName, email, emailVerified, accountSetup, admin, provider } = content.data;
+        // user.setUserState({ displayName, email, emailVerified, accountSetup, admin, provider });
+    } catch (error) {
+
+    }
 }
 
 

@@ -31,17 +31,16 @@ function App() {
           const content = await response.json();
           const user = content.data;
           const { displayName, email, emailVerified, accountSetup, admin, provider } = user;
-          console.log(user)
           setTimeout(() => {
             document.getElementById('pre-loader-custom').classList.add('fade-away');
             setUserState({ displayName, email, emailVerified, accountSetup, admin, provider });
-          }, 4000);
+          }, 1500);
           // setLoading(false);
         } catch (error) {
           setTimeout(() => {
             document.getElementById('pre-loader-custom').classList.add('fade-away');
             setUserState(null);
-          }, 4000);
+          }, 1500);
           // setLoading(false);
         }
       })();

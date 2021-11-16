@@ -8,17 +8,23 @@ const startupSchema = new mongoose.Schema({
     ownerLastName: { type: String },
     email: { type: String, required: true },
     contactNumber: { type: String },
-    logo: { data: Buffer, contentType: String },
+    // logo: { data: Buffer, contentType: String },
+    logo: {
+        fileName: { type: String },
+        filePath: { type: String }
+    },
     images: [
         {
-            fileName: { type: String, required: true },
-            image: { data: Buffer, contentType: String }
+            fileName: { type: String },
+            filePath: { type: String }
         }
     ],
     productsServices: [
         {
-            fileName: { type: String, required: true },
-            image: { data: Buffer, contentType: String },
+            image: {
+                fileName: { type: String },
+                filePath: { type: String }
+            },
             name: { type: String, required: true },
             price: { type: Number, required: true }
         }

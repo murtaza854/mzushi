@@ -34,6 +34,10 @@ function Details(props) {
             classes = "closed-business";
         }
     }
+    if (props.activeDays.length === 0) {
+        displayTime = "Closed";
+        classes = "closed-business";
+    }
     const activeDaysJSON = [
         { name: 'Monday', workingHourStart: 'Closed', workingHourEnd: 'Closed' },
         { name: 'Tuesday', workingHourStart: 'Closed', workingHourEnd: 'Closed' },
@@ -50,6 +54,13 @@ function Details(props) {
         daytime.workingHourStart = formatAMPM(startTime);
         daytime.workingHourEnd = formatAMPM(endTime);
     });
+    console.log(props.website);
+    let website = "";
+    if (props.website.includes("http")) {
+        website = props.website;
+    } else {
+        website = `https://${props.website}`;
+    }
     return (
         <div className="details">
             <Row className="justify-content-center">
@@ -93,7 +104,7 @@ function Details(props) {
                     <Row>
                         <Col md={6}>
                             <Rating size="medium" name="read-only" value={props.rating} readOnly />
-                            <p className="content-read">Click <a style={{ color: 'black' }} className="bold-600" href={props.website} target="_blank" rel="noreferrer">HERE</a> to head to {props.startupName} website.</p>
+                            <p className="content-read">Click <a style={{ color: 'black' }} className="bold-600" href={website} target="_blank" rel="noreferrer">HERE</a> to head to {props.startupName} website.</p>
                             <div className="icon-text">
                                 <IoLocationOutline className="icon center-relative-vertical" />
                                 <p>{props.addressLine1}</p>

@@ -11,10 +11,18 @@ function WordSlider(props) {
                         <span>Trending</span>
                         &nbsp;
                         <span className="word-slider__words">
+                            <span>Clothing</span>
                             <span>Eateries</span>
-                            <span>Restaurants</span>
+                            <span>Jewelry</span>
+                            <span>Accessories</span>
+                            <span>Skincare</span>
+                            <span>Shoes</span>
+                            <span>Watches</span>
+                            <span>Electronics</span>
+                            <span>Makeup</span>
+                            <span>Decor</span>
                             {/*You must repeat the first word to emulate the loop effect*/}
-                            <span>Eateries</span>
+                            <span>Clothing</span>
                         </span>
                     </h1>
                 </div>

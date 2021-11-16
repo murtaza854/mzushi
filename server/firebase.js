@@ -11,8 +11,6 @@ firebase.initializeApp({
   appId: process.env.APP_ID
 });
 
-console.log(firebase)
-
 const serviceAccount = require("./mzushi-key.json");
 
 admin.initializeApp({

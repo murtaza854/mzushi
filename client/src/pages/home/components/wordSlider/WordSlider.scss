@@ -1,4 +1,4 @@
-$numberOfUniqueWords: 2;
+$numberOfUniqueWords: 10;
 .word-slider-main {
   background-color: #8fbedf;
   height: 20rem;
@@ -59,7 +59,7 @@ $numberOfUniqueWords: 2;
   color: #F6D33E;
   grid-template-rows: repeat($numberOfUniqueWords+1, 1fr);
   grid-row-gap: var(--row-gap);
-  animation: slide 8s infinite cubic-bezier(0.01, 1.07, 0.38, 1.02);
+  animation: slide 16s infinite cubic-bezier(0.01, 1.07, 0.38, 1.02);
   @include initTranslateY();
 }
 

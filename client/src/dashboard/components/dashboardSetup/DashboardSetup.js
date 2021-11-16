@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, Container, Form, Row } from 'react-bootstrap';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import { arrayBufferToBase64 } from '../../../helperFunctions/arrayBufferToBase64';
+// import { arrayBufferToBase64 } from '../../../helperFunctions/arrayBufferToBase64';
 import { formatAMPM } from '../../../helperFunctions/formatAMPM';
 import { BiPencil } from 'react-icons/bi';
 import './DashboardSetup.scss';
@@ -10,8 +10,9 @@ import { Link } from 'react-router-dom';
 import { Heading2 } from '../../../components';
 
 function DashboardSetup(props) {
-    const base64Flag = `data:${props.logo.contentType};base64,`;
-    const imagePath = base64Flag + arrayBufferToBase64(props.logo.data.data);
+    // const base64Flag = `data:${props.logo.contentType};base64,`;
+    // const imagePath = base64Flag + arrayBufferToBase64(props.logo.data.data);
+    const imagePath = props.logo.filePath;
     const activeDaysJSON = [
         { name: 'Monday', workingHourStart: 'Closed', workingHourEnd: 'Closed' },
         { name: 'Tuesday', workingHourStart: 'Closed', workingHourEnd: 'Closed' },
@@ -81,7 +82,7 @@ function DashboardSetup(props) {
                     </Col>
                     <Col md={5}>
                         <Form.Group>
-                            <Form.Label className="bold-600">Business Poster</Form.Label>
+                            <Form.Label className="bold-600">Brand/Business Picture</Form.Label>
                             <img src={imagePath} alt={props.startupName} />
                         </Form.Group>
                     </Col>

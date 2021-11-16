@@ -5,7 +5,9 @@ import { useHistory } from 'react-router-dom';
 import api from '../../api';
 import { DescriptionText, Heading1 } from '../../components';
 import UserContext from '../../contexts/userContext';
+import { onSignIn, responseFacebook } from '../../firebase';
 import './Signup.scss';
+/* global gapi */
 
 function Signup(props) {
     const history = useHistory();
@@ -117,6 +119,20 @@ function Signup(props) {
                 else setConfirmPassword(prevState => ({ ...prevState, errorText: '', error: false }));
             })();
     }, [confirmPassword.name, password.name]);
+
+    useEffect(() => {
+        gapi.signin2.render('g-signin2', {
+            'scope': 'https://www.googleapis.com/auth/plus.login',
+            //   'width': 200,
+            //   'height': 50,
+            'longtitle': true,
+            'border-radius': 15,
+            'theme': 'dark',
+            'onsuccess': googleuser => onSignIn(googleuser, user),
+        })
+        // document.getElementById('not_signed_inew1wh5km8dc').innerHTML = 'Sign up with Google';
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <Container>
@@ -257,6 +273,16 @@ function Signup(props) {
                                 classes="text-center"
                             />
                         </Col>
+                    </Row>
+                    <Row className="justify-content-center">
+                        <div id="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+                        <div className="margin-global-top-1 unhide-768" />
+                        <div className="facebook-button-container">
+                            <button className="login-with-fb-btn connect-fb" onClick={e => responseFacebook(user)}>
+                                <i className="fa fa-facebook mr-1"></i>
+                                <span>Sign in with Facebook</span>
+                            </button>
+                        </div>
                     </Row>
                 </Form>
             </Row>

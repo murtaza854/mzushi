@@ -4,7 +4,7 @@ import { Heading2 } from '../../../components';
 import { MDBDataTable } from 'mdbreact';
 import { Link } from 'react-router-dom';
 import { IoIosAddCircleOutline } from 'react-icons/io';
-import { arrayBufferToBase64 } from '../../../helperFunctions/arrayBufferToBase64';
+// import { arrayBufferToBase64 } from '../../../helperFunctions/arrayBufferToBase64';
 import './Gallery.scss'
 import { AiOutlineDelete } from 'react-icons/ai';
 import api from '../../../api';
@@ -16,9 +16,10 @@ function Gallery(props) {
         const rowsTemp = [];
         try {
             props.images.forEach(element => {
-                console.log(element);
-                const base64Flag = `data:${element.image.contentType};base64,`;
-                const imagePath = base64Flag + arrayBufferToBase64(element.image.data.data);
+                // console.log(element);
+                // const base64Flag = `data:${element.image.contentType};base64,`;
+                // const imagePath = base64Flag + arrayBufferToBase64(element.image.data.data);
+                const imagePath = element.filePath;
                 rowsTemp.push({
                     fileName: element.fileName,
                     image: <img
@@ -54,8 +55,9 @@ function Gallery(props) {
         if (content.data) {
             content.images.forEach(element => {
                 console.log(element);
-                const base64Flag = `data:${element.image.contentType};base64,`;
-                const imagePath = base64Flag + arrayBufferToBase64(element.image.data.data);
+                // const base64Flag = `data:${element.image.contentType};base64,`;
+                // const imagePath = base64Flag + arrayBufferToBase64(element.image.data.data);
+                const imagePath = element.filePath;
                 rowsTemp.push({
                     fileName: element.fileName,
                     image: <img

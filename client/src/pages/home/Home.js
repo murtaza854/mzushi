@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import { SearchBar } from '../../components';
-import { Featured, WordSlider, MzushiChoice } from './components';
+import { Featured, WordSlider } from './components';
 import './Home.scss';
 
 function Home(props) {
@@ -16,8 +16,8 @@ function Home(props) {
             <Featured />
             <div className="margin-global-top-5" />
             <WordSlider />
-            <div className="margin-global-top-5" />
-            <MzushiChoice />
+            {/* <div className="margin-global-top-5" />
+            <MzushiChoice /> */}
         </Container>
     );
 }

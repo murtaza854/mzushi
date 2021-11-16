@@ -6,6 +6,7 @@ import { onSignIn, responseFacebook } from '../../firebase';
 import api from '../../api';
 import { DescriptionText, Heading1 } from '../../components';
 import UserContext from '../../contexts/userContext';
+/* global gapi */
 
 function Login(props) {
     const [email, setEmail] = useState({ name: '', errorText: '', error: false });
@@ -45,7 +46,7 @@ function Login(props) {
                 },
                 credentials: 'include',
                 withCredentials: true,
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ email, password, provider: 'email-password' }),
             });
             const content = await response.json();
             if (content.error === "Email not verified") {
@@ -80,7 +81,7 @@ function Login(props) {
     }, [history, user.userState]);
 
     useEffect(() => {
-        window.gapi.signin2.render('g-signin2', {
+        gapi.signin2.render('g-signin2', {
             'scope': 'https://www.googleapis.com/auth/plus.login',
             //   'width': 200,
             //   'height': 50,
@@ -181,28 +182,13 @@ function Login(props) {
                     </Row>
                     <Row className="justify-content-center">
                         <div id="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+                        <div className="margin-global-top-1 unhide-768" />
                         <div className="facebook-button-container">
                             <button className="login-with-fb-btn connect-fb" onClick={e => responseFacebook(user)}>
                                 <i className="fa fa-facebook mr-1"></i>
                                 <span>Sign in with Facebook</span>
                             </button>
                         </div>
-                        {/* <button  data-onsuccess={onSignIn} type="button" className="signin2 login-with-google-btn spacing-btns" >
-                            Login with Google
-                        </button> */}
-                        {/* <div class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="rounded" data-auto-logout-link="true" data-use-continue-as="true">Login</div> */}
-                        {/* <button onClick={signInWithFacebook} type="button" className="login-with-fb-btn connect-fb spacing-btns" >
-                            Login with Facebook
-                        </button> */}
-                        {/* <FacebookLogin
-          appId="166380605707790"
-          autoLoad={true}
-          fields="name,email,picture"
-          scope="public_profile,user_friends,user_actions.books"
-          onClick={res => responseFacebook(res)}
-        /> */}
-                        {/* <Button onClick={e => handleFacebookLogin(e, 'facebook')} type="text">Facebook</Button> */}
-                        {/* <Button onClick={signInWithFacebook} type="text">Facebook</Button> */}
                     </Row>
                 </Form>
             </Row>

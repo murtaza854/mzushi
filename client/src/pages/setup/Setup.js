@@ -13,7 +13,7 @@ import { TextField } from '@material-ui/core';
 import UserContext from '../../contexts/userContext';
 import { useHistory } from 'react-router';
 import { gcd } from '../../helperFunctions/gcd';
-import { arrayBufferToBase64 } from '../../helperFunctions/arrayBufferToBase64';
+// import { arrayBufferToBase64 } from '../../helperFunctions/arrayBufferToBase64';
 
 function Setup(props) {
     const user = useContext(UserContext);
@@ -87,9 +87,9 @@ function Setup(props) {
         if (props.edit) {
             setBusinessName({ text: props.startupName, error: false, errorText: '' });
             setBusinessDescription({ text: props.startupDescription, error: false, errorText: '' });
-            const base64Flag = `data:${props.logo.contentType};base64,`;
-            const imagePath = base64Flag + arrayBufferToBase64(props.logo.data.data);
-            setLogo({ picturePreview: '', imgURl: imagePath, error: false });
+            // const base64Flag = `data:${props.logo.contentType};base64,`;
+            // const imagePath = base64Flag + arrayBufferToBase64(props.logo.data.data);
+            // setLogo({ picturePreview: '', imgURl: imagePath, error: false });
             setAlignment(props.alignment);
             setMinPrice({ text: props.minPrice, error: false, errorText: '' });
             setMaxPrice({ text: props.maxPrice, error: false, errorText: '' });
@@ -638,7 +638,7 @@ function Setup(props) {
                         </Col>
                         <Col className="form-group-left margin-global-top-2-xs" lg={6}>
                             <Form.Group controlId="firstName">
-                                <Form.Label className="bold-600">Add your Logo Here</Form.Label>
+                                <Form.Label className="bold-600">Add a Picture that represents your Brand/Business</Form.Label>
                                 <input onChange={logoChange} accept="image/*" type="file" id="logo-upload" style={{ display: 'none' }} />
                                 <ClickButton
                                     text="Choose Here"

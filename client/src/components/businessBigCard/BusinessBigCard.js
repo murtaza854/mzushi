@@ -35,6 +35,10 @@ function BusinessBigCard(props) {
             classes = "closed-business";
         }
     }
+    if (props.activeDays.length === 0) {
+        displayTime = "Closed";
+        classes = "closed-business";
+    }
     return (
         <div className={`business-big-card ${props.classes}`}>
             <Row>
@@ -87,6 +91,7 @@ function BusinessBigCard(props) {
                         <IoLocationOutline className="icon center-relative-vertical" />
                         <p>{props.area}, {props.city}, {props.province}</p>
                     </div>
+                    <div class="margin-global-top-06"></div>
                     <div className="icon-text">
                         <AiOutlineClockCircle className={`icon ${classes}`} />
                         <p>{displayTime}</p>

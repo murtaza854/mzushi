@@ -19,7 +19,8 @@ const storage = multer.diskStorage({
         cb(null, path.resolve('../client/public/startupUploads'))
     },
     filename: (req, file, cb) => {
-        cb(null, file.fieldname + '-' + Date.now())
+        const ext = path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + Date.now() + ext);
     }
 });
 
@@ -255,10 +256,15 @@ router.post('/send-password-reset-link', async (req, res) => {
     }
 });
 
+// console.log(firebase.auth.Auth.Persistence)
+
 router.post('/login', async (req, res) => {
     const { provider } = req.body;
+    console.log(provider);
     try {
         if (provider === 'email-password') {
+            // await firebase.auth().setPersistence
+            await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
             const response = await firebase.auth().signInWithEmailAndPassword(req.body.email.name, req.body.password.name);
             const user = response.user;
             const idTokenResult = await user.getIdTokenResult();
@@ -277,6 +283,7 @@ router.post('/login', async (req, res) => {
         } else if (provider === 'google') {
             const { id_token } = req.body;
             const credential = firebase.auth.GoogleAuthProvider.credential(id_token);
+            await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
             const response = await firebase.auth().signInWithCredential(credential);
             const user = response.user;
             const displayName = user.displayName;
@@ -308,6 +315,7 @@ router.post('/login', async (req, res) => {
         } else if (provider === 'facebook') {
             const { accessToken } = req.body;
             const credential = firebase.auth.FacebookAuthProvider.credential(accessToken);
+            await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
             const response = await firebase.auth().signInWithCredential(credential);
             const user = response.user;
             const displayName = user.displayName;
@@ -360,11 +368,10 @@ router.post('/add-product-service', upload.single('image'), async (req, res, nex
         const data = JSON.parse(req.body.data);
         if (req.file) {
             const image = {
-                data: fs.readFileSync((path.resolve('../client/public/startupUploads') + '/' + req.file.filename)),
-                contentType: req.file.mimetype
+                fileName: req.file.filename,
+                filePath: '/startupUploads/' + req.file.filename
             };
             const productServiceObj = {
-                fileName: req.file.filename,
                 image: image,
                 name: data.name,
                 price: data.price
@@ -389,19 +396,8 @@ router.post('/delete-product-service', async (req, res) => {
         });
         console.log(req.body.fileName)
         startup.productsServices = newProductsServicesArray;
-        // if (req.file) {
-        //     const image = {
-        //         data: fs.readFileSync((path.resolve('../client/public/startupUploads') + '/' + req.file.filename)),
-        //         contentType: req.file.mimetype
-        //     };
-        //     const imageObj = {
-        //         fileName: req.file.filename,
-        //         image: image
-        //     }
-        //     startup.images.push(imageObj);
-        // }
         startup.save();
-        fs.unlinkSync(path.resolve('../client/public/startupUploads') + '/' + req.body.fileName);
+        fs.unlinkSync('/startupUploads/' + req.file.filename);
         res.json({ data: true, productsServices: startup.productsServices });
     } catch (error) {
         console.log(error);
@@ -445,8 +441,8 @@ router.post('/add-image', upload.single('image'), async (req, res, next) => {
         const startup = await Startup.findOne({ uid: user.uid });
         if (req.file) {
             const image = {
-                data: fs.readFileSync((path.resolve('../client/public/startupUploads') + '/' + req.file.filename)),
-                contentType: req.file.mimetype
+                fileName: req.file.filename,
+                filePath: '/startupUploads/' + req.file.filename
             };
             const imageObj = {
                 fileName: req.file.filename,
@@ -466,15 +462,21 @@ router.post('/startup-setup', upload.single('image'), async (req, res, next) => 
     try {
         const data = JSON.parse(req.body.data);
         const edit = data.edit;
-        console.log(req.file.filename);
         const startup = await Startup.findOne({ email: data.user.email });
         startup.startupName = data.businessName;
         startup.slug = slugify(data.businessName, { lower: true });
+        console.log(startup.logo);
+        if (startup.logo) {
+            fs.unlinkSync(startup.logo.filePath);
+        }
         if (req.file) {
             startup.logo = {
-                data: fs.readFileSync((path.resolve('../client/public/startupUploads') + '/' + req.file.filename)),
-                contentType: req.file.mimetype
+                fileName: req.file.filename,
+                filePath: '/startupUploads/' + req.file.filename
+                // data: fs.readFileSync((path.resolve('../client/public/startupUploads') + '/' + req.file.filename)),
+                // contentType: req.file.mimetype
             };
+            console.log(startup.logo);
         }
         startup.description = data.businessDescription;
         startup.minPrice = data.minPrice;

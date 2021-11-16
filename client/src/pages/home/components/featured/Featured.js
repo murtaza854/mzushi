@@ -28,8 +28,12 @@ function Featured(props) {
             //     }
             //     return chunks;
             // }
-            setFeaturedCategory(array.slice(0, 4));
-            setCategory(array.slice(4, array.length));
+            const newArray = array.map((item, index) => {
+                item.name = item.name.replace('and', '&');
+                return item;
+            });
+            setFeaturedCategory(newArray.slice(0, 4));
+            setCategory(newArray.slice(4, newArray.length));
             // setCategory(splitArrayIntoChunksOfLen(content.data, 4));
         })()
     }, []);
@@ -62,10 +66,14 @@ function Featured(props) {
                     text="Female Run"
                     text1="Businesses"
                     size={4}
-                    classes="text-center yellow-big-box big-box-fixed-size"
-                    classes_p="center-absolute"
+                    classes="text-center yellow-big-box big-box-fixed-size has-image"
+                    classes_p="center-absolute show-text"
                     to="/directory?feature=female-owned"
-                    img=""
+                    img={
+                        <img
+                            src="/female.jpeg"
+                            alt="Female"
+                        />}
                     onClick={null}
                 />
                 <BigBox
@@ -73,7 +81,7 @@ function Featured(props) {
                     text1={`${catText[1]} Categories`}
                     size={4}
                     classes="text-center blue-big-box big-box-fixed-size"
-                    classes_p="center-absolute"
+                    classes_p="center-absolute show-text"
                     to="/"
                     img=""
                     onClick={handleDisplay}

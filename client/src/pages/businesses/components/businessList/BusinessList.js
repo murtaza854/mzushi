@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row } from 'react-bootstrap';
 import { BusinessBigCard } from '../../../../components';
-import { arrayBufferToBase64 } from '../../../../helperFunctions/arrayBufferToBase64';
+// import { arrayBufferToBase64 } from '../../../../helperFunctions/arrayBufferToBase64';
 import './BusinessList.scss';
 
 function BusinessList(props) {
@@ -12,8 +12,9 @@ function BusinessList(props) {
                 props.startUps.map((value, index) => {
                     let classes = "";
                     if (index !== 0) classes = "margin-global-top-1";
-                    const base64Flag = `data:${value.logo.contentType};base64,`;
-                    const imagePath = base64Flag + arrayBufferToBase64(value.logo.data.data);
+                    // const base64Flag = `data:${value.logo.contentType};base64,`;
+                    // const imagePath = base64Flag + arrayBufferToBase64(value.logo.data.data);
+                    const imagePath = value.logo.filePath;
                     return (
                         <Row key={index} className={classes}>
                             <BusinessBigCard

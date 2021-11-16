@@ -1,6 +1,9 @@
 .filter-panel {
     position: relative;
     background-color: white;
+    label {
+        line-height: 30px;
+    }
     .MuiToggleButtonGroup-root {
         border: 0px solid #f6d33e;
         border-radius: 10px;

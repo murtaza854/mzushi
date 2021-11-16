@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import { useParams } from 'react-router';
 import api from '../../api';
-import { arrayBufferToBase64 } from '../../helperFunctions/arrayBufferToBase64';
+// import { arrayBufferToBase64 } from '../../helperFunctions/arrayBufferToBase64';
 import './Business.scss';
 import { Details, Poster, SmallGallery, BusinessDynamic } from './components';
 
@@ -24,10 +24,10 @@ function Business(props) {
                 },
             });
             const content = await response.json();
-            const base64Flag = `data:${content.data.logo.contentType};base64,`;
-            const imagePath = base64Flag + arrayBufferToBase64(content.data.logo.data.data);
+            // const base64Flag = `data:${content.data.logo.contentType};base64,`;
+            // const imagePath = base64Flag + arrayBufferToBase64(content.data.logo.data.data);
+            const imagePath = content.data.logo.filePath;
             setPoster(imagePath);
-            console.log(content.data);
             setStartupObj(content.data);
         })()
     }, [category, startup]);

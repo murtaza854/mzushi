@@ -138,11 +138,10 @@ router.post('/signup', async (req, res) => {
             const response = await createUserWithEmailAndPassword(auth, email.name, password.name);
             const user = response.user;
             await firebaseAdmin.auth().setCustomUserClaims(user.uid, { admin: false });
-            user.sendEmailVerification();
             sendEmailVerification(user);
-            await user.updateProfile({
+            await updateProfile(user, {
                 displayName: firstName.name,
-            });
+            })
             const newStartup = new Startup({
                 ownerFirstName: firstName.name,
                 ownerLastName: lastName.name,

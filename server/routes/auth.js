@@ -1,10 +1,13 @@
 const router = require('express').Router();
 const firebaseFile = require('../firebase');
-const firebase = firebaseFile.firebase;
+const firebaseAdmin = firebaseFile.admin;
+const { getAuth, verifyPasswordResetCode, confirmPasswordReset, applyActionCode } = require('firebase/auth');
+
+const auth = getAuth();
 
 router.post('/reset-password-check', async (req, res) => {
     try {
-        await firebase.auth().verifyPasswordResetCode(req.body.actionCode);
+        await verifyPasswordResetCode(auth, req.body.actionCode);
         res.json({ data: true });
     } catch (error) {
         res.json({ data: false });
@@ -22,7 +25,7 @@ router.post('/', async (req, res) => {
             case 'resetPassword':
                 // Display reset password handler and UI.
                 // handleResetPassword(auth, actionCode, continueUrl, lang);
-                await firebase.auth().confirmPasswordReset(actionCode, req.body.password);
+                await confirmPasswordReset(auth, actionCode, req.body.password);
                 res.json({ data: 'Reset success' });
                 break;
             case 'recoverEmail':
@@ -32,7 +35,7 @@ router.post('/', async (req, res) => {
             case 'verifyEmail':
                 // Display email verification handler and UI.
                 // data = auth.handleVerifyEmail(firebase.auth(), actionCode, continueUrl, lang);
-                await firebase.auth().applyActionCode(actionCode);
+                await applyActionCode(auth, actionCode);
                 res.json({ data: 'Email verified' });
                 break;
             default:
@@ -40,6 +43,7 @@ router.post('/', async (req, res) => {
                 throw 'Invalid'
         }
     } catch (error) {
+        console.log(error);
         res.json({ data: 'Invalid', error: error });
     }
 });

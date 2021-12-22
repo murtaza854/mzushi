@@ -29,7 +29,7 @@ const startupSchema = new mongoose.Schema({
             price: { type: Number, required: true }
         }
     ],
-    description: { type: String },
+    description: [{ type: String }],
     minPrice: { type: Number },
     maxPrice: { type: Number },
     active: { type: Boolean, required: true },
@@ -58,6 +58,10 @@ const startupSchema = new mongoose.Schema({
     mzushiChoice: { type: Boolean, default: false },
     features: [{ type: Schema.Types.ObjectId, ref: 'features', required: true }],
     provider : { type: String, required: true },
+    facebookURL: { type: String },
+    twitterURL: { type: String },
+    instagramURL: { type: String },
+    youtubeURL: { type: String },
 });
 
 const Startup = mongoose.model('startups', startupSchema);

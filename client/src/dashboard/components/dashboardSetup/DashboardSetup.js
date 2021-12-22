@@ -49,21 +49,21 @@ function DashboardSetup(props) {
 
     return (
         <Container className="dashboard-about box-shadow-dashboard" fluid>
-        <Row>
-            <Col>
-                <Heading2
-                    text="Business Setup"
-                    classes="text-left"
-                />
-            </Col>
-            <Col>
-                <Row>
-                <Link className="icon-link" to="/dashboard/account/account-setup/edit">
-                    <BiPencil className="icon" />
-                </Link>
-                </Row>
-            </Col>
-        </Row>
+            <Row>
+                <Col>
+                    <Heading2
+                        text="Business Setup"
+                        classes="text-left"
+                    />
+                </Col>
+                <Col>
+                    <Row>
+                        <Link className="icon-link" to="/dashboard/account/account-setup/edit">
+                            <BiPencil className="icon" />
+                        </Link>
+                    </Row>
+                </Col>
+            </Row>
             <Form className="form-style margin-global-top-1">
                 <Row>
                     <Col md={7}>
@@ -76,7 +76,13 @@ function DashboardSetup(props) {
                         <Row>
                             <Form.Group>
                                 <Form.Label className="bold-600">Business Description</Form.Label>
-                                <p className="content-read">{props.startupDescription}</p>
+                                {
+                                    props.startupDescription.map((elem, index) => {
+                                        return (
+                                            <p key={index} className="content-read">{elem}</p>
+                                        );
+                                    })
+                                }
                             </Form.Group>
                         </Row>
                     </Col>
@@ -137,7 +143,13 @@ function DashboardSetup(props) {
                         <Row>
                             <Form.Group controlId="firstName">
                                 <Form.Label className="bold-600">Website</Form.Label>
-                                <p className="content-read">{props.webUrl}</p>
+                                {
+                                    props.webUrl === '' ? (
+                                        <p className="content-read">Not provided</p>
+                                    ) : (
+                                        <p className="content-read">{props.webUrl}</p>
+                                    )
+                                }
                             </Form.Group>
                         </Row>
                     </Col>
@@ -197,6 +209,56 @@ function DashboardSetup(props) {
                             <p className="content-read">{featuresString}</p>
                         </Form.Group>
                     </Col>
+                </Row>
+                <div className="margin-global-top-1" />
+                <Row>
+                    <Form.Group as={Col}>
+                        <Form.Label className="bold-600">Social Media Links</Form.Label>
+                    </Form.Group>
+                </Row>
+                <Row>
+                    <Form.Group as={Col} controlId="facebook">
+                        <Form.Label>Facebook</Form.Label>
+                        {
+                            props.facebook === '' ? (
+                                <p className="content-read">Not provided</p>
+                            ) : (
+                                <p className="content-read">{props.facebook}</p>
+                            )
+                        }
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="instagram">
+                        <Form.Label>Instagram</Form.Label>
+                        {
+                            props.instagram === '' ? (
+                                <p className="content-read">Not provided</p>
+                            ) : (
+                                <p className="content-read">{props.instagram}</p>
+                            )
+                        }
+                    </Form.Group>
+                </Row>
+                <Row>
+                    <Form.Group as={Col} controlId="twitter">
+                        <Form.Label>Twitter</Form.Label>
+                        {
+                            props.twitter === '' ? (
+                                <p className="content-read">Not provided</p>
+                            ) : (
+                                <p className="content-read">{props.twitter}</p>
+                            )
+                        }
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="youtube">
+                        <Form.Label>Youtube</Form.Label>
+                        {
+                            props.youtube === '' ? (
+                                <p className="content-read">Not provided</p>
+                            ) : (
+                                <p className="content-read">{props.youtube}</p>
+                            )
+                        }
+                    </Form.Group>
                 </Row>
                 <div className="margin-global-top-1" />
                 <Row>

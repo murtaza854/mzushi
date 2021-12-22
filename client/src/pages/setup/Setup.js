@@ -33,7 +33,7 @@ function Setup(props) {
     const [minPrice, setMinPrice] = useState({ text: '', error: false, errorText: '' });
     const [maxPrice, setMaxPrice] = useState({ text: '', error: false, errorText: '' });
 
-    const [webUrl, setWebUrl] = useState({ text: '' });
+    const [webUrl, setWebUrl] = useState({ text: '', error: false, errorText: '' });
 
     const [monday, setMonday] = useState({ check: false, startValue: new Date(), endValue: new Date() });
     const [tuesday, setTuesday] = useState({ check: false, startValue: new Date(), endValue: new Date() });
@@ -77,6 +77,8 @@ function Setup(props) {
     const [areaDSList, setAreaDSList] = useState([]);
     const [areaDSLoading, setAreaDSLoading] = useState(false);
 
+    const [socialMedia, setSocialMedia] = useState({ facebook: '', twitter: '', instagram: '', youtube: '' });
+
     const [disabledBtn, setDisabledBtn] = useState(true);
 
     useEffect(() => {
@@ -86,10 +88,8 @@ function Setup(props) {
     useEffect(() => {
         if (props.edit) {
             setBusinessName({ text: props.startupName, error: false, errorText: '' });
-            setBusinessDescription({ text: props.startupDescription, error: false, errorText: '' });
-            // const base64Flag = `data:${props.logo.contentType};base64,`;
-            // const imagePath = base64Flag + arrayBufferToBase64(props.logo.data.data);
-            // setLogo({ picturePreview: '', imgURl: imagePath, error: false });
+            setBusinessDescription({ text: props.startupDescription.join('\n\n'), error: false, errorText: '' });
+            setLogo({ picturePreview: '', imgURl: props.logo.filePath, error: false });
             setAlignment(props.alignment);
             setMinPrice({ text: props.minPrice, error: false, errorText: '' });
             setMaxPrice({ text: props.maxPrice, error: false, errorText: '' });
@@ -121,6 +121,7 @@ function Setup(props) {
             setProvinceDS(prevState => ({ ...prevState, value: props.provinceDS }));
             setCityDS(prevState => ({ ...prevState, value: props.cityDS }));
             setAreaDS(prevState => ({ ...prevState, value: props.areaDS }));
+            setSocialMedia({ facebook: props.facebook, twitter: props.twitter, instagram: props.instagram, youtube: props.youtube });
         }
     }, [props]);
 
@@ -186,8 +187,9 @@ function Setup(props) {
     }
     const handleWebUrl = event => {
         const urlCheck = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)/g;
-        if (!event.target.value.match(urlCheck)) setWebUrl({ text: event.target.value, errorText: "Please enter a valid URL!", error: true });
-        else setWebUrl({ text: event.target.value });
+        if (event.target.value === '') setWebUrl({ text: event.target.value, errorText: '', error: false });
+        else if (!event.target.value.match(urlCheck)) setWebUrl({ text: event.target.value, errorText: "Please enter a valid URL!", error: true });
+        else setWebUrl({ text: event.target.value, errorText: '', error: false });
     }
     const handleMondayCheck = _ => {
         setMonday(prevState => ({ ...prevState, check: !monday.check }));
@@ -535,9 +537,14 @@ function Setup(props) {
         delete category.active;
         const featuresList = features.filter(element => element.active === 'active');
         featuresList.forEach(function (v) { delete v.active });
+        const website = webUrl.text.includes('http') ? webUrl.text : `https://${webUrl.text}`;
+        const facebook = socialMedia.facebook.includes('http') ? socialMedia.facebook : `https://${socialMedia.facebook}`;
+        const instagram = socialMedia.instagram.includes('http') ? socialMedia.instagram : `https://${socialMedia.instagram}`;
+        const twitter = socialMedia.twitter.includes('http') ? socialMedia.twitter : `https://${socialMedia.twitter}`;
+        const youtube = socialMedia.youtube.includes('http') ? socialMedia.youtube : `https://${socialMedia.youtube}`;
         formData.append(
             "data",
-            JSON.stringify({ businessName: businessName.text, businessDescription: businessDescription.text, alignment: alignment, minPrice: minPrice.text, maxPrice: maxPrice.text, webUrl: webUrl.text, activeDays, category, features: featuresList, area: area.value, addressLine1: addressLine1.text, addressLine2: addressLine2.text, landmark: landmark.text, radios, provinceDS: provinceDS.value, cityDS: cityDS.value, areaDS: areaDS.value, user: user.userState, edit: props.edit })
+            JSON.stringify({ businessName: businessName.text, businessDescription: businessDescription.text, alignment: alignment, minPrice: minPrice.text, maxPrice: maxPrice.text, webUrl: website, activeDays, category, features: featuresList, area: area.value, addressLine1: addressLine1.text, addressLine2: addressLine2.text, landmark: landmark.text, radios, provinceDS: provinceDS.value, cityDS: cityDS.value, areaDS: areaDS.value, user: user.userState, edit: props.edit, facebook, instagram, twitter, youtube })
         );
         // console.log(logo.picturePreview);
         try {
@@ -573,6 +580,7 @@ function Setup(props) {
         else if (minPrice.text.length === 0) flag = true;
         else if (maxPrice.error === true) flag = true;
         else if (maxPrice.text.length === 0) flag = true;
+        else if (webUrl.error === true) flag = true;
         else if (province.error === true) flag = true;
         else if (province.value.length === 0) flag = true;
         else if (city.error === true) flag = true;
@@ -585,7 +593,7 @@ function Setup(props) {
         else if (provinceDS.value.length === 0) flag = true;
         else flag = false;
         setDisabledBtn(flag);
-    }, [businessName, businessDescription, logo, minPrice, maxPrice, province, city, area, addressLine1, provinceDS]);
+    }, [businessName, businessDescription, logo, minPrice, maxPrice, webUrl, province, city, area, addressLine1, provinceDS]);
 
     return (
         <Container className="setup">
@@ -610,10 +618,11 @@ function Setup(props) {
                     <Row className="justify-content-between">
                         <Col className="form-group-right" lg={6}>
                             <Row>
-                                <Form.Group controlId="firstName">
+                                <Form.Group>
                                     <Form.Label className="bold-600">Business Name</Form.Label>
                                     <Form.Control
                                         type="text"
+                                        id="businessName"
                                         onChange={handleBusinessName}
                                         onBlur={handleBusinessName}
                                         value={businessName.text}
@@ -623,9 +632,10 @@ function Setup(props) {
                             </Row>
                             <div className="margin-global-top-2" />
                             <Row>
-                                <Form.Group controlId="email">
+                                <Form.Group>
                                     <Form.Label className="bold-600">Business Description</Form.Label>
                                     <textarea
+                                        id="businessDescription"
                                         maxLength={1250}
                                         rows={7}
                                         onChange={handleBusinessDescription}
@@ -637,7 +647,7 @@ function Setup(props) {
                             </Row>
                         </Col>
                         <Col className="form-group-left margin-global-top-2-xs" lg={6}>
-                            <Form.Group controlId="firstName">
+                            <Form.Group>
                                 <Form.Label className="bold-600">Add a Picture that represents your Brand/Business</Form.Label>
                                 <input onChange={logoChange} accept="image/*" type="file" id="logo-upload" style={{ display: 'none' }} />
                                 <ClickButton
@@ -667,8 +677,9 @@ function Setup(props) {
                     <Row>
                         <Col lg={6} className="form-group-right">
                             <Row>
-                                <Form.Group controlId="email">
+                                <Form.Group>
                                     <ToggleButtonGroup
+                                        id="toggle-button-group"
                                         value={alignment}
                                         size="small"
                                         exclusive
@@ -692,14 +703,15 @@ function Setup(props) {
                             </Row>
                             <div className="margin-global-top-1" />
                             <Row>
-                                <Form.Group as={Col} controlId="firstName">
+                                <Form.Group as={Col}>
                                     <Form.Label className="bold-600">Add your Price Range</Form.Label>
                                 </Form.Group>
                             </Row>
                             <Row>
-                                <Form.Group as={Col} xs={6} controlId="firstName">
+                                <Form.Group as={Col} xs={6}>
                                     <Form.Label>Minimum Price</Form.Label>
                                     <Form.Control
+                                        id='minPrice'
                                         type="text"
                                         onChange={handleMinPrice}
                                         onBlur={handleMinPrice}
@@ -707,9 +719,10 @@ function Setup(props) {
                                     />
                                     <div className="error-text">{minPrice.errorText}</div>
                                 </Form.Group>
-                                <Form.Group as={Col} xs={6} controlId="firstName">
+                                <Form.Group as={Col} xs={6}>
                                     <Form.Label>Maximum Price</Form.Label>
                                     <Form.Control
+                                        id='maxPrice'
                                         type="text"
                                         onChange={handleMaxPrice}
                                         onBlur={handleMaxPrice}
@@ -720,20 +733,22 @@ function Setup(props) {
                             </Row>
                             <div className="margin-global-top-2" />
                             <Row>
-                                <Form.Group as={Col} controlId="firstName">
+                                <Form.Group as={Col}>
                                     <Form.Label className="bold-600">Have a Website? [Optional]</Form.Label>
                                 </Form.Group>
                             </Row>
                             <Row>
-                                <Form.Group as={Col} lg={12} controlId="firstName">
+                                <Form.Group as={Col} lg={12}>
                                     <Form.Label>Enter your URL</Form.Label>
                                     <Form.Control
+                                        id='website'
                                         type="text"
                                         onChange={handleWebUrl}
                                         onBlur={handleWebUrl}
                                         value={webUrl.text}
                                     />
                                 </Form.Group>
+                                <div className="error-text">{webUrl.errorText}</div>
                             </Row>
                         </Col>
                         <Col className="form-group-left margin-global-top-2-xs" lg={6}>
@@ -750,19 +765,20 @@ function Setup(props) {
                                 </Col>
                             </Row>
                             <Row>
-                                <Form.Group className="datetime-col-xs" as={Col} xs={3} controlId="email">
+                                <Form.Group className="datetime-col-xs" as={Col} xs={3}>
                                     <Form.Check
+                                        id="monday"
                                         className="center-relative-vertical"
                                         type='checkbox'
-                                        id="service"
                                         label="Monday"
                                         checked={monday.check}
                                         onChange={handleMondayCheck}
                                     />
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4}>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
+                                            id="mondayStart"
                                             label=""
                                             disabled={!monday.check}
                                             value={monday.startValue}
@@ -773,9 +789,10 @@ function Setup(props) {
                                         />
                                     </LocalizationProvider>
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4}>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
+                                            id="mondayEnd"
                                             label=""
                                             disabled={!monday.check}
                                             value={monday.endValue}
@@ -789,19 +806,20 @@ function Setup(props) {
                             </Row>
                             <div className="margin-global-top-06" />
                             <Row>
-                                <Form.Group className="datetime-col-xs" as={Col} xs={3} controlId="email">
+                                <Form.Group className="datetime-col-xs" as={Col} xs={3}>
                                     <Form.Check
+                                        id="tuesday"
                                         className="center-relative-vertical"
                                         type='checkbox'
-                                        id="service"
                                         label="Tuesday"
                                         checked={tuesday.check}
                                         onChange={handleTuesdayCheck}
                                     />
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4}>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
+                                            id="tuesdayStart"
                                             label=""
                                             disabled={!tuesday.check}
                                             value={tuesday.startValue}
@@ -812,9 +830,10 @@ function Setup(props) {
                                         />
                                     </LocalizationProvider>
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4}>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
+                                            id="tuesdayEnd"
                                             label=""
                                             disabled={!tuesday.check}
                                             value={tuesday.endValue}
@@ -828,19 +847,20 @@ function Setup(props) {
                             </Row>
                             <div className="margin-global-top-06" />
                             <Row>
-                                <Form.Group className="datetime-col-xs" as={Col} xs={3} controlId="email">
+                                <Form.Group className="datetime-col-xs" as={Col} xs={3}>
                                     <Form.Check
+                                        id="wednesday"
                                         className="center-relative-vertical"
                                         type='checkbox'
-                                        id="service"
                                         label="Wednesday"
                                         checked={wednesday.check}
                                         onChange={handleWednesdayCheck}
                                     />
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4}>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
+                                            id="wednesdayStart"
                                             label=""
                                             disabled={!wednesday.check}
                                             value={wednesday.startValue}
@@ -851,9 +871,10 @@ function Setup(props) {
                                         />
                                     </LocalizationProvider>
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4}>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
+                                            id="wednesdayEnd"
                                             label=""
                                             disabled={!wednesday.check}
                                             value={wednesday.endValue}
@@ -867,19 +888,20 @@ function Setup(props) {
                             </Row>
                             <div className="margin-global-top-06" />
                             <Row>
-                                <Form.Group className="datetime-col-xs" as={Col} xs={3} controlId="email">
+                                <Form.Group className="datetime-col-xs" as={Col} xs={3}>
                                     <Form.Check
+                                        id="thursday"
                                         className="center-relative-vertical"
                                         type='checkbox'
-                                        id="service"
                                         label="Thursday"
                                         checked={thursday.check}
                                         onChange={handleThursdayCheck}
                                     />
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4}>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
+                                            id="thursdayStart"
                                             label=""
                                             disabled={!thursday.check}
                                             value={thursday.startValue}
@@ -890,9 +912,10 @@ function Setup(props) {
                                         />
                                     </LocalizationProvider>
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4}>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
+                                            id="thursdayEnd"
                                             label=""
                                             disabled={!thursday.check}
                                             value={thursday.endValue}
@@ -906,19 +929,20 @@ function Setup(props) {
                             </Row>
                             <div className="margin-global-top-06" />
                             <Row>
-                                <Form.Group className="datetime-col-xs" as={Col} xs={3} controlId="email">
+                                <Form.Group className="datetime-col-xs" as={Col} xs={3}>
                                     <Form.Check
+                                        id="friday"
                                         className="center-relative-vertical"
                                         type='checkbox'
-                                        id="service"
                                         label="Friday"
                                         checked={friday.check}
                                         onChange={handleFridayCheck}
                                     />
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4}>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
+                                            id="fridayStart"
                                             label=""
                                             disabled={!friday.check}
                                             value={friday.startValue}
@@ -929,9 +953,10 @@ function Setup(props) {
                                         />
                                     </LocalizationProvider>
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4}>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
+                                            id="fridayEnd"
                                             label=""
                                             disabled={!friday.check}
                                             value={friday.endValue}
@@ -945,19 +970,20 @@ function Setup(props) {
                             </Row>
                             <div className="margin-global-top-06" />
                             <Row>
-                                <Form.Group className="datetime-col-xs" as={Col} xs={3} controlId="email">
+                                <Form.Group className="datetime-col-xs" as={Col} xs={3}>
                                     <Form.Check
+                                        id="saturday"
                                         className="center-relative-vertical"
                                         type='checkbox'
-                                        id="service"
                                         label="Saturday"
                                         checked={saturday.check}
                                         onChange={handleSaturdayCheck}
                                     />
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4}>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
+                                            id="saturdayStart"
                                             label=""
                                             disabled={!saturday.check}
                                             value={saturday.startValue}
@@ -968,9 +994,10 @@ function Setup(props) {
                                         />
                                     </LocalizationProvider>
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4}>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
+                                            id="saturdayEnd"
                                             label=""
                                             disabled={!saturday.check}
                                             value={saturday.endValue}
@@ -984,19 +1011,20 @@ function Setup(props) {
                             </Row>
                             <div className="margin-global-top-06" />
                             <Row>
-                                <Form.Group className="datetime-col-xs" as={Col} xs={3} controlId="email">
+                                <Form.Group className="datetime-col-xs" as={Col} xs={3}>
                                     <Form.Check
+                                        id="sunday"
                                         className="center-relative-vertical"
                                         type='checkbox'
-                                        id="service"
                                         label="Sunday"
                                         checked={sunday.check}
                                         onChange={handleSundayCheck}
                                     />
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4}>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
+                                            id="sundayStart"
                                             label=""
                                             disabled={!sunday.check}
                                             value={sunday.startValue}
@@ -1007,9 +1035,10 @@ function Setup(props) {
                                         />
                                     </LocalizationProvider>
                                 </Form.Group>
-                                <Form.Group className="less-padding" as={Col} xs={4} controlId="email">
+                                <Form.Group className="less-padding" as={Col} xs={4}>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <MobileTimePicker
+                                            id="sundayEnd"
                                             label=""
                                             disabled={!sunday.check}
                                             value={sunday.endValue}
@@ -1025,12 +1054,12 @@ function Setup(props) {
                     </Row>
                     <div className="margin-global-top-3" />
                     <Row>
-                        <Form.Group as={Col} controlId="firstName">
+                        <Form.Group as={Col}>
                             <Form.Label className="bold-600">What Category does your Business fall in?</Form.Label>
                         </Form.Group>
                     </Row>
                     <Row>
-                        <Form.Group as={Col} lg={8} controlId="firstName">
+                        <Form.Group as={Col} lg={8}>
                             <Form.Label>Choose the Most Relevant Option</Form.Label>
                             <div className="form-yellow-buttons">
                                 {
@@ -1052,7 +1081,7 @@ function Setup(props) {
                         </Form.Group>
                     </Row>
                     <Row>
-                        <Form.Group as={Col} lg={8} controlId="firstName">
+                        <Form.Group as={Col} lg={8}>
                             <Form.Label>Choose the Option(s) that Apply</Form.Label>
                             <div className="form-yellow-buttons">
                                 {
@@ -1069,12 +1098,58 @@ function Setup(props) {
                     </Row>
                     <div className="margin-global-top-4" />
                     <Row>
-                        <Form.Group as={Col} controlId="firstName">
+                        <Form.Group as={Col}>
+                            <Form.Label className="bold-600">Social Media Links [Optional]</Form.Label>
+                        </Form.Group>
+                    </Row>
+                    <Row>
+                        <Form.Group className="form-group-right" as={Col} lg={6}>
+                            <Form.Label>Facebook</Form.Label>
+                            <Form.Control
+                                id='facebook'
+                                type="text"
+                                value={socialMedia.facebook}
+                                onChange={e => setSocialMedia({ ...socialMedia, facebook: e.target.value })}
+                            />
+                        </Form.Group>
+                        <Form.Group className="form-group-left" as={Col} lg={6}>
+                            <Form.Label>Instagram</Form.Label>
+                            <Form.Control
+                                id='instagram'
+                                type="text"
+                                value={socialMedia.instagram}
+                                onChange={e => setSocialMedia({ ...socialMedia, instagram: e.target.value })}
+                            />
+                        </Form.Group>
+                    </Row>
+                    <Row>
+                        <Form.Group className="form-group-right" as={Col} lg={6}>
+                            <Form.Label>Twitter</Form.Label>
+                            <Form.Control
+                                id='twitter'
+                                type="text"
+                                value={socialMedia.twitter}
+                                onChange={e => setSocialMedia({ ...socialMedia, twitter: e.target.value })}
+                            />
+                        </Form.Group>
+                        <Form.Group className="form-group-left" as={Col} lg={6}>
+                            <Form.Label>Youtube</Form.Label>
+                            <Form.Control
+                                id='youtube'
+                                type="text"
+                                value={socialMedia.youtube}
+                                onChange={e => setSocialMedia({ ...socialMedia, youtube: e.target.value })}
+                            />
+                        </Form.Group>
+                    </Row>
+                    <div className="margin-global-top-4" />
+                    <Row>
+                        <Form.Group as={Col}>
                             <Form.Label className="bold-600">Business Address</Form.Label>
                         </Form.Group>
                     </Row>
                     <Row>
-                        <Form.Group className="form-group-right" as={Col} md={6} controlId="firstName">
+                        <Form.Group className="form-group-right" as={Col} md={6}>
                             <Form.Label>Province</Form.Label>
                             <AsyncTypeahead
                                 filterBy={filterByProvince}
@@ -1097,9 +1172,10 @@ function Setup(props) {
                             />
                             <div className="error-text">{province.errortext}</div>
                         </Form.Group>
-                        <Form.Group className="form-group-left" as={Col} md={6} controlId="firstName">
+                        <Form.Group className="form-group-left" as={Col} md={6}>
                             <Form.Label>Address Line 1</Form.Label>
                             <Form.Control
+                                id='address1'
                                 type="text"
                                 onChange={handleAddressLine1}
                                 onBlur={handleAddressLine1}
@@ -1109,7 +1185,7 @@ function Setup(props) {
                         </Form.Group>
                     </Row>
                     <Row>
-                        <Form.Group className="form-group-right" as={Col} md={6} controlId="firstName">
+                        <Form.Group className="form-group-right" as={Col} md={6}>
                             <Form.Label>City</Form.Label>
                             <AsyncTypeahead
                                 filterBy={filterByCity}
@@ -1132,9 +1208,10 @@ function Setup(props) {
                             />
                             <div className="error-text">{city.errortext}</div>
                         </Form.Group>
-                        <Form.Group className="form-group-left" as={Col} md={6} controlId="firstName">
+                        <Form.Group className="form-group-left" as={Col} md={6}>
                             <Form.Label>Address Line 2 [Optional]</Form.Label>
                             <Form.Control
+                                id='address2'
                                 type="text"
                                 onChange={handleAddressLine2}
                                 onBlur={handleAddressLine2}
@@ -1143,7 +1220,7 @@ function Setup(props) {
                         </Form.Group>
                     </Row>
                     <Row>
-                        <Form.Group className="form-group-right" as={Col} md={6} controlId="firstName">
+                        <Form.Group className="form-group-right" as={Col} md={6}>
                             <Form.Label>Area</Form.Label>
                             <AsyncTypeahead
                                 filterBy={filterByArea}
@@ -1166,9 +1243,10 @@ function Setup(props) {
                             />
                             <div className="error-text">{area.errortext}</div>
                         </Form.Group>
-                        <Form.Group className="form-group-left" as={Col} md={6} controlId="firstName">
+                        <Form.Group className="form-group-left" as={Col} md={6}>
                             <Form.Label>Nearest Landmark [Optional]</Form.Label>
                             <Form.Control
+                                id='landmark'
                                 type="text"
                                 onChange={handleLandmark}
                                 onBlur={handleLandmark}
@@ -1178,12 +1256,12 @@ function Setup(props) {
                     </Row>
                     <div className="margin-global-top-4" />
                     <Row>
-                        <Form.Group as={Col} controlId="firstName">
+                        <Form.Group as={Col}>
                             <Form.Label className="bold-600">Delivery or Service Areas</Form.Label>
                         </Form.Group>
                     </Row>
                     <Row>
-                        <Form.Group as={Col} xs={3} controlId="delivery">
+                        <Form.Group as={Col} xs={3}>
                             <Form.Check
                                 type='radio'
                                 id="delivery"
@@ -1193,7 +1271,7 @@ function Setup(props) {
                                 onChange={_ => { }}
                             />
                         </Form.Group>
-                        <Form.Group as={Col} xs={3} controlId="service">
+                        <Form.Group as={Col} xs={3}>
                             <Form.Check
                                 type='radio'
                                 id="service"
@@ -1206,7 +1284,7 @@ function Setup(props) {
                     </Row>
                     <div className="margin-global-top-1" />
                     <Row>
-                        <Form.Group className="form-group-right" as={Col} lg={6} controlId="firstName">
+                        <Form.Group className="form-group-right" as={Col} lg={6}>
                             <Form.Label>Province</Form.Label>
                             <AsyncTypeahead
                                 filterBy={filterByProvinceDS}
@@ -1232,7 +1310,7 @@ function Setup(props) {
                         </Form.Group>
                     </Row>
                     <Row>
-                        <Form.Group className="form-group-right" as={Col} lg={6} controlId="firstName">
+                        <Form.Group className="form-group-right" as={Col} lg={6}>
                             <Form.Label>City [Optional]</Form.Label>
                             <AsyncTypeahead
                                 filterBy={filterByCityDS}
@@ -1257,7 +1335,7 @@ function Setup(props) {
                         </Form.Group>
                     </Row>
                     <Row>
-                        <Form.Group className="form-group-right" as={Col} lg={6} controlId="firstName">
+                        <Form.Group className="form-group-right" as={Col} lg={6}>
                             <Form.Label>Area [Optional]</Form.Label>
                             <AsyncTypeahead
                                 filterBy={filterByAreaDS}

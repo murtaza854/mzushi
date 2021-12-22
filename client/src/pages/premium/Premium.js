@@ -3,7 +3,7 @@ import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { FiCheck } from 'react-icons/fi'
 import { useHistory } from 'react-router';
 // import api from '../../api';
-import { Heading1 } from '../../components';
+import { DescriptionText, Heading1 } from '../../components';
 import UserContext from '../../contexts/userContext';
 import './Premium.scss';
 
@@ -22,16 +22,12 @@ function Premium(props) {
         } else history.push('/login');
     }, [history, user.userState]);
     const features = [
-        { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
-        { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
-        { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
-        { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
-        { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
-        { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
-        { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
-        { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
-        { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
-        { text: 'Lorem Ipsum', icon: <FiCheck className="icon" /> },
+        { text: 'Business listed', icon: <FiCheck className="icon" /> },
+        { text: 'Business dashboard', icon: <FiCheck className="icon" /> },
+        { text: 'Featured Listings', icon: <FiCheck className="icon" /> },
+        { text: 'Upload upto 21 pictures', icon: <FiCheck className="icon" /> },
+        { text: "Get featured on mzushi's growing social media platforms", icon: <FiCheck className="icon" /> },
+        { text: 'Sellers Blog', icon: <FiCheck className="icon" /> },
     ];
 
     const changeCheck = _ => {
@@ -85,6 +81,46 @@ function Premium(props) {
             <Row>
                 <Col>
                     <Form style={{ padding: 0 }} onSubmit={onSubmit} className="form-style margin-global-top-1">
+                        <Row>
+                            <Col>
+                                <DescriptionText
+                                    text="Please make your payment, PKR. 250/- in the following bank account:"
+                                    classes=""
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <DescriptionText
+                                    text="Account Title: Qirat Gill"
+                                    classes="margin-bottom-0"
+                                />
+                                <DescriptionText
+                                    text="Account Number: 08967901151903"
+                                    classes="margin-bottom-0"
+                                />
+                                <DescriptionText
+                                    text="IBAN: PK56 HABB 0008967901151903"
+                                    classes="margin-bottom-0"
+                                />
+                                <DescriptionText
+                                    text="Bank: Habib Bank Limited"
+                                    classes=""
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <DescriptionText
+                                    text="Please send proof of payment with your Startup name to help@mzushi.com from your registered email address."
+                                    classes="margin-bottom-0"
+                                />
+                                <DescriptionText
+                                    text="Please note that you will be charged a monthly fee of PKR. 250/- for the duration of your premium account."
+                                    classes=""
+                                />
+                            </Col>
+                        </Row>
                         <Row>
                             <Col>
                                 <Form.Check

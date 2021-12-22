@@ -17,3 +17,4 @@ export { default as BusinessBigCard } from './businessBigCard/BusinessBigCard';
 export { default as ButtonTab } from './buttonTab/ButtonTab';
 export { default as Package } from './package/Package';
 export { default as PreLoader } from './preLoader/PreLoader';
+export { default as MapContainer } from './mapContainer/MapContainer';

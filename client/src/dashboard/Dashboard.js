@@ -34,6 +34,8 @@ function Dashboard(props) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
+                withCredentials: true,
             });
             const content = await response.json();
             console.log(content.data);
@@ -115,6 +117,10 @@ function Dashboard(props) {
                                     provinceDS={startup.serviceProvinces}
                                     cityDS={startup.serviceCities}
                                     areaDS={startup.serviceAreas}
+                                    facebook={startup.facebookURL}
+                                    instagram={startup.instagramURL}
+                                    twitter={startup.twitterURL}
+                                    youtube={startup.youtubeURL}
                                 />
                             </div>
                         } />
@@ -135,6 +141,10 @@ function Dashboard(props) {
                                 provinceDS={startup.serviceProvinces}
                                 cityDS={startup.serviceCities}
                                 areaDS={startup.serviceAreas}
+                                facebook={startup.facebookURL}
+                                instagram={startup.instagramURL}
+                                twitter={startup.twitterURL}
+                                youtube={startup.youtubeURL}
                             />
                         } />
                         <Route path="/dashboard/account/change-email" children={

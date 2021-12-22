@@ -9,9 +9,9 @@ const dotenv = require('dotenv');
 const fs = require('fs');
 const multer = require('multer');
 const path = require('path');
-const { signInWithEmailAndPassword, signOut, getAuth, signInWithCredential, createUserWithEmailAndPassword, sendEmailVerification, GoogleAuthProvider, FacebookAuthProvider, EmailAuthProvider, reauthenticateWithCredential, updatePassword, updateEmail, updateProfile, sendPasswordResetEmail } = require('firebase/auth');
 const firebaseFile = require('../firebase');
 const firebaseAdmin = firebaseFile.admin;
+const { signInWithEmailAndPassword, signOut, getAuth, signInWithCredential, createUserWithEmailAndPassword, sendEmailVerification, GoogleAuthProvider, FacebookAuthProvider, EmailAuthProvider, reauthenticateWithCredential, updatePassword, updateEmail, updateProfile, sendPasswordResetEmail } = require('firebase/auth');
 dotenv.config();
 
 const auth = getAuth();
@@ -137,12 +137,11 @@ router.post('/signup', async (req, res) => {
             const { firstName, lastName, email, contactNumber, password } = req.body;
             const response = await createUserWithEmailAndPassword(auth, email.name, password.name);
             const user = response.user;
-            await firebaseAdmin.auth().setCustomUserClaims(user.uid, { admin: false });
             sendEmailVerification(user);
             await updateProfile(user, {
                 displayName: firstName.name,
             })
-            const newStartup = new Startup({
+            const data = {
                 ownerFirstName: firstName.name,
                 ownerLastName: lastName.name,
                 email: email.name,
@@ -155,9 +154,11 @@ router.post('/signup', async (req, res) => {
                 lastLogin: new Date(),
                 uid: user.uid,
                 provider: provider
-            });
+            }
+            await signOut(auth);
+            const newStartup = new Startup(data);
             newStartup.save();
-            await signOut();
+            await firebaseAdmin.auth().setCustomUserClaims(data.uid, { admin: false });
             res.json({ data: true });
         }
     } catch (error) {
@@ -283,7 +284,7 @@ router.post('/login', async (req, res) => {
             const sessionCookie = await firebaseAdmin.auth().createSessionCookie(idToken, { expiresIn });
             const options = { maxAge: expiresIn, httpOnly: true };
             res.cookie("session", sessionCookie, options);
-            signOut(auth);
+            await signOut(auth);
             res.json({ data: true });
         } else if (provider === 'google') {
             const { id_token } = req.body;
@@ -295,7 +296,7 @@ router.post('/login', async (req, res) => {
             const sessionCookie = await firebaseAdmin.auth().createSessionCookie(idToken, { expiresIn });
             const options = { maxAge: expiresIn, httpOnly: true };
             res.cookie("session", sessionCookie, options);
-            signOut(auth);
+            await signOut(auth);
             const startup = await Startup.findOne({ uid: user.uid });
             if (startup) {
                 res.json({ data: true });
@@ -327,7 +328,7 @@ router.post('/login', async (req, res) => {
             const sessionCookie = await firebaseAdmin.auth().createSessionCookie(idToken, { expiresIn });
             const options = { maxAge: expiresIn, httpOnly: true };
             res.cookie("session", sessionCookie, options);
-            signOut(auth);
+            await signOut(auth);
             const startup = await Startup.findOne({ uid: user.uid });
             if (startup) {
                 res.json({ data: true });
@@ -470,11 +471,18 @@ router.post('/add-image', upload.single('image'), async (req, res, next) => {
 router.post('/startup-setup', upload.single('image'), async (req, res, next) => {
     try {
         const data = JSON.parse(req.body.data);
+        const descriptions = [];
+        for (let i = 0; i < data.businessDescription.split('\n').length; i++) {
+            const element = data.businessDescription.split('\n')[i];
+            if (element !== '') {
+                descriptions.push(element.trim());
+            }
+        }
         const edit = data.edit;
         const startup = await Startup.findOne({ email: data.user.email });
         startup.startupName = data.businessName;
         startup.slug = slugify(data.businessName, { lower: true });
-        if (startup.logo) {
+        if (startup.logo && startup.logo.filePath) {
             fs.unlinkSync(startup.logo.filePath);
         }
         if (req.file) {
@@ -485,7 +493,7 @@ router.post('/startup-setup', upload.single('image'), async (req, res, next) => 
                 // contentType: req.file.mimetype
             };
         }
-        startup.description = data.businessDescription;
+        startup.description = descriptions;
         startup.minPrice = data.minPrice;
         startup.maxPrice = data.maxPrice;
         startup.website = data.webUrl;
@@ -510,6 +518,10 @@ router.post('/startup-setup', upload.single('image'), async (req, res, next) => 
         startup.serviceProvinces = data.provinceDS;
         startup.accountSetup = true;
         startup.features = data.features;
+        startup.facebookURL = data.facebook;
+        startup.instagramURL = data.instagram;
+        startup.twitterURL = data.twitter;
+        startup.youtubeURL = data.youtube;
         startup.save();
         res.json({ data: true });
     } catch (error) {

@@ -14,7 +14,6 @@ function arrayBufferToBase64(buffer) {
 
 const createTableData = (data) => {
     const { _id, name, featured } = data;
-    // console.log(data.image.contentType);
     const base64Flag = `data:${data.image.contentType};base64,`;
     const imagePath = base64Flag + arrayBufferToBase64(data.image.data.data);
     return { _id, name, featured, imagePath };
@@ -173,8 +172,6 @@ const categoryObj = {
 
                         image.onload = function () {
                             // access image size here 
-                            // console.log(this.width, this.height);
-                            // console.log(gcd(this.width, this.height));
                             const w = this.width;
                             const h = this.height;
                             const r = gcd(w, h);

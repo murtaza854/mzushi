@@ -10,12 +10,12 @@ router.get('/get-cities-search', async (req, res) => {
 });
 
 router.get('/get-featured', async (req, res) => {
-    
-    const cities = await City.find({featured: true});
+
+    const cities = await City.find({ featured: true });
     res.json({ data: cities });
 });
 
-router.get('/table-data', async (req, res) => {
+router.get('/getAllCities', async (req, res) => {
     const cities = await City.find({}).populate({
         path: 'province',
         populate: {
@@ -38,12 +38,27 @@ router.get('/get-cities-with-ref', async (req, res) => {
     else res.json({ data: cities });
 });
 
+router.post('/getById', async (req, res) => {
+    try {
+        const city = await City.findOne({ _id: req.body.id }).populate({
+            path: 'province',
+            populate: {
+                path: 'country',
+            }
+        });
+        res.json({ data: city });
+    } catch (error) {
+        res.json({ data: null, error: error });
+    }
+});
+
 router.post('/add', async (req, res) => {
     const data = req.body;
     const newCity = new City({
         name: data.name,
-        province: data.province,
-        featured: data.featured
+        province: data.state,
+        featured: data.featured,
+        active: data.active
     });
     newCity.save();
     res.json({ data: 'success' });
@@ -51,10 +66,11 @@ router.post('/add', async (req, res) => {
 
 router.post('/update', async (req, res) => {
     const data = req.body;
-    const city = await City.findOne({ _id: data._id });
+    const city = await City.findOne({ _id: data.id });
     city.name = data.name;
-    city.province = data.province;
+    city.province = data.state;
     city.featured = data.featured;
+    city.active = data.active;
     city.save();
     res.json({ data: 'success' });
 });
@@ -70,6 +86,24 @@ router.get('/get-by-ids', async (req, res) => {
     else res.json({ data: cities });
 });
 
+router.post('/getDeleteData', async (req, res) => {
+    try {
+        const {
+            selected
+        } = req.body;
+        console.log(selected);
+        const cities = await City.find({ id: selected }).populate({
+            path: 'addresses',
+            populate: {
+                path: 'startups'
+            }
+        })
+        res.json({ data: cities });
+    } catch (error) {
+        res.json({ data: null, error: error });
+    }
+});
+
 router.post('/delete', async (req, res) => {
     try {
         const data = req.body.data;
@@ -79,7 +113,7 @@ router.post('/delete', async (req, res) => {
         await City.deleteMany({ _id: req.body.ids });
         res.json({ data: 'success' });
     } catch (error) {
-        console.log(error);
+        ;
         res.json({ data: 'failed' });
     }
 });

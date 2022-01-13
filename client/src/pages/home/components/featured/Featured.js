@@ -29,7 +29,7 @@ function Featured(props) {
             //     return chunks;
             // }
             const newArray = array.map((item, index) => {
-                item.name = item.name.replace('and', '&');
+                if (item.name.includes(' and ')) item.name = item.name.replace('and', '&');
                 return item;
             });
             setFeaturedCategory(newArray.slice(0, 4));
@@ -97,12 +97,12 @@ function Featured(props) {
             <Row className={`justify-content-center`}>
                 {
                     featuredCategory.map((cat, catIndex) => {
-                        function arrayBufferToBase64(buffer) {
-                            var binary = '';
-                            var bytes = [].slice.call(new Uint8Array(buffer)); bytes.forEach((b) => binary += String.fromCharCode(b)); return window.btoa(binary);
-                        };
-                        const base64Flag = `data:${cat.image.contentType};base64,`;
-                        const imagePath = base64Flag + arrayBufferToBase64(cat.image.data.data);
+                        // function arrayBufferToBase64(buffer) {
+                        //     var binary = '';
+                        //     var bytes = [].slice.call(new Uint8Array(buffer)); bytes.forEach((b) => binary += String.fromCharCode(b)); return window.btoa(binary);
+                        // };
+                        // const base64Flag = `data:${cat.image.contentType};base64,`;
+                        // const imagePath = base64Flag + arrayBufferToBase64(cat.image.data.data);
                         return (
                             <div className="big-box-div featured-cats" key={catIndex}>
                                 <BigBox
@@ -114,7 +114,7 @@ function Featured(props) {
                                     to={cat.slug}
                                     img={
                                         <img
-                                            src={imagePath}
+                                            src={cat.image.filePath}
                                             alt={cat.name}
                                         />
                                     }

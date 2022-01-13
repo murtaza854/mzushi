@@ -65,7 +65,7 @@ router.post('/delete', async (req, res) => {
         await ProductSubCategory.deleteMany({ _id: req.body.ids });
         res.json({ data: 'success' });
     } catch (error) {
-        console.log(error);
+        ;
         res.json({ data: 'failed' });
     }
 });

@@ -250,67 +250,6 @@ function FilterPanel(props) {
                     </div>
                     {/* </Row> */}
                     <div className="margin-global-top-2 hide-1200 unhide-576" />
-                    {/* <Row className="justify-content-center"> */}
-                    <div className="filter-panel-section-width">
-                        <Heading3
-                            text="Area"
-                            blue=""
-                            classes="fit-content"
-                            text2=""
-                        />
-                        <div className="filter-panel-section-list">
-                            {
-                                props.areas.map((value, index) => {
-                                    return (
-                                        <Form.Check
-                                            type='checkbox'
-                                            label={value.name}
-                                            id={value.name}
-                                            key={index}
-                                            checked={value.active}
-                                            onClick={e => props.handleAreaChange(e, index)}
-                                            onChange={_ => { }}
-                                        />
-                                    )
-                                })
-                            }
-                            {/* <Form.Check
-                                type='checkbox'
-                                label="Lorem Ipsum"
-                            // checked={radios.service}
-                            // onClick={handleServiceClick}
-                            // onChange={_ => { }}
-                            />
-                            <Form.Check
-                                type='checkbox'
-                                label="Lorem Ipsum"
-                            // checked={radios.service}
-                            // onClick={handleServiceClick}
-                            // onChange={_ => { }}
-                            />
-                            <Form.Check
-                                type='checkbox'
-                                label="Lorem Ipsum"
-                            // checked={radios.service}
-                            // onClick={handleServiceClick}
-                            // onChange={_ => { }}
-                            />
-                            <Form.Check
-                                type='checkbox'
-                                label="Lorem Ipsum"
-                            // checked={radios.service}
-                            // onClick={handleServiceClick}
-                            // onChange={_ => { }}
-                            />
-                            <Form.Check
-                                type='checkbox'
-                                label="Lorem Ipsum"
-                            // checked={radios.service}
-                            // onClick={handleServiceClick}
-                            // onChange={_ => { }}
-                            /> */}
-                        </div>
-                    </div>
                 </Row>
                 {/* <Row className="unhide-1200">
                     <button onClick={closeFilterPanel} type="button">Filter panel</button>

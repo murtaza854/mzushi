@@ -60,9 +60,7 @@ function BusinessDynamic(props) {
     }).join(", ");
     if (props.cityDS.length === 0) citiesString = 'Not provided';
 
-    let areasString = props.areaDS.map(function (elem) {
-        return elem.name;
-    }).join(", ");
+    let areasString = props.areaDS;
     if (props.areaDS.length === 0) areasString = 'Not provided';
 
     const buttons = [

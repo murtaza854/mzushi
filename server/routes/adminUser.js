@@ -6,10 +6,30 @@ const firebase = firebaseFile.firebase;
 const firebaseAdmin = firebaseFile.admin;
 dotenv.config();
 
-router.get('/table-data', async (req, res) => {
-    const adminUsers = await AdminUser.find({}, { uid: 0 });
+router.get('/getAllAdminUsers', async (req, res) => {
+    const adminUsers = await AdminUser.find({});
     if (!adminUsers) res.json({ data: [] });
     else res.json({ data: adminUsers });
+});
+
+router.get('/logged-in', async (req, res) => {
+    const sessionCookie = req.cookies.sessionA || "";
+    if (sessionCookie) {
+        const admin = await firebaseAdmin.auth().verifySessionCookie(sessionCookie, true);
+        if (admin) {
+            const displayName = admin.displayName;
+            const email = admin.email;
+            const emailVerified = admin.emailVerified;
+            if (!emailVerified) {
+                res.clearCookie("sessionA");
+                res.json({ data: { displayName, email, emailVerified } });
+            } else {
+                res.json({ data: { displayName, email, emailVerified } });
+            }
+        } else res.json({ data: null });
+    } else {
+        res.json({ data: null });
+    }
 });
 
 router.post('/login', async (req, res) => {

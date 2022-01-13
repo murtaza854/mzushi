@@ -17,13 +17,11 @@ const auth = getAuth();
 
 export const onSignIn = (googleUser, user) => {
     try {
-        console.log('Google Auth Response', googleUser);
         // We need to register an Observer on Firebase Auth to make sure auth is initialized.
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
             unsubscribe();
             // Check if we are already signed-in Firebase with the correct user.
             if (true) {
-                console.log('We are authenticated', firebaseUser);
                 // Build Firebase credential with the Google ID token.
                 const response = await fetch(`${api}/startup/login`, {
                     method: 'POST',
@@ -60,7 +58,6 @@ export const onSignIn = (googleUser, user) => {
                 //   // ...
                 // });
             } else {
-                console.log('User already signed-in Firebase.');
             }
         });
     } catch (error) {
@@ -70,7 +67,6 @@ export const onSignIn = (googleUser, user) => {
 
 // export const signInWithGoogle = (user) => {
 //     signInWithPopup(auth, googleProvider).then(async (res) => {
-//         console.log(res.user);
 //         // await signInWithCredential(credential);
 //         // const response = await fetch(`${api}/startup/login`, {
 //         //     method: 'POST',
@@ -88,7 +84,6 @@ export const onSignIn = (googleUser, user) => {
 //         // user.setUserState({ displayName, email, emailVerified, accountSetup, admin });
 //         // if (accountSetup) history.push("/");
 //     }).catch((error) => {
-//         console.log(error.message);
 //     })
 // }
 
@@ -104,9 +99,7 @@ export const onSignIn = (googleUser, user) => {
 //             body: JSON.stringify({ user: res.user, provider: 'facebook' })
 //         });
 //         const content = await response.json();
-//         console.log(content.data);
 //     }).catch((error) => {
-//         console.log(error.message);
 //     })
 // }
 
@@ -149,9 +142,7 @@ export const responseFacebook = async user => {
 // const googleProvider = new auth.GoogleAuthProvider()
 // export const signInWithGoogle = () => {
 //     auth.signInWithPopup(googleProvider).then((res) => {
-//         console.log(res.user)
 //     }).catch((error) => {
-//         console.log(error.message)
 //     })
 // }
 

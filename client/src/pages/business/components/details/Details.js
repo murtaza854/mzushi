@@ -21,7 +21,6 @@ function Details(props) {
         if (dayName === element.name) {
             const startTime = new Date(element.workingHourStart);
             const endTime = new Date(element.workingHourEnd);
-            // console.log(new Date(element.workingHourStart));
             if (startTime.getTime() < currentTime && endTime.getTime() > currentTime) {
                 displayTime = `Today - ${formatAMPM(startTime)} to ${formatAMPM(endTime)}`;
                 break;
@@ -54,7 +53,6 @@ function Details(props) {
         daytime.workingHourStart = formatAMPM(startTime);
         daytime.workingHourEnd = formatAMPM(endTime);
     });
-    console.log(props.website);
     let website = "";
     if (props.website.includes("http")) {
         website = props.website;

@@ -58,9 +58,10 @@ function Signup(props) {
     }
     const changePassword = event => {
         const { value } = event.target;
-        const passwReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+        // const passwReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+        const passwReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
         setPassword(prevState => ({ ...prevState, name: value }));
-        if (!value.match(passwReg)) setPassword(prevState => ({ ...prevState, errorText: 'Password must contain atleast 1 lowercase alhpabetical character, atleast 1 uppercase alhpabetical character, atleast 1 numericical character, 1 special character and must be of atleast 8 characters', error: true }));
+        if (!value.match(passwReg)) setPassword(prevState => ({ ...prevState, errorText: 'Password must contain atleast 1 lowercase alhpabetical character, atleast 1 uppercase alhpabetical character, atleast 1 numericical character and must be of atleast 8 characters', error: true }));
         else setPassword(prevState => ({ ...prevState, errorText: '', error: false }));
     }
     const handleClickShowConfirmPassword = _ => {
@@ -283,6 +284,30 @@ function Signup(props) {
                                 <span>Sign in with Facebook</span>
                             </button>
                         </div>
+                    </Row>
+                    <div className="margin-global-top-2" />
+                    <Row>
+                        <Col>
+                            <DescriptionText
+                                text="Please click"
+                                link="HERE"
+                                to="/terms-conditions"
+                                text1="to read our terms and conditions for having an account with us."
+                                classes="text-center margin-bottom-0"
+                            />
+                        </Col>
+                    </Row>
+                    <div className="margin-global-top-1" />
+                    <Row>
+                        <Col>
+                            <DescriptionText
+                                text="Please click"
+                                link="HERE"
+                                to="/privacy-policy"
+                                text1="to read our privacy policy."
+                                classes="text-center"
+                            />
+                        </Col>
                     </Row>
                 </Form>
             </Row>

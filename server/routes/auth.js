@@ -43,7 +43,7 @@ router.post('/', async (req, res) => {
                 throw 'Invalid'
         }
     } catch (error) {
-        console.log(error);
+        ;
         res.json({ data: 'Invalid', error: error });
     }
 });

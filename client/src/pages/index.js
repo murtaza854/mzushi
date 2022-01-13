@@ -8,3 +8,5 @@ export { default as Business } from './business/Business';
 export { default as PackageSelection } from './packageSelection/PackageSelection';
 export { default as Premium } from './premium/Premium';
 export { default as ForgotPassword } from './forgotPassword/ForgotPassword';
+export { default as Terms } from './terms/Terms';
+export { default as Privacy } from './privacy/Privacy';

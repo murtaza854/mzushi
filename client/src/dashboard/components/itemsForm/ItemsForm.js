@@ -42,7 +42,6 @@ function ItemsForm(props) {
             "data",
             JSON.stringify({ name: name.text, price: price.text })
         );
-        // console.log(logo.picturePreview);
         try {
             const response = await fetch(`${api}/startup/add-product-service`, {
                 method: 'POST',
@@ -80,8 +79,6 @@ function ItemsForm(props) {
                     image.src = theFile.target.result;
                     image.onload = function () {
                         // access image size here 
-                        // console.log(this.width, this.height);
-                        // console.log(gcd(this.width, this.height));
                         const w = this.width;
                         const h = this.height;
                         const r = gcd(w, h);

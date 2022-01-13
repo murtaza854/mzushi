@@ -5,7 +5,7 @@ import {
     useLocation,
 } from "react-router-dom";
 import { MainNavbar, IconBanner, Footer } from './components';
-import { Home, Signup, Login, Setup, Businesses, Business, PackageSelection, Premium, ForgotPassword } from './pages';
+import { Home, Signup, Login, Setup, Businesses, Business, PackageSelection, Premium, ForgotPassword, Terms, Privacy } from './pages';
 import Auth from './auth/Auth';
 // import { ComingSoon } from './pages';
 // import { Dashboard } from './dashboard';
@@ -56,6 +56,14 @@ function Routes(props) {
                             <Route path="/:category/:startup">
                                 <MainNavbar />
                                 <Business />
+                            </Route>
+                            <Route path="/terms-conditions">
+                                <MainNavbar />
+                                <Terms />
+                            </Route>
+                            <Route path="/privacy-policy">
+                                <MainNavbar />
+                                <Privacy />
                             </Route>
                             <Route path="/forgot-password">
                                 <MainNavbar />

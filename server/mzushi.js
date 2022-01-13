@@ -64,7 +64,7 @@ const createServer = async (callback) => {
     app.use('/api/auth', authRoutes);
     app.use('/api/ad-package', adPackageRoutes);
     app.use('/api/startup', startupRoutes);
-    app.use('/api/features', featuresRoutes);
+    app.use('/api/feature', featuresRoutes);
 
     app.get('/api/logged-in', async (req, res) => {
         try {
@@ -100,10 +100,10 @@ const createServer = async (callback) => {
             res.json({ data: null, error: error });
         }
     });
-    app.get('*', function (req, res) {
-        // res.sendFile('./build/index.html');
-        res.sendFile(path.resolve('./build/index.html'));
-    });
+    // app.get('*', function (req, res) {
+    //     // res.sendFile('./build/index.html');
+    //     res.sendFile(path.resolve('./build/index.html'));
+    // });
     // app.use('/api/orders', orderRoutes);
     // app.get('/login', (req, res) => {
     //   firebase.auth().signInWithEmailAndPassword('murtazashafi11@gmail.com', 'test123')
@@ -155,78 +155,3 @@ const createServer = async (callback) => {
 }
 
 createServer();
-
-
-// app.use(bodyParser.json());
-// app.use(cookieParser());
-
-// app.get('/signup', (req, res) => {
-//   firebase
-//     .auth()
-//     .createUserWithEmailAndPassword('murtazashafi11@gmail.com', 'test123')
-//     .then(({ user }) => {
-//       user.sendEmailVerification();
-//       res.send(user);
-//     })
-//   // .then(() => {
-//   // return firebase.auth().signOut();
-//   // }) app passswor d = 
-//   // res.send('Hello World!');
-// })
-
-// app.get('/login', (req, res) => {
-//   firebase.auth().signInWithEmailAndPassword('murtazashafi11@gmail.com', 'test123')
-//   .then((userCredential) => {
-//     // Signed in
-//     var user = userCredential.user;
-//     res.send(user);
-//     // ...
-//   })
-//   .catch((error) => {
-//     // var errorCode = error.code;
-//     // var errorMessage = error.message;
-//     res.send(error);
-//   });
-// })
-
-// app.get('/', (req, res) => {
-//   res.send(firebase.auth())
-//   // admin
-//   // .auth()
-//   // .deleteUser('tbgzyIvZadUx0O3O68U8IFWNPen1')
-//   // .then((userRecord) => {
-//   //   // See the UserRecord reference doc for the contents of userRecord.
-//   //   console.log(`Successfully fetched user data: ${userRecord.toJSON()}`);
-//   //   res.send('Successfully deleted user')
-//   // })
-//   // .catch((error) => {
-//   //   console.log('Error deleting user:', error);
-//   //   res.send('Error deleting user:', error)
-//   // });
-
-//   // admin
-//   // .auth()
-//   // .getUser('tbgzyIvZadUx0O3O68U8IFWNPen1')
-//   // .then((userRecord) => {
-//   //   // See the UserRecord reference doc for the contents of userRecord.
-//   //   console.log(`Successfully fetched user data: ${userRecord.toJSON()}`);
-//   // })
-//   // .catch((error) => {
-//   //   console.log('Error fetching user data:', error);
-//   // });
-
-//   // firebase.auth()
-//   // .getUser('tbgzyIvZadUx0O3O68U8IFWNPen1')
-//   // .then((userRecord) => {
-//   //   // See the UserRecord reference doc for the contents of userRecord.
-//   //   res.send(`Successfully fetched user data: ${userRecord.toJSON()}`);
-//   // })
-//   // .catch((error) => {
-//   //   res.send('Error fetching user data:', error);
-//   // });  
-// })
-
-
-// app.listen(port, () => {
-//   console.log(`Example app listening at http://localhost:${port}`);
-// });

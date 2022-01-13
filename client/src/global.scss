@@ -51,6 +51,15 @@
     position: relative;
 }
 
+.flex-display {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.margin-global-05 {
+    margin: 0.5rem;
+}
+
 .unhide-1200 {
     display: none;
 }
@@ -154,6 +163,9 @@
 
 .bold-400 {
     font-weight: 400;
+}
+.bold-500 {
+    font-weight: 500;
 }
 .bold-600 {
     font-weight: 600;

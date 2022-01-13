@@ -33,7 +33,6 @@ function GalleryForm(props) {
             // imageState.picturePreview
             logo.picturePreview
         );
-        // console.log(logo.picturePreview);
         try {
             const response = await fetch(`${api}/startup/add-image`, {
                 method: 'POST',
@@ -73,8 +72,6 @@ function GalleryForm(props) {
                     image.src = theFile.target.result;
                     image.onload = function () {
                         // access image size here 
-                        // console.log(this.width, this.height);
-                        // console.log(gcd(this.width, this.height));
                         const w = this.width;
                         const h = this.height;
                         const r = gcd(w, h);

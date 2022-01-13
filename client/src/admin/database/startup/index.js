@@ -1,0 +1,1 @@
+export { default as StartupTable } from './startupTable/StartupTable';

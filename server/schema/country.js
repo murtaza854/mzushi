@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const countrySchema = new mongoose.Schema({
     name: { type: String, required: true },
+    abbreviation: { type: String, required: true },
+    active: { type: Boolean, required: true },
 });
 
 countrySchema.virtual('provinces', {

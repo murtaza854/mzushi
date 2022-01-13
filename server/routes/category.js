@@ -13,15 +13,17 @@ const slugify = require('slugify');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, path.resolve('../client/public/categoryUploads'))
+        // cb(null, path.resolve('./build/categoryUploads'));
     },
     filename: (req, file, cb) => {
-        cb(null, file.fieldname + '-' + Date.now())
+        const ext = path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + Date.now() + ext);
     }
 });
 
 const upload = multer({ storage: storage });
 
-router.get('/table-data', async (req, res) => {
+router.get('/getAllCategories', async (req, res) => {
     const categories = await Category.find({});
     if (!categories) res.json({ data: [] });
     else res.json({ data: categories });
@@ -39,33 +41,63 @@ router.get('/get-categories', async (req, res) => {
     else res.json({ data: categories });
 });
 
+router.post('/getById', async (req, res) => {
+    try {
+        const category = await Category.findOne({ _id: req.body.id });
+        res.json({ data: category });
+    } catch (error) {
+        res.json({ data: null, error: error });
+    }
+});
 
 router.post('/add', upload.single('image'), async (req, res) => {
     const data = JSON.parse(req.body.data);
+    const image = {
+        fileName: req.file.filename,
+        filePath: '/categoryUploads/' + req.file.filename
+    };
     const newCategory = new Category({
         name: data.name,
         slug: slugify(data.name, { lower: true }),
-        keywords: data.keywords,
-        description: data.description,
-        image: {
-            data: fs.readFileSync((path.resolve('../client/public/categoryUploads') + '/' + req.file.filename)),
-            contentType: req.file.mimetype
-        },
-        featured: data.featured
+        image: image,
+        featured: data.featured,
+        active: data.active
     });
     newCategory.save();
-    res.json({ data: 'success' });
+    res.json({ data: true });
 });
 
-router.post('/update', async (req, res) => {
+router.post('/updateWithImage', upload.single('image'), async (req, res) => {
+    try {
+        const data = JSON.parse(req.body.data);
+        fs.unlinkSync(path.resolve('../client/public/categoryUploads/' + data.oldFileName));
+        // fs.unlinkSync(path.resolve('./build/categoryUploads/' + data.oldFileName));
+        const image = {
+            fileName: req.file.filename,
+            filePath: '/categoryUploads/' + req.file.filename
+        };
+        const category = await Category.findOne({ _id: data.id });
+        category.name = data.name;
+        category.slug = slugify(data.name, { lower: true });
+        category.image = image;
+        category.featured = data.featured;
+        category.active = data.active;
+        category.save();
+        res.json({ data: true });
+    } catch (error) {
+        res.json({ data: null, error: error });
+    }
+});
+
+router.post('/updateWithoutImage', async (req, res) => {
     const data = req.body;
-    const category = await Category.findOne({ _id: data._id });
+    const category = await Category.findOne({ _id: data.id });
     category.name = data.name;
     category.slug = slugify(data.name, { lower: true });
-    category.keywords = data.keywords;
-    category.description = data.description;
+    category.featured = data.featured;
+    category.active = data.active;
     category.save();
-    res.json({ data: 'success' });
+    res.json({ data: true });
 });
 
 router.get('/get-by-ids', async (req, res) => {
@@ -110,7 +142,7 @@ router.post('/delete', async (req, res) => {
         await Category.deleteMany({ _id: req.body.ids });
         res.json({ data: 'success' });
     } catch (error) {
-        console.log(error);
+        ;
         res.json({ data: 'failed' });
     }
 });

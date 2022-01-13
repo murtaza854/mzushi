@@ -21,10 +21,7 @@ function Businesses(props) {
 
     // const [cities, setCities] = useState([]);
     const [filteredCities, setFilteredCities] = useState([]);
-
-    // const [areas, setAreas] = useState([]);
-    const [filteredAreas, setFilteredAreas] = useState([]);
-    // const [areaChange, setAreaChange] = useState(true);
+    
     const params = new URLSearchParams(window.location.search);
     const feature = params.get('feature') || null;
 
@@ -35,7 +32,7 @@ function Businesses(props) {
     useEffect(() => {
         (
             async () => {
-                const response = await fetch(`${api}/features/table-data`, {
+                const response = await fetch(`${api}/feature/getAllFeatures`, {
                     headers: {
                         'Content-Type': 'application/json',
                         'Cache-Control': 'no-store'
@@ -92,26 +89,6 @@ function Businesses(props) {
     }, []);
 
     useEffect(() => {
-        (
-            async () => {
-                const response = await fetch(`${api}/area/get-areas-with-ref`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Cache-Control': 'no-store'
-                    },
-                });
-                const content = await response.json();
-                const areasList = [];
-                content.data.forEach(element => {
-                    element['active'] = false;
-                    areasList.push(element);
-                });
-                // setAreas(areasList);
-                setFilteredAreas(areasList);
-            })();
-    }, []);
-
-    useEffect(() => {
         (async () => {
             const response = await fetch(`${api}/startup/get-all-by-category?categorySlug=${category}`, {
                 method: 'GET',
@@ -131,13 +108,11 @@ function Businesses(props) {
             const activeFeatures = features.filter(e => e.active === true);
             const activeProvinces = provinces.filter(e => e.active === true);
             const activeCities = filteredCities.filter(e => e.active === true);
-            const activeAreas = filteredAreas.filter(e => e.active === true);
             const filteredStartups = [];
             for (let i = 0; i < startUps.length; i++) {
                 const s = startUps[i];
                 const startupFeatures = s.features;
-                const startupArea = s.address.area;
-                const startupCity = startupArea.city;
+                const startupCity = s.address.city;
                 const startupProvince = startupCity.province;
                 let flag = true;
                 for (let j = 0; j < activeFeatures.length; j++) {
@@ -151,82 +126,12 @@ function Businesses(props) {
                 if (flag) {
                     if (activeCities.find(elem => elem.name !== startupCity.name)) flag = false;
                 }
-                if (flag) {
-                    if (activeAreas.find(elem => elem.name !== startupArea.name)) flag = false;
-                }
                 if (flag) filteredStartups.push(s);
             }
-            console.log(filteredStartups);
             setSelectedStartups(filteredStartups);
         } catch (error) {
-            console.log(error);
         }
-    }, [startUps, features, provinces, filteredCities, filteredAreas]);
-
-    // useEffect(() => {
-    //     const activeProvinces = provinces.filter(e => e.active === true);
-    //     const citiesList = [];
-    //     if (activeProvinces.length > 0) {
-    //         for (let i = 0; i < cities.length; i++) {
-    //             const city = cities[i];
-    //             city.active = false;
-    //             if (activeProvinces.find(province => province._id === city.province)) {
-    //                 citiesList.push(city);
-    //             }
-    //         }
-    //         setFilteredCities(citiesList);
-    //         const areasList = [];
-    //         if (citiesList.length > 0) {
-    //             // setAreaChange(false);
-    //             for (let i = 0; i < areas.length; i++) {
-    //                 const area = areas[i];
-    //                 area.active = false;
-    //                 if (citiesList.find(city => city._id === area.city)) {
-    //                     areasList.push(area);
-    //                 }
-    //             }
-    //             setFilteredAreas(areasList);
-    //         } else {
-    //             // setAreaChange(true);
-    //             setFilteredAreas(areas);
-    //         }
-    //     } else {
-    //         setFilteredCities(cities);
-    //         const activeCities = filteredCities.filter(e => e.active === true);
-    //         const areasList = [];
-    //         if (activeCities.length > 0) {
-    //             for (let i = 0; i < areas.length; i++) {
-    //                 const area = areas[i];
-    //                 area.active = false;
-    //                 if (activeCities.find(city => city._id === area.city)) {
-    //                     areasList.push(area);
-    //                 }
-    //             }
-    //             setFilteredAreas(areasList);
-    //         } else {
-    //             setFilteredAreas(areas);
-    //         }
-    //     }
-    // }, [provinces, cities, areas, filteredCities]);
-
-    // useEffect(() => {
-    //     if (areaChange) {
-    //         const activeCities = filteredCities.filter(e => e.active === true);
-    //         const areasList = [];
-    //         if (activeCities.length > 0) {
-    //             for (let i = 0; i < areas.length; i++) {
-    //                 const area = areas[i];
-    //                 area.active = false;
-    //                 if (activeCities.find(city => city._id === area.city)) {
-    //                     areasList.push(area);
-    //                 }
-    //             }
-    //             setFilteredAreas(areasList);
-    //         } else {
-    //             setFilteredAreas(areas);
-    //         }
-    //     }
-    // }, [filteredCities, areas, areaChange]);
+    }, [startUps, features, provinces, filteredCities]);
 
     const handleFeatureChange = (e, index) => {
         const featuresList = [...features];
@@ -252,16 +157,6 @@ function Businesses(props) {
             return value;
         });
         setFilteredCities(citiesList);
-    }
-
-    const handleAreaChange = (e, index) => {
-        const areasList = [...filteredAreas];
-        areasList[index].active = !areasList[index].active;
-        areasList.map((value, i) => {
-            if (i !== index) value.active = false;
-            return value;
-        });
-        setFilteredAreas(areasList);
     }
 
     let sliderLength = 4;
@@ -356,11 +251,9 @@ function Businesses(props) {
                             handleFeatureChange={handleFeatureChange}
                             handleProvinceChange={handleProvinceChange}
                             handleCityChange={handleCityChange}
-                            handleAreaChange={handleAreaChange}
                             features={features}
                             provinces={provinces}
                             cities={filteredCities}
-                            areas={filteredAreas}
                         />
                         <div className="unhide-1200 filter-icon-btn-container">
                             <div className="filter-icon-btn">

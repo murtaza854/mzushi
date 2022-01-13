@@ -38,9 +38,10 @@ function Dashboard(props) {
                 withCredentials: true,
             });
             const content = await response.json();
-            console.log(content.data);
             setStartup(content.data);
+            if (!content.data.address) user.setUserState({ ...user.userState, accountSetup: false });
         })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // const logout = async (e, id) => {
@@ -63,6 +64,8 @@ function Dashboard(props) {
         document.getElementById('dashboard-sidebar').classList.add('active-dashboard-sidebar');
         // document.body.classList.add('disable-scroll');
     }
+
+    console.log(startup);
 
     return (
         // <Container className="user-dashboard text-center margin-global-top-2">

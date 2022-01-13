@@ -95,7 +95,7 @@ const areaObj = {
         useEffect(() => {
             (
                 async () => {
-                    const response = await fetch(`${api}/city/table-data`, {
+                    const response = await fetch(`${api}/city/getAllCities`, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Cache-Control': 'no-store'

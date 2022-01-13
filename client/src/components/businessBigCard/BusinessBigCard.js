@@ -22,7 +22,6 @@ function BusinessBigCard(props) {
         if (dayName === element.name) {
             const startTime = new Date(element.workingHourStart);
             const endTime = new Date(element.workingHourEnd);
-            // console.log(new Date(element.workingHourStart));
             if (startTime.getTime() < currentTime && endTime.getTime() > currentTime) {
                 displayTime = `Today - ${formatAMPM(startTime)} to ${formatAMPM(endTime)}`;
                 break;

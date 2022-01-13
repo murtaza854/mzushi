@@ -19,6 +19,7 @@ const auth = getAuth();
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, path.resolve('../client/public/startupUploads'))
+        // cb(null, path.resolve('./build/startupUploads'))
     },
     filename: (req, file, cb) => {
         const ext = path.extname(file.originalname);
@@ -28,8 +29,16 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.get('/table-data', async (req, res) => {
-    const startups = await Startup.find({});
+router.get('/getAllStartups', async (req, res) => {
+    const startups = await Startup.find({}).populate("category").populate("features").populate('serviceProvinces').populate('serviceCities').populate({
+        path: 'address',
+        populate: {
+            path: 'city',
+            populate: {
+                path: 'province',
+            }
+        }
+    });
     if (!startups) res.json({ data: [] });
     else res.json({ data: startups });
 });
@@ -41,15 +50,12 @@ router.get('/get-logged-in', async (req, res) => {
             const user = await firebaseAdmin.auth().verifySessionCookie(sessionCookie, true);
             if (user) {
                 const uid = user.uid;
-                const startup = await Startup.findOne({ uid: uid }).populate("category").populate("features").populate('serviceProvinces').populate('serviceCities').populate('serviceAreas').populate({
+                const startup = await Startup.findOne({ uid: uid }).populate("category").populate("features").populate('serviceProvinces').populate('serviceCities').populate({
                     path: 'address',
                     populate: {
-                        path: 'area',
+                        path: 'city',
                         populate: {
-                            path: 'city',
-                            populate: {
-                                path: 'province',
-                            }
+                            path: 'province',
                         }
                     }
                 });
@@ -78,15 +84,12 @@ router.get('/get-mzushi-choice', async (req, res) => {
 router.get('/get-one-by-category-startup', async (req, res) => {
     const { categorySlug, startupSlug } = req.query;
     const category = await Category.findOne({ slug: categorySlug });
-    const startup = await Startup.findOne({ category: category, slug: startupSlug }).populate("category").populate("features").populate('serviceProvinces').populate('serviceCities').populate('serviceAreas').populate({
+    const startup = await Startup.findOne({ category: category, slug: startupSlug }).populate("category").populate("features").populate('serviceProvinces').populate('serviceCities').populate({
         path: 'address',
         populate: {
-            path: 'area',
+            path: 'city',
             populate: {
-                path: 'city',
-                populate: {
-                    path: 'province',
-                }
+                path: 'province',
             }
         }
     });
@@ -100,12 +103,9 @@ router.get('/get-all-by-category', async (req, res) => {
         const startups = await Startup.find({}).populate("category").populate("features").populate({
             path: 'address',
             populate: {
-                path: 'area',
+                path: 'city',
                 populate: {
-                    path: 'city',
-                    populate: {
-                        path: 'province',
-                    }
+                    path: 'province',
                 }
             }
         });
@@ -116,12 +116,9 @@ router.get('/get-all-by-category', async (req, res) => {
         const startups = await Startup.find({ category: category }).populate("category").populate("features").populate({
             path: 'address',
             populate: {
-                path: 'area',
+                path: 'city',
                 populate: {
-                    path: 'city',
-                    populate: {
-                        path: 'province',
-                    }
+                    path: 'province',
                 }
             }
         });
@@ -198,7 +195,7 @@ router.post('/change-password', async (req, res) => {
         await updatePassword(user, req.body.password);
         res.json({ data: true });
     } catch (error) {
-        console.log(error);
+        ;
         res.json({ data: false });
     }
 });
@@ -229,7 +226,7 @@ router.post('/change-email', async (req, res) => {
         res.cookie("session", sessionCookieNew, options);
         res.json({ data: true });
     } catch (error) {
-        console.log(error);
+        ;
         res.json({ data: false });
     }
 });
@@ -238,10 +235,15 @@ router.post('/change-owner-info', async (req, res) => {
     try {
         const sessionCookie = req.cookies.session;
         const user = await firebaseAdmin.auth().verifySessionCookie(sessionCookie, true);
+        // console.log(user);
         const dbUser = await Startup.findOne({ uid: user.uid });
-        await updateProfile(user, {
+        // console.log(dbUser);
+        const firebaseUser = await firebaseAdmin.auth().getUser(user.uid);
+        console.log(firebaseUser);
+        await updateProfile(firebaseUser, {
             displayName: req.body.firstName,
         })
+        console.log(user);
         dbUser.ownerFirstName = req.body.firstName;
         dbUser.ownerLastName = req.body.lastName;
         dbUser.contactNumber = req.body.contactNumber;
@@ -264,16 +266,13 @@ router.post('/send-password-reset-link', async (req, res) => {
         await sendPasswordResetEmail(auth, req.body.email);
         res.json({ data: true });
     } catch (error) {
-        console.log(error);
+        ;
         res.json({ data: false });
     }
 });
 
-// console.log(firebase.auth.Auth.Persistence.NONE);
-
 router.post('/login', async (req, res) => {
     const { provider } = req.body;
-    console.log(provider);
     try {
         if (provider === 'email-password') {
             const response = await signInWithEmailAndPassword(auth, req.body.email.name, req.body.password.name)
@@ -352,14 +351,13 @@ router.post('/login', async (req, res) => {
             }
         }
     } catch (error) {
-        console.log(error);
+        ;
         res.json({ data: null, error: error });
     }
 });
 
 router.post('/mark-premium', async (req, res) => {
     try {
-        console.log(req.body)
         const startup = await Startup.findOne({ email: req.body.user.email });
         startup.premium = req.body.mark;
         startup.save();
@@ -390,7 +388,7 @@ router.post('/add-product-service', upload.single('image'), async (req, res, nex
         startup.save();
         res.json({ data: true });
     } catch (error) {
-        console.log(error);
+        ;
         res.json({ data: false, error: error });
     }
 });
@@ -409,7 +407,7 @@ router.post('/delete-product-service', async (req, res) => {
         fs.unlinkSync('/startupUploads/' + req.file.filename);
         res.json({ data: true, productsServices: startup.productsServices });
     } catch (error) {
-        console.log(error);
+        ;
         res.json({ data: false, error: error });
     }
 });
@@ -437,9 +435,10 @@ router.post('/delete-image', async (req, res) => {
         // }
         startup.save();
         fs.unlinkSync(path.resolve('../client/public/startupUploads') + '/' + req.body.fileName);
+        // fs.unlinkSync(path.resolve('./build/startupUploads') + '/' + req.body.fileName);
         res.json({ data: true, images: startup.images });
     } catch (error) {
-        console.log(error);
+        ;
         res.json({ data: false, error: error });
     }
 });
@@ -463,7 +462,7 @@ router.post('/add-image', upload.single('image'), async (req, res, next) => {
         startup.save();
         res.json({ data: true });
     } catch (error) {
-        console.log(error);
+        ;
         res.json({ data: false, error: error });
     }
 });
@@ -471,6 +470,7 @@ router.post('/add-image', upload.single('image'), async (req, res, next) => {
 router.post('/startup-setup', upload.single('image'), async (req, res, next) => {
     try {
         const data = JSON.parse(req.body.data);
+        console.log(data);
         const descriptions = [];
         for (let i = 0; i < data.businessDescription.split('\n').length; i++) {
             const element = data.businessDescription.split('\n')[i];
@@ -482,8 +482,12 @@ router.post('/startup-setup', upload.single('image'), async (req, res, next) => 
         const startup = await Startup.findOne({ email: data.user.email });
         startup.startupName = data.businessName;
         startup.slug = slugify(data.businessName, { lower: true });
-        if (startup.logo && startup.logo.filePath) {
-            fs.unlinkSync(startup.logo.filePath);
+        try {
+            if (startup.logo && startup.logo.filePath) {
+                fs.unlinkSync(startup.logo.filePath);
+            }
+        } catch (error) {
+
         }
         if (req.file) {
             startup.logo = {
@@ -507,7 +511,8 @@ router.post('/startup-setup', upload.single('image'), async (req, res, next) => 
             addressLine1: data.addressLine1,
             addressLine2: data.addressLine2,
             landmark: data.landmark,
-            area: data.area[0]
+            area: data.area,
+            city: data.city,
         });
         address.save();
         startup.address = address;

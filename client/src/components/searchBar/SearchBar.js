@@ -42,7 +42,7 @@ function SearchBar(props) {
     useEffect(() => {
         (async () => {
             try {
-                const response = await fetch(`${api}/city/table-data`, {
+                const response = await fetch(`${api}/city/getAllCities`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -60,7 +60,6 @@ function SearchBar(props) {
     const filterByStartup = () => true;
 
     const changeSelectedCity = e => {
-        // console.log(e.target.value);
         // setStartupList([]);
         setSelectedCity(e.target.value);
     }

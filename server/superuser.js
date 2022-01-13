@@ -33,7 +33,6 @@ const createServer = async (callback) => {
     await user.updateProfile({
         displayName: firstName,
     });
-    // console.log(user);
     const newAdminUser = new AdminUser({
         firstName: firstName,
         lastName: lastName,

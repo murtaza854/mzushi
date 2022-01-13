@@ -55,9 +55,7 @@ function Setup(props) {
     const [cityList, setCityList] = useState([]);
     const [cityLoading, setCityLoading] = useState(false);
 
-    const [area, setArea] = useState({ value: [], error: false, errortext: '', readOnly: true });
-    const [areaList, setAreaList] = useState([]);
-    const [areaLoading, setAreaLoading] = useState(false);
+    const [area, setArea] = useState({ text: '', error: false, errortext: '', readOnly: true });
 
     const [addressLine1, setAddressLine1] = useState({ text: '', error: false, errorText: '' });
     const [addressLine2, setAddressLine2] = useState({ text: '' });
@@ -73,9 +71,7 @@ function Setup(props) {
     const [cityDSList, setCityDSList] = useState([]);
     const [cityDSLoading, setCityDSLoading] = useState(false);
 
-    const [areaDS, setAreaDS] = useState({ value: [], readOnly: true });
-    const [areaDSList, setAreaDSList] = useState([]);
-    const [areaDSLoading, setAreaDSLoading] = useState(false);
+    const [areaDS, setAreaDS] = useState({ text: '', readOnly: true });
 
     const [socialMedia, setSocialMedia] = useState({ facebook: '', twitter: '', instagram: '', youtube: '' });
 
@@ -111,16 +107,16 @@ function Setup(props) {
                     setSunday({ check: true, startValue: new Date(element.workingHourStart), endValue: new Date(element.workingHourEnd) });
                 }
             });
-            setProvince({ value: [props.address.area.city.province], error: false, errortext: '', readOnly: false });
-            setCity({ value: [props.address.area.city], error: false, errortext: '', readOnly: false });
-            setArea({ value: [props.address.area], error: false, errortext: '', readOnly: false });
+            setProvince({ value: [props.address.city.province], error: false, errortext: '', readOnly: false });
+            setCity({ value: [props.address.city], error: false, errortext: '', readOnly: false });
+            setArea({ text: props.address.area, error: false, errortext: '', readOnly: false });
             setAddressLine1({ text: props.address.addressLine1, error: false, errorText: '' });
             setAddressLine2({ text: props.address.addressLine2 });
             setLandmark({ text: props.address.landmark });
             setRadios(props.radios);
             setProvinceDS(prevState => ({ ...prevState, value: props.provinceDS }));
             setCityDS(prevState => ({ ...prevState, value: props.cityDS }));
-            setAreaDS(prevState => ({ ...prevState, value: props.areaDS }));
+            setAreaDS(prevState => ({ ...prevState, text: props.areaDS }));
             setSocialMedia({ facebook: props.facebook, twitter: props.twitter, instagram: props.instagram, youtube: props.youtube });
         }
     }, [props]);
@@ -154,8 +150,6 @@ function Setup(props) {
                     setLogo(prevState => ({ ...prevState, picturePreview: event.target.files[0], imgURl: objectUrl, error: false }));
                     image.onload = function () {
                         // access image size here 
-                        // console.log(this.width, this.height);
-                        // console.log(gcd(this.width, this.height));
                         const w = this.width;
                         const h = this.height;
                         const r = gcd(w, h);
@@ -239,12 +233,10 @@ function Setup(props) {
         if (array.length === 0) {
             setProvince({ value: array, error: true, errortext: 'Province is required!', readOnly: false });
             setCity({ value: [], error: false, errortext: '', readOnly: true });
-            setArea({ value: [], error: false, errortext: '', readOnly: true });
         }
         else {
             setProvince({ value: array, error: false, errortext: '', readOnly: false });
             setCity({ value: [], error: false, errortext: '', readOnly: false });
-            setArea({ value: [], error: false, errortext: '', readOnly: true });
         }
     }
     const handleProvinceSearch = async (query) => {
@@ -270,11 +262,9 @@ function Setup(props) {
     const changeCity = async array => {
         if (array.length === 0) {
             setCity({ value: array, error: true, errortext: 'City is required!', readOnly: false });
-            setArea({ value: [], error: false, errortext: '', readOnly: false });
         }
         else {
             setCity({ value: array, error: false, errortext: '', readOnly: false });
-            setArea({ value: [], error: false, errortext: '', readOnly: false });
         }
     }
     const handleCitySearch = async (query) => {
@@ -297,29 +287,10 @@ function Setup(props) {
     };
     const filterByCity = () => true;
 
-    const changeArea = async array => {
-        if (array.length === 0) setArea({ value: array, error: true, errortext: 'Area is required!', readOnly: false });
-        else setArea({ value: array, error: false, errortext: '', readOnly: false });
+    const handleArea = (event) => {
+        if (event.target.value === '') setArea({ text: event.target.value, error: true, errortext: 'Area is required!', readOnly: false });
+        else setArea({ text: event.target.value, error: false, errortext: '', readOnly: false });
     }
-    const handleAreaSearch = async (query) => {
-        setAreaLoading(true);
-        setAreaList([]);
-        const response = await fetch(`${api}/area/get-areas-search?areaText=${query}&cities=${JSON.stringify(city.value)}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-store'
-            },
-            credentials: 'include',
-            withCredentials: true,
-        });
-        const content = await response.json();
-        setTimeout(() => {
-            setAreaList(content.data);
-            setAreaLoading(false);
-        }, 1000)
-    };
-    const filterByArea = () => true;
 
     const handleAddressLine1 = event => {
         if (event.target.value === '') setAddressLine1({ text: event.target.value, errorText: 'Address line 1 is required!', error: true });
@@ -334,15 +305,12 @@ function Setup(props) {
 
     const changeProvinceDS = async array => {
         if (array.length === 0) {
-            console.log(1)
             setProvinceDS({ value: array, error: true, errortext: 'Province(s) is required!', readOnly: false });
             setCityDS({ value: [], readOnly: true });
-            setAreaDS({ value: [], readOnly: true });
         }
         else {
             setProvinceDS({ value: array, error: false, errortext: '', readOnly: false });
             setCityDS({ value: [], readOnly: false });
-            setAreaDS({ value: [], readOnly: true });
         }
     }
     const handleProvinceDSSearch = async (query) => {
@@ -368,11 +336,9 @@ function Setup(props) {
     const changeCityDS = async array => {
         if (array.length === 0) {
             setCityDS({ value: array, readOnly: false });
-            setAreaDS({ value: [], readOnly: false });
         }
         else {
             setCityDS({ value: array, readOnly: false });
-            setAreaDS({ value: [], readOnly: false });
         }
     }
     const handleCityDSSearch = async (query) => {
@@ -395,33 +361,14 @@ function Setup(props) {
     };
     const filterByCityDS = () => true;
 
-    const changeAreaDS = async array => {
-        if (array.length === 0) setAreaDS({ value: array, readOnly: false });
-        else setAreaDS({ value: array, readOnly: false });
+    const handleAreaDS = (event) => {
+        if (event.target.value === '') setAreaDS({ text: event.target.value, readOnly: false });
+        else setAreaDS({ text: event.target.value, readOnly: false });
     }
-    const handleAreaDSSearch = async (query) => {
-        setAreaDSLoading(true);
-        setAreaDSList([]);
-        const response = await fetch(`${api}/area/get-areas-search?areaText=${query}&cities=${JSON.stringify(cityDS.value)}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-store'
-            },
-            credentials: 'include',
-            withCredentials: true,
-        });
-        const content = await response.json();
-        setTimeout(() => {
-            setAreaDSList(content.data);
-            setAreaDSLoading(false);
-        }, 1000)
-    };
-    const filterByAreaDS = () => true;
 
     useEffect(() => {
         (async () => {
-            const response = await fetch(`${api}/category/table-data`, {
+            const response = await fetch(`${api}/category/getAllCategories`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -453,7 +400,7 @@ function Setup(props) {
 
     useEffect(() => {
         (async () => {
-            const response = await fetch(`${api}/features/table-data`, {
+            const response = await fetch(`${api}/feature/getAllFeatures`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -477,38 +424,6 @@ function Setup(props) {
             setFeatures(featureList);
         })()
     }, [props.edit, props.features]);
-
-    // useEffect(() => {
-    //     setCategories([
-    //         { _id: 0, name: 'Plumber', active: '' },
-    //         { _id: 1, name: 'Plumber', active: '' },
-    //         { _id: 2, name: 'Plumber', active: '' },
-    //         { _id: 3, name: 'Plumber', active: '' },
-    //         { _id: 4, name: 'Plumber', active: '' },
-    //         { _id: 5, name: 'Plumber', active: '' },
-    //         { _id: 6, name: 'Plumber', active: '' },
-    //         { _id: 7, name: 'Plumber', active: '' },
-    //         { _id: 8, name: 'Plumber', active: '' },
-    //         { _id: 9, name: 'Plumber', active: '' },
-    //         { _id: 10, name: 'Plumber', active: '' },
-    //     ]);
-    // }, []);
-
-    // useEffect(() => {
-    //     setFeatures([
-    //         { _id: 0, name: 'Wifi', active: '' },
-    //         { _id: 1, name: 'Wifi', active: '' },
-    //         { _id: 2, name: 'Wifi', active: '' },
-    //         { _id: 3, name: 'Wifi', active: '' },
-    //         { _id: 4, name: 'Wifi', active: '' },
-    //         { _id: 5, name: 'Wifi', active: '' },
-    //         { _id: 6, name: 'Wifi', active: '' },
-    //         { _id: 7, name: 'Wifi', active: '' },
-    //         { _id: 8, name: 'Wifi', active: '' },
-    //         { _id: 9, name: 'Wifi', active: '' },
-    //         { _id: 10, name: 'Wifi', active: '' },
-    //     ]);
-    // }, []);
 
     const handleDeliveryClick = _ => {
         setRadios({ delivery: true, service: false })
@@ -537,16 +452,15 @@ function Setup(props) {
         delete category.active;
         const featuresList = features.filter(element => element.active === 'active');
         featuresList.forEach(function (v) { delete v.active });
-        const website = webUrl.text.includes('http') ? webUrl.text : `https://${webUrl.text}`;
-        const facebook = socialMedia.facebook.includes('http') ? socialMedia.facebook : `https://${socialMedia.facebook}`;
-        const instagram = socialMedia.instagram.includes('http') ? socialMedia.instagram : `https://${socialMedia.instagram}`;
-        const twitter = socialMedia.twitter.includes('http') ? socialMedia.twitter : `https://${socialMedia.twitter}`;
-        const youtube = socialMedia.youtube.includes('http') ? socialMedia.youtube : `https://${socialMedia.youtube}`;
+        const website = webUrl.text !== '' ? webUrl.text.includes('http') ? webUrl.text : `https://${webUrl.text}` : '';
+        const facebook = socialMedia.facebook !== '' ? socialMedia.facebook.includes('http') ? socialMedia.facebook : `https://${socialMedia.facebook}` : '';
+        const instagram = socialMedia.instagram !== '' ? socialMedia.instagram.includes('http') ? socialMedia.instagram : `https://${socialMedia.instagram}` : '';
+        const twitter = socialMedia.twitter !== '' ? socialMedia.twitter.includes('http') ? socialMedia.twitter : `https://${socialMedia.twitter}` : '';
+        const youtube = socialMedia.youtube !== '' ? socialMedia.youtube.includes('http') ? socialMedia.youtube : `https://${socialMedia.youtube}` : '';
         formData.append(
             "data",
-            JSON.stringify({ businessName: businessName.text, businessDescription: businessDescription.text, alignment: alignment, minPrice: minPrice.text, maxPrice: maxPrice.text, webUrl: website, activeDays, category, features: featuresList, area: area.value, addressLine1: addressLine1.text, addressLine2: addressLine2.text, landmark: landmark.text, radios, provinceDS: provinceDS.value, cityDS: cityDS.value, areaDS: areaDS.value, user: user.userState, edit: props.edit, facebook, instagram, twitter, youtube })
+            JSON.stringify({ businessName: businessName.text, businessDescription: businessDescription.text, alignment: alignment, minPrice: minPrice.text, maxPrice: maxPrice.text, webUrl: website, activeDays, category, features: featuresList, city: city.value[0], area: area.text, addressLine1: addressLine1.text, addressLine2: addressLine2.text, landmark: landmark.text, radios, provinceDS: provinceDS.value, cityDS: cityDS.value, areaDS: areaDS.text, user: user.userState, edit: props.edit, facebook, instagram, twitter, youtube })
         );
-        // console.log(logo.picturePreview);
         try {
             const response = await fetch(`${api}/startup/startup-setup`, {
                 method: 'POST',
@@ -570,6 +484,7 @@ function Setup(props) {
 
     useEffect(() => {
         let flag = true;
+        console.log(area);
         if (businessName.error === true) flag = true;
         else if (businessName.text.length === 0) flag = true;
         else if (businessDescription.error === true) flag = true;
@@ -586,7 +501,7 @@ function Setup(props) {
         else if (city.error === true) flag = true;
         else if (city.value.length === 0) flag = true;
         else if (area.error === true) flag = true;
-        else if (area.value.length === 0) flag = true;
+        else if (area.text.length === 0) flag = true;
         if (addressLine1.error === true) flag = true;
         else if (addressLine1.text.length === 0) flag = true;
         else if (provinceDS.error === true) flag = true;
@@ -1222,7 +1137,16 @@ function Setup(props) {
                     <Row>
                         <Form.Group className="form-group-right" as={Col} md={6}>
                             <Form.Label>Area</Form.Label>
-                            <AsyncTypeahead
+                            <Form.Control
+                                id='area'
+                                type="text"
+                                onChange={handleArea}
+                                onBlur={handleArea}
+                                value={area.text}
+                            />
+                            <div className="error-text">{area.errorText}</div>
+                        </Form.Group>
+                            {/* <AsyncTypeahead
                                 filterBy={filterByArea}
                                 isLoading={areaLoading}
                                 id="area"
@@ -1240,9 +1164,7 @@ function Setup(props) {
                                         <span>{option.name}</span>
                                     </Fragment>
                                 )}
-                            />
-                            <div className="error-text">{area.errortext}</div>
-                        </Form.Group>
+                            /> */}
                         <Form.Group className="form-group-left" as={Col} md={6}>
                             <Form.Label>Nearest Landmark [Optional]</Form.Label>
                             <Form.Control
@@ -1337,7 +1259,16 @@ function Setup(props) {
                     <Row>
                         <Form.Group className="form-group-right" as={Col} lg={6}>
                             <Form.Label>Area [Optional]</Form.Label>
-                            <AsyncTypeahead
+                            <Form.Control
+                                id='areaDS'
+                                type="text"
+                                onChange={handleAreaDS}
+                                onBlur={handleAreaDS}
+                                value={areaDS.text}
+                            />
+                            <div className="dim-text">Please enter areas seperated by a comma</div>
+                        </Form.Group>
+                            {/* <AsyncTypeahead
                                 filterBy={filterByAreaDS}
                                 isLoading={areaDSLoading}
                                 id="areaDS"
@@ -1357,7 +1288,7 @@ function Setup(props) {
                                     </Fragment>
                                 )}
                             />
-                        </Form.Group>
+                        </Form.Group> */}
                     </Row>
                     <div className="margin-global-top-2" />
                     <Row className="justify-content-center">

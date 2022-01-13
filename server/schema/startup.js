@@ -49,7 +49,7 @@ const startupSchema = new mongoose.Schema({
     address: { type: Schema.Types.ObjectId, ref: 'addresses' },
     delivery: { type: Boolean },
     service: { type: Boolean },
-    serviceAreas: [{ type: Schema.Types.ObjectId, ref: 'areas', required: true }],
+    serviceAreas: { type: String },
     serviceCities: [{ type: Schema.Types.ObjectId, ref: 'cities', required: true }],
     serviceProvinces: [{ type: Schema.Types.ObjectId, ref: 'provinces', required: true }],
     availableAds: { type: Number, required: true, default: 0 },
@@ -62,6 +62,7 @@ const startupSchema = new mongoose.Schema({
     twitterURL: { type: String },
     instagramURL: { type: String },
     youtubeURL: { type: String },
+    admin: { type: Boolean, required: true, default: false },
 });
 
 const Startup = mongoose.model('startups', startupSchema);

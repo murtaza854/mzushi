@@ -9,10 +9,19 @@ router.get('/get-provinces-search', async (req, res) => {
     res.json({ data: provinces });
 });
 
-router.get('/table-data', async (req, res) => {
+router.get('/getAllStates', async (req, res) => {
     const provinces = await Province.find({}).populate('country');
     if (!provinces) res.json({ data: [] });
     else res.json({ data: provinces });
+});
+
+router.post('/getById', async (req, res) => {
+    try {
+        const province = await Province.findOne({ _id: req.body.id }).populate('country');
+        res.json({ data: province });
+    } catch (error) {
+        res.json({ data: null, error: error });
+    }
 });
 
 router.get('/get-provinces', async (req, res) => {
@@ -32,6 +41,7 @@ router.post('/add', async (req, res) => {
     const newProvince = new Province({
         name: data.name,
         country: data.country,
+        active: data.active
     });
     newProvince.save();
     res.json({ data: 'success' });
@@ -39,9 +49,10 @@ router.post('/add', async (req, res) => {
 
 router.post('/update', async (req, res) => {
     const data = req.body;
-    const province = await Province.findOne({ _id: data._id });
+    const province = await Province.findOne({ _id: data.id });
     province.name = data.name;
     province.country = data.country;
+    province.active = data.active;
     province.save();
     res.json({ data: 'success' });
 });
@@ -72,7 +83,7 @@ router.post('/delete', async (req, res) => {
         await Province.deleteMany({ _id: req.body.ids });
         res.json({ data: 'success' });
     } catch (error) {
-        console.log(error);
+        ;
         res.json({ data: 'failed' });
     }
 });

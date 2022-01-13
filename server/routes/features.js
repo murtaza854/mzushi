@@ -2,7 +2,7 @@ const router = require('express').Router();
 const slugify = require('slugify');
 const Feature = require('../schema').feature;
 
-router.get('/table-data', async (req, res) => {
+router.get('/getAllFeatures', async (req, res) => {
     const features = await Feature.find({});
     if (!features) res.json({ data: [] });
     else res.json({ data: features });
@@ -14,11 +14,21 @@ router.get('/get-features', async (req, res) => {
     else res.json({ data: features });
 });
 
+router.post('/getById', async (req, res) => {
+    try {
+        const feature = await Feature.findOne({ _id: req.body.id });
+        res.json({ data: feature });
+    } catch (error) {
+        res.json({ data: null, error: error });
+    }
+});
+
 router.post('/add', async (req, res) => {
     const data = req.body;
     const newFeature = new Feature({
         name: data.name,
         slug: slugify(data.name, { lower: true }),
+        active: data.active
     });
     newFeature.save();
     res.json({ data: 'success' });
@@ -26,9 +36,10 @@ router.post('/add', async (req, res) => {
 
 router.post('/update', async (req, res) => {
     const data = req.body;
-    const feature = await Feature.findOne({ _id: data._id });
+    const feature = await Feature.findOne({ _id: data.id });
     feature.name = data.name;
     feature.slug = slugify(data.name, { lower: true });
+    feature.active = data.active;
     feature.save();
     res.json({ data: 'success' });
 });
@@ -47,7 +58,7 @@ router.post('/delete', async (req, res) => {
         await Feature.deleteMany({ _id: req.body.ids });
         res.json({ data: 'success' });
     } catch (error) {
-        console.log(error);
+        ;
         res.json({ data: 'failed' });
     }
 });

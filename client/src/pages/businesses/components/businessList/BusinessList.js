@@ -28,9 +28,9 @@ function BusinessList(props) {
                                 addressLine1={value.address.addressLine1}
                                 addressLine2={value.address.addressLine2}
                                 landmark={value.address.landmark}
-                                area={value.address.area.name}
-                                city={value.address.area.city.name}
-                                province={value.address.area.city.province.name}
+                                area={value.address.area}
+                                city={value.address.city.name}
+                                province={value.address.city.province.name}
                                 activeDays={value.activeDays}
                                 features={value.features}
                             />

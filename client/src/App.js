@@ -50,24 +50,28 @@ function App() {
   // if (userState === 'loading') return <PreLoader className="" />;
 
   return (
-    <UserContext.Provider value={{ userState: userState, setUserState: setUserState }}>
-      {
-        userState === 'loading' ? null : (
-          <Router>
-            <Switch>
-              <Route path="/admin">
-                <Admin />
-              </Route>
-              <Route path="*">
-                <div id="overlay" className="overlay"></div>
-                <Routes />
-              </Route>
-            </Switch>
-          </Router>
-        )
-      }
+    <>
+      <Router>
+        <Switch>
+          <Route path="/admin">
+            <Admin />
+          </Route>
+          <Route path="*">
+            <UserContext.Provider value={{ userState: userState, setUserState: setUserState }}>
+              {
+                userState === 'loading' ? null : (
+                  <>
+                    <div id="overlay" className="overlay"></div>
+                    <Routes />
+                  </>
+                )
+              }
+            </UserContext.Provider>
+          </Route>
+        </Switch>
+      </Router>
       <PreLoader id="pre-loader-custom" />
-    </UserContext.Provider>
+    </>
   );
 }
 

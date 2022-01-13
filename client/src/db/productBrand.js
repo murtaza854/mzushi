@@ -32,7 +32,6 @@ const productBrandObj = {
         let html = [];
         for (let i = 0; i < items.length; i++) {
             const element = items[i];
-            console.log(element);
             html.push(
                 <TreeItem key={i} nodeId={`${element._id}`} label={element.name}>
                     {element.products.map((childValue, childIndex) => {

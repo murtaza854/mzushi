@@ -54,9 +54,9 @@ function Business(props) {
                                 addressLine1={startupObj.address.addressLine1}
                                 addressLine2={startupObj.address.addressLine2}
                                 landmark={startupObj.address.landmark}
-                                area={startupObj.address.area.name}
-                                city={startupObj.address.area.city.name}
-                                province={startupObj.address.area.city.province.name}
+                                area={startupObj.address.area}
+                                city={startupObj.address.city.name}
+                                province={startupObj.address.city.province.name}
                                 activeDays={startupObj.activeDays}
                                 features={startupObj.features}
                                 website={startupObj.website}

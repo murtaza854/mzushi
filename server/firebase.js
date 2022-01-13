@@ -1,6 +1,5 @@
 const { initializeApp } = require('firebase/app');
-const admin = require("firebase-admin");
-
+var admin = require("firebase-admin");
 initializeApp({
   apiKey: process.env.API_KEY,
   authDomain: process.env.AUTH_DOMAIN,
@@ -10,11 +9,12 @@ initializeApp({
   appId: process.env.APP_ID
 });
 
-const serviceAccount = require("./mzushi-key.json");
+var serviceAccount = require("./mzushi-544aa-firebase-adminsdk-xxftd-24ca2e8293.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
+
 
 module.exports = {
   admin

@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const provinceSchema = new mongoose.Schema({
     name: { type: String, required: true },
     country: { type: Schema.Types.ObjectId, ref: 'countries', required: true },
+    active: { type: Boolean, default: true },
 });
 
 provinceSchema.virtual('cities', {

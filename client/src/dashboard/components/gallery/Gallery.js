@@ -16,7 +16,6 @@ function Gallery(props) {
         const rowsTemp = [];
         try {
             props.images.forEach(element => {
-                // console.log(element);
                 // const base64Flag = `data:${element.image.contentType};base64,`;
                 // const imagePath = base64Flag + arrayBufferToBase64(element.image.data.data);
                 const imagePath = element.filePath;
@@ -32,7 +31,6 @@ function Gallery(props) {
                     _id: element._id
                 });
             });
-            console.log(123);
             setRows(rowsTemp);
         } catch (error) {
             // setRows(rowsTemp);
@@ -54,7 +52,6 @@ function Gallery(props) {
         const content = await response.json();
         if (content.data) {
             content.images.forEach(element => {
-                console.log(element);
                 // const base64Flag = `data:${element.image.contentType};base64,`;
                 // const imagePath = base64Flag + arrayBufferToBase64(element.image.data.data);
                 const imagePath = element.filePath;

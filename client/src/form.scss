@@ -41,6 +41,9 @@
     .MuiFormControlLabel-label {
         font-size: 1.2rem;
     }
+    .dim-text {
+        color: rgba($color: #000000, $alpha: 0.54);
+    }
     .error-text,
     .show-password {
         margin-top: 0.188rem;

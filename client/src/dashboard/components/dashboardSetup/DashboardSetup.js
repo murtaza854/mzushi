@@ -10,8 +10,6 @@ import { Link } from 'react-router-dom';
 import { Heading2 } from '../../../components';
 
 function DashboardSetup(props) {
-    // const base64Flag = `data:${props.logo.contentType};base64,`;
-    // const imagePath = base64Flag + arrayBufferToBase64(props.logo.data.data);
     const imagePath = props.logo.filePath;
     const activeDaysJSON = [
         { name: 'Monday', workingHourStart: 'Closed', workingHourEnd: 'Closed' },
@@ -42,9 +40,7 @@ function DashboardSetup(props) {
     }).join(", ");
     if (props.cityDS.length === 0) citiesString = 'Not provided';
 
-    let areasString = props.areaDS.map(function (elem) {
-        return elem.name;
-    }).join(", ");
+    let areasString = props.areaDS;
     if (props.areaDS.length === 0) areasString = 'Not provided';
 
     return (
@@ -269,7 +265,7 @@ function DashboardSetup(props) {
                 <Row>
                     <Form.Group as={Col} md={6}>
                         <Form.Label>Province</Form.Label>
-                        <p className="content-read">{props.address.area.city.province.name}</p>
+                        <p className="content-read">{props.address.city.province.name}</p>
                     </Form.Group>
                     <Form.Group as={Col} md={6}>
                         <Form.Label>Address Line 1</Form.Label>
@@ -279,7 +275,7 @@ function DashboardSetup(props) {
                 <Row>
                     <Form.Group as={Col} md={6}>
                         <Form.Label>City</Form.Label>
-                        <p className="content-read">{props.address.area.city.name}</p>
+                        <p className="content-read">{props.address.city.name}</p>
                     </Form.Group>
                     <Form.Group as={Col} md={6}>
                         <Form.Label>Address Line 2</Form.Label>
@@ -295,7 +291,7 @@ function DashboardSetup(props) {
                 <Row>
                     <Form.Group as={Col} md={6}>
                         <Form.Label>Area</Form.Label>
-                        <p className="content-read">{props.address.area.name}</p>
+                        <p className="content-read">{props.address.area}</p>
                     </Form.Group>
                     <Form.Group as={Col} md={6}>
                         <Form.Label>Nearest Landmark</Form.Label>

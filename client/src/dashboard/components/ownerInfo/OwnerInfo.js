@@ -43,6 +43,8 @@ function OwnerInfo(props) {
                     'Cache-Control': 'no-store'
                 },
                 body: JSON.stringify({ firstName: firstName.name, lastName: lastName.name, contactNumber: contactNumber.name }),
+                credentials: 'include',
+                withCredentials: true,
             });
             const content = await response.json();
             if (content.check) {

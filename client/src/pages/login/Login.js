@@ -199,6 +199,30 @@ function Login(props) {
                             </button>
                         </div>
                     </Row>
+                    <div className="margin-global-top-2" />
+                    <Row>
+                        <Col>
+                            <DescriptionText
+                                text="Please click"
+                                link="HERE"
+                                to="/terms-conditions"
+                                text1="to read our terms and conditions for having an account with us."
+                                classes="text-center margin-bottom-0"
+                            />
+                        </Col>
+                    </Row>
+                    <div className="margin-global-top-1" />
+                    <Row>
+                        <Col>
+                            <DescriptionText
+                                text="Please click"
+                                link="HERE"
+                                to="/privacy-policy"
+                                text1="to read our privacy policy."
+                                classes="text-center"
+                            />
+                        </Col>
+                    </Row>
                 </Form>
             </Row>
         </Container>

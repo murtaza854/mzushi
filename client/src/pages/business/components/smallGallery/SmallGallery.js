@@ -14,7 +14,6 @@ function SmallGallery(props) {
         while (props.images.length) {
             results.push(props.images.splice(0, 4));
         }
-        console.log(results);
         setRows(results);
     }, [props.images])
 

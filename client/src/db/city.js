@@ -19,7 +19,7 @@ const editObjCheck = (data, value, editObj) => {
 }
 
 const cityObj = {
-    apiTable: `${api}/city/table-data`,
+    apiTable: `${api}/city/getAllCities`,
     deleteApi: [`${api}/city/get-by-ids`, `${api}/city/delete`],
     createTableData: createTableData,
     headCells: [
@@ -35,7 +35,6 @@ const cityObj = {
         let html = [];
         for (let i = 0; i < items.length; i++) {
             const element = items[i];
-            console.log(element);
             html.push(
                 <TreeItem key={i} nodeId={`${element._id}`} label={element.name}>
                     {element.areas.map((childValue, childIndex) => {
@@ -83,7 +82,7 @@ const cityObj = {
         useEffect(() => {
             (
                 async () => {
-                    const response = await fetch(`${api}/city/table-data`, {
+                    const response = await fetch(`${api}/city/getAllCities`, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Cache-Control': 'no-store'
@@ -91,7 +90,6 @@ const cityObj = {
                     });
                     const content = await response.json();
                     const obj = content.data.find(o => o._id === queryID);
-                    console.log(obj);
                     setEditObj(obj);
                     setCitiesArray(content.data);
                     setLoading(false);
